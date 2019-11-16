@@ -1,0 +1,13 @@
+{
+    "Database": {
+        "host": "localhost",
+        "user": "ermaket",
+        "password": "ermaket777",
+        "database": "ermaket",
+        "port": "5432"
+    },
+    "Models": {
+        "models_dir": "models",
+        "model_prefix": "model_"
+    }
+}

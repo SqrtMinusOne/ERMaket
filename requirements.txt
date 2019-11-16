@@ -1,0 +1,4 @@
+sqlalchemy
+pyramid
+psycopg2-binary
+mixer

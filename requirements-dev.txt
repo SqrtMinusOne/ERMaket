@@ -1,0 +1,7 @@
+python-language-server
+pylama
+yapf
+isort
+autopep8
+neovim
+pudb
