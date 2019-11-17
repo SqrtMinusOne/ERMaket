@@ -10,4 +10,6 @@ class User(Base):
     __table_args__ = {"schema": "er1"}
 
     name = sa.Column(sa.String(256), primary_key=True)
+    email = sa.Column(sa.String(256), nullable=False)
+
     task_on = sa.orm.relationship("UserOnTask", backref='user')
