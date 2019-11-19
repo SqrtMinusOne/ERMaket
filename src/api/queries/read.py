@@ -19,4 +19,7 @@ class QueryBuilder:
     def fetch_one(self, model, **kwargs):
         q = self._build_query(model, page=1, per_page=1, **kwargs)
         obj = q.first()
-        return obj.__marshmallow__().dump(obj)
+        if obj:
+            return obj.__marshmallow__().dump(obj)
+        else:
+            return None
