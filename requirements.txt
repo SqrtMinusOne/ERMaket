@@ -1,5 +1,8 @@
 sqlalchemy
-pyramid
 psycopg2-binary
 mixer
 tqdm
+Flask
+marshmallow_sqlalchemy
+sqlalchemy_json_querybuilder
+stringcase

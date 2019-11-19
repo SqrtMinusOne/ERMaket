@@ -21,7 +21,7 @@ class TestSeeder(unittest.TestCase):
     def test_faker(self):
         models = Models()
         seeder = Seeder(models)
-        faker = Faker(models)
+        faker = Faker(models, verbose=True)
         seeder.create_models()
         faker.fake_all(100)
         with DBConn.get_session() as db:

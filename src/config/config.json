@@ -43,8 +43,7 @@
             "console":{
                 "level": "DEBUG",
                 "class": "logging.StreamHandler",
-                "formatter": "single-line",
-                "stream" : "ext://sys.stdout"
+                "formatter": "single-line"
             },
             "file_handler": {
                 "level": "INFO",
@@ -63,10 +62,6 @@
         "loggers": { },
         "root": {
             "handlers": ["console"],
-            "level": "DEBUG"
-        },
-        "sqlalchemy.engine": {
-            "handlers": ["null"],
             "level": "DEBUG"
         }
     }
