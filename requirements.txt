@@ -6,3 +6,4 @@ Flask
 marshmallow_sqlalchemy
 sqlalchemy_json_querybuilder
 stringcase
+flask_debugtoolbar
