@@ -49,6 +49,7 @@ class Models:
                     self.schemas[schema] = {class_name: model}
                     self._paths[schema] = {class_name: module_name}
                 loaded += 1
+                setattr(model, '__module_name__', module_name)
 
         self._setup_marshmallows()
         logging.info(f'Schemas loaded: {len(self.schemas)}')

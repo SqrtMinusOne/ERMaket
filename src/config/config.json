@@ -53,11 +53,20 @@
                 "filename": "/tmp/file_handler.log",
                 "mode": "a",
                 "encoding": "utf-8"
+            },
+            "null": {
+                "level": "DEBUG",
+                "class": "logging.NullHandler",
+                "formatter": "single-line"
             }
         },
         "loggers": { },
         "root": {
             "handlers": ["console"],
+            "level": "DEBUG"
+        },
+        "sqlalchemy.engine": {
+            "handlers": ["null"],
             "level": "DEBUG"
         }
     }
