@@ -17,14 +17,12 @@ class Models:
     Models are separated by schemas; schemas can be accessed as this class'
     attributes.
 
-    DBConn has to be instantiated before the first use of this class
-
     related config.json parameters: Models
     """
 
     def __init__(self):
         if DBConn.engine is None:
-            raise RuntimeError('Initialize DBConn first')
+            DBConn()
         self.config = Config()
         self.schemas = {}
         self._paths = {}

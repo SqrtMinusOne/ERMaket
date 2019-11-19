@@ -1,0 +1,13 @@
+[Unit]
+Description=Gunicorn instance to serve ERMaket Experiment
+After=network.target
+
+[Service]
+User=pavel
+Group=www-data
+WorkingDirectory=/home/pavel/Programming/ERMaket_Experiment/src
+Environment="PATH=/home/pavel/Programming/ERMaket_Experiment/venv/bin"
+ExecStart=/home/pavel/Programming/ERMaket_Experiment/venv/bin/gunicorn --workers 9 --bind unix:app.sock -m 007 wsgi:app
+
+[Install]
+WantedBy=multi-user.target

@@ -14,15 +14,24 @@ __all__ = ['app', 'models']
 
 app = Flask(__name__)
 
-if not os.environ.get("WERKZEUG_RUN_MAIN"):
-    config = Config()
-    logging.config.dictConfig(config.Logging)
-    logging.info('Starting app')
+@app.errorhandler(500)
+def internal_error(exception):
+    app.logger.error(exception)
+    return render_template('500.html'), 500
 
-    app.config.update(config.Flask)
-    DBConn()
-    toolbar = DebugToolbarExtension(app)
+try:
+    if not os.environ.get("WERKZEUG_RUN_MAIN"):
+        config = Config()
+        logging.config.dictConfig(config.Logging)
+        logging.info('Starting app')
 
-models = Models()
+        app.config.update(config.Flask)
+        toolbar = DebugToolbarExtension(app)
+
+    models = Models()
+
+except Exception as e:
+    logging.error(e)
+    raise e
 
 from routes import *

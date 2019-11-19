@@ -47,9 +47,21 @@
             },
             "file_handler": {
                 "level": "INFO",
-                "class": "logging.handlers.WatchedFileHandler",
+                "class": "logging.handlers.RotatingFileHandler",
                 "formatter": "verbose",
-                "filename": "/tmp/file_handler.log",
+                "filename": "../logs/app.log",
+                "maxBytes": 1048576,
+                "backupCount": 5,
+                "mode": "a",
+                "encoding": "utf-8"
+            },
+            "error_file_handler": {
+                "level": "ERROR",
+                "class": "logging.handlers.RotatingFileHandler",
+                "formatter": "verbose",
+                "filename": "../logs/error.log",
+                "maxBytes": 1048576,
+                "backupCount": 2,
                 "mode": "a",
                 "encoding": "utf-8"
             },
@@ -61,7 +73,7 @@
         },
         "loggers": { },
         "root": {
-            "handlers": ["console"],
+            "handlers": ["console", "file_handler", "error_file_handler"],
             "level": "DEBUG"
         }
     }
