@@ -1,9 +1,8 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
 
 from api import Config
 from contextlib import contextmanager
-from models.base import Base
 
 
 __all__ = ['DBConn']
@@ -19,13 +18,14 @@ class DBConn:
     """
     engine = None
     Session = None
+    scoped_session
     Base = None
 
     def __init__(self, **kwargs):
         DBConn.engine = DBConn.get_engine(**kwargs)
         DBConn.Session = sessionmaker()
         DBConn.Session.configure(bind=self.engine)
-        DBConn.Base = Base
+        DBConn.scoped_session = scoped_session(DBConn.Session)
 
     @classmethod
     def reset(cls):

@@ -11,3 +11,7 @@ class NamesConverter:
         :param table_name:
         """
         return stringcase.pascalcase(table_name.split('.')[1])
+
+    @staticmethod
+    def table_to_class(schema, table_name):
+        return stringcase.pascalcase(table_name)

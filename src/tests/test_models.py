@@ -13,6 +13,7 @@ class ModelsTest(unittest.TestCase):
             self.assertTrue(sess)
 
     def test_models(self):
+        DBConn()
         models = Models()
         self.assertGreater(len(models.schemas), 0)
 
@@ -21,3 +22,9 @@ class ModelsTest(unittest.TestCase):
 
         models2 = Models()
         self.assertEqual(len(models.schemas), len(models2.schemas))
+
+    def test_marshmallow(self):
+        DBConn()
+        models = Models()
+        for model in iter(models):
+            self.assertTrue(hasattr(model, '__marshmallow__'))
