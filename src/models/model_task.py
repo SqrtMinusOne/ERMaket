@@ -10,7 +10,7 @@ class Task(Base):
     __table_args__ = {"schema": "er1"}
 
     name = sa.Column(sa.String(256), primary_key=True)
-    finish_date = sa.Column(sa.DateTime, nullable=False)
+    finish_date = sa.Column(sa.DateTime, nullable=False, index=True)
     description = sa.Column(sa.Text, nullable=False)
 
     list_name = sa.Column(

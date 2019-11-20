@@ -8,3 +8,4 @@ sqlalchemy_json_querybuilder
 stringcase
 flask_debugtoolbar
 gunicorn
+click

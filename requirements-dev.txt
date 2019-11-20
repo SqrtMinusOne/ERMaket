@@ -5,3 +5,4 @@ isort
 autopep8
 neovim
 pudb
+locustio
