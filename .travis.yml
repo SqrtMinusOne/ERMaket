@@ -24,6 +24,7 @@ install:
 before_script:
     - psql -c 'create database ermaket;' -U postgres
     - psql -c "CREATE USER ermaket WITH PASSWORD 'ermaket777';" -U postgres
+    - psql -c 'GRANT ALL PRIVILEGES ON DATABASE "ermaket" to ermaket;' -U postgres
 
 script:
     - cd src && python -m pytest
