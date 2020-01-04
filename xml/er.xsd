@@ -1,0 +1,89 @@
+<?xml version="1.0" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="ermaket" xmlns="ermaket" xmlns:ns="ermaket" elementFormDefault="qualified">
+
+    <!-- Простые типы полей в БД -->
+    <xs:simpleType name="staticTypes">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="boolean" />
+            <xs:enumeration value="float8" />
+            <xs:enumeration value="float4" />
+            <xs:enumeration value="date" />
+            <xs:enumeration value="json" />
+            <xs:enumeration value="int8" />
+            <xs:enumeration value="int4" />
+            <xs:enumeration value="int2" />
+            <xs:enumeration value="time" />
+            <xs:enumeration value="timestamp" />
+            <xs:enumeration value="text" />
+            <xs:enumeration value="xml" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- Типы полей с изменяемым размером -->
+    <xs:simpleType name="fieldTypes">
+        <xs:union memberTypes="staticTypes">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:pattern value="varchar\[[0-9]{1,7}\]" />
+                    <xs:pattern value="decimal\[[0-9]{1,10},( )*[0-9]{1,10}\]" />
+                    <xs:pattern value="enum( )*\(( |\'[ \S]*\'(,)?)*\)" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:union>
+    </xs:simpleType>
+
+    <!-- Атрибут сущности -->
+    <xs:complexType name="attributeType">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string" />
+            <xs:element name="isPk" type="xs:boolean" default="false" minOccurs="0" />
+            <xs:element name="type" type="fieldTypes" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- Сущность -->
+    <xs:complexType name="entityType">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string" />
+            <xs:element name="attribute" type="attributeType" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:integer" use="required" />
+    </xs:complexType>
+
+    <!-- Сторона связи -->
+    <xs:complexType name="relationSideType">
+        <xs:sequence>
+            <xs:element name="idRef" type="xs:integer" />
+            <xs:element name="isMandatory" type="xs:boolean" />
+            <xs:element name="isMultiple" type="xs:boolean" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- Связь -->
+    <xs:complexType name="relationType">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string" />
+            <xs:element name="side" type="relationSideType" minOccurs="2" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- Корень -->
+    <xs:element name="erModel">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="entity" type="entityType" maxOccurs="unbounded" />
+                <xs:element name="relation" type="relationType" minOccurs="0" maxOccurs="unbounded" />
+                <!-- Id сущностей в связи могут повторяться; связь может быть рекурсивной -->
+            </xs:sequence>
+        </xs:complexType>
+        <xs:key name="entity-key">
+            <xs:selector xpath="ns:entity" />
+            <xs:field xpath="@id" />
+        </xs:key>
+        <xs:keyref name="entity-keyref" refer="entity-key">
+            <xs:selector xpath="ns:relation/ns:side/ns:idRef" />
+            <xs:field xpath="." />
+        </xs:keyref>
+    </xs:element>
+
+</xs:schema>

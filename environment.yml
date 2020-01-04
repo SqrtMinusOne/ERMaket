@@ -8,6 +8,7 @@ dependencies:
   - python-language-server
   - pytest
   - pytest-cov
+  - pip
   - pip:
     - sqlalchemy
     - psycopg2-binary
@@ -22,3 +23,7 @@ dependencies:
     - neovim
     - pudb
     - ipdb
+    - repr
+    - bs4
+    - lxml
+    - pytest-pudb

@@ -106,3 +106,4 @@ venv.bak/
 *.log
 _*
 obj.json
+.vscode
