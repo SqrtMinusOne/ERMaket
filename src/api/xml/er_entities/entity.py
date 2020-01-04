@@ -16,7 +16,7 @@ class Entity(XMLObject):
     @classmethod
     def from_xml(cls, tag):
         attributes = [Attribute.from_xml(t) for t in tag.find_all('attribute')]
-        return cls(_id=tag['id'],
+        return cls(_id=int(tag['id']),
                    name=tag.find('name').text,
                    attributes=attributes)
 

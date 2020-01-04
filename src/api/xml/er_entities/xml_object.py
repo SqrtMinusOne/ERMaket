@@ -16,7 +16,7 @@ class XMLObject(ABC):
         pass
 
     @abstractmethod
-    def to_xml(self):
+    def to_xml(self) -> bs4.element.Tag:
         pass
 
     @classmethod

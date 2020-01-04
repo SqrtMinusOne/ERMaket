@@ -1,7 +1,9 @@
 import unittest
 
-from api.xml.er_entities import Entity, Relation, XMLObject
 from bs4 import BeautifulSoup
+
+from api.xml.er_entities import Entity, Relation, XMLObject
+from api.xml import ERD
 
 
 class TestXML(unittest.TestCase):
@@ -12,10 +14,12 @@ class TestXML(unittest.TestCase):
         XMLObject.soup = self.soup
 
     def test_conv(self):
-        entities = [Entity.from_xml(tag)
-                    for tag in self.soup.find_all('entity')]
-        relations = [Relation.from_xml(tag)
-                     for tag in self.soup.find_all('relation')]
+        entities = [
+            Entity.from_xml(tag) for tag in self.soup.find_all('entity')
+        ]
+        relations = [
+            Relation.from_xml(tag) for tag in self.soup.find_all('relation')
+        ]
         self.assertGreater(len(entities), 0)
         self.assertGreater(len(relations), 0)
 
@@ -25,14 +29,14 @@ class TestXML(unittest.TestCase):
         [
             self.assertEqual(
                 Entity.from_xml(tag).to_xml().prettify(),
-                tag.prettify()[:-1]
-            )
-            for tag in entities_tags
+                tag.prettify()[:-1]) for tag in entities_tags
         ]
         [
             self.assertEqual(
                 Relation.from_xml(tag).to_xml().prettify(),
-                tag.prettify()[:-1]
-            )
-            for tag in rel_tags
+                tag.prettify()[:-1]) for tag in rel_tags
         ]
+
+    def test_ERD(self):
+        erd = ERD(self.xml)
+        self.assertGreater(len(erd.entities), 0)

@@ -13,7 +13,7 @@ class Side(XMLObject):
 
     @classmethod
     def from_xml(cls, tag):
-        return cls(tag.idRef.text, tag.isMandatory.text == 'true',
+        return cls(int(tag.idRef.text), tag.isMandatory.text == 'true',
                    tag.isMultiple.text == 'true')
 
     def to_xml(self):
