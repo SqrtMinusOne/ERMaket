@@ -22,5 +22,5 @@ class XMLObject(ABC):
     @classmethod
     def new_tag(cls, name, string):
         tag = cls.soup.new_tag(name)
-        tag.string = string
+        tag.string = str(string)
         return tag

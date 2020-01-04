@@ -2,7 +2,7 @@ from typing import List
 
 from bs4 import BeautifulSoup
 
-from api.xml.er_entities import Entity, Relation, XMLObject
+from api.erd.er_entities import Entity, Relation, XMLObject
 
 __all__ = ['ERD']
 
