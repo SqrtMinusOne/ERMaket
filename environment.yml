@@ -1,0 +1,23 @@
+name: ermaket
+channels:
+  - defaults
+dependencies:
+  - flask
+  - gunicorn
+  - python=3.8.0
+  - python-language-server
+  - pytest
+  - pip:
+    - sqlalchemy
+    - psycopg2-binary
+    - mixer
+    - tqdm
+    - marshmallow_sqlalchemy
+    - sqlalchemy_json_querybuilder
+    - stringcase
+    - flask_debugtoolbar
+    - simplejson
+    - pylama
+    - neovim
+    - pudb
+    - ipdb

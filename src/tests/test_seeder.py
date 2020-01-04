@@ -23,7 +23,7 @@ class TestSeeder(unittest.TestCase):
         seeder = Seeder(models)
         faker = Faker(models, verbose=True)
         seeder.create_models()
-        faker.fake_all(100)
+        faker.fake_all(10)
         with DBConn.get_session() as db:
             for table in iter(models):
                 self.assertTrue(db.query(table).first())

@@ -1,6 +1,6 @@
 from api.database import DBConn
 from api.queries import QueryBuilder
-from api.models import Models
+from api.models import Models, Seeder, Faker
 
 import unittest
 
@@ -9,9 +9,15 @@ class TestQueries(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         DBConn()
-        cls.MODEL = next(iter(Models()))
+        models = Models()
+        cls.MODEL = next(iter(models))
         cls.MODEL_NAME = cls.MODEL.__name__
         cls.FIELD_NAME = next(iter(cls.MODEL.__table__.columns)).name
+
+        faker = Faker(models, verbose=True)
+        seeder = Seeder(models)
+        seeder.create_models()
+        faker.fake_all(10)
 
     def _get_sample(self, db):
         q = db.query(self.MODEL).first()

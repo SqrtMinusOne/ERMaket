@@ -9,3 +9,4 @@ stringcase
 flask_debugtoolbar
 gunicorn
 click
+simplejson
