@@ -27,4 +27,7 @@ before_script:
     - psql -c 'GRANT ALL PRIVILEGES ON DATABASE "ermaket" to ermaket;' -U postgres
 
 script:
-    - cd src && python -m pytest
+    - cd src && python -m pytest --cov=api
+
+after_success:
+    bash <(curl -s https://codecov.io/bash)
