@@ -13,6 +13,9 @@
             "xsi:schemaLocation": "ermaket er.xsd"
         }
     },
+    "Generation": {
+        "templates_folder": "api/generation/templates/"
+    },
     "Models": {
         "models_dir": "models",
         "model_prefix": "model_"

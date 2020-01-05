@@ -7,7 +7,7 @@ class Column:
     def __init__(self,
                  name,
                  type_,
-                 not_null=False,
+                 not_null=True,
                  auto_inc=False,
                  unique=False,
                  pk=False):

@@ -15,7 +15,6 @@
             <xs:enumeration value="time" />
             <xs:enumeration value="timestamp" />
             <xs:enumeration value="text" />
-            <xs:enumeration value="xml" />
         </xs:restriction>
     </xs:simpleType>
 
@@ -24,9 +23,9 @@
         <xs:union memberTypes="staticTypes">
             <xs:simpleType>
                 <xs:restriction base="xs:string">
-                    <xs:pattern value="varchar\[[0-9]{1,7}\]" />
-                    <xs:pattern value="decimal\[[0-9]{1,10},( )*[0-9]{1,10}\]" />
-                    <xs:pattern value="enum( )*\(( |\'[ \S]*\'(,)?)*\)" />
+                    <xs:pattern value="varchar\([0-9]{1,7}\)" />
+                    <xs:pattern value="decimal\([0-9]{1,10}(,( )*[0-9]{1,10})?\)" />
+                    <xs:pattern value="enum\(( |\'[ \S]*\'(,)?)+\)" />
                 </xs:restriction>
             </xs:simpleType>
         </xs:union>

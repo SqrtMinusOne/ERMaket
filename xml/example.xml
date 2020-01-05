@@ -5,14 +5,14 @@
         <attribute>
             <name>Name</name>
             <isPk>true</isPk>
-            <type>varchar[256]</type>
+            <type>varchar(256)</type>
         </attribute>
     </entity>
     <entity id="1">
         <name>Task</name>
         <attribute>
             <name>Name</name>
-            <type>varchar[256]</type>
+            <type>varchar(256)</type>
         </attribute>
         <attribute>
             <name>Due date</name>
@@ -28,7 +28,7 @@
         <attribute>
             <name>Name</name>
             <isPk>true</isPk>
-            <type>varchar[256]</type>
+            <type>varchar(256)</type>
         </attribute>
     </entity>
     <entity id="3">
@@ -42,7 +42,7 @@
         <name>List</name>
         <attribute>
             <name>Name</name>
-            <type>varchar[256]</type>
+            <type>varchar(256)</type>
         </attribute>
     </entity>
     <entity id="5">
@@ -56,7 +56,7 @@
         <name>Item</name>
         <attribute>
             <name>Name</name>
-            <type>varchar[256]</type>
+            <type>varchar(256)</type>
         </attribute>
         <attribute>
             <name>Status</name>

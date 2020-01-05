@@ -1,7 +1,8 @@
 from typing import List
 
 from api.erd.er_entities import Attribute, Entity, Relation
-from api.erd.rd_entities import Column, Table, ForeignKey
+from api.erd.rd_entities import Column, ForeignKey, Table
+from api.models import NamesConverter
 
 
 class Factory:
@@ -20,7 +21,8 @@ class Factory:
         columns = [
             Factory._attribute_to_column(attr) for attr in entity.attributes
         ]
-        table = Table(name=entity.name, columns=columns)
+        table = Table(name=NamesConverter.table_name(entity.name),
+                      columns=columns)
         if auto_pk:
             Factory.auto_pk(table)
         return table
@@ -31,6 +33,7 @@ class Factory:
             name = f"{tables[0].name}_{relation.name}_{tables[1].name}"
         else:
             name = relation.name
+        name = NamesConverter.table_name(name)
         table = Table(name=name, columns=[])
         [table.add_fk(ForeignKey(linked)) for linked in tables]
         return table
@@ -79,7 +82,8 @@ class Factory:
         :param ignore_pk: Whether to ignore primary key
         :rtype: Column
         """
-        column = Column(name=attribute.name, type_=attribute.type_)
+        name = NamesConverter.attribute_name(attribute.name)
+        column = Column(name=name, type_=attribute.type_)
         if attribute.is_pk and not ignore_pk:
             column.pk = True
         return column

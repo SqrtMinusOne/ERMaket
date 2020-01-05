@@ -4,6 +4,7 @@ from magic_repr import make_repr
 
 from api.erd.er_entities import Entity
 from api.erd.rd_entities import Column, ForeignKey, Table
+from api.models import NamesConverter
 
 from .error import ModelError
 from .factory import Factory
@@ -99,6 +100,7 @@ class Algorithm:
         if not recursive and table1 == table2:
             raise ModelError(f'Tables {table1}, {table2} cannot have relation'
                              'because they are one table')
+        name = NamesConverter.attribute_name(name)
         table2.add_fk(ForeignKey(table1, name=name, unique=unique))
 
     def _make_1n_to_1n(self):

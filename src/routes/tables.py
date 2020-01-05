@@ -36,7 +36,7 @@ def get_table(schema, table):
 @app.route('/entry/<schema>/<table>')
 def get_entry(schema, table):
     try:
-        model = models[schema][NamesConverter.table_to_class(schema, table)]
+        model = models[schema][NamesConverter.class_name(schema, table)]
     except KeyError:
         abort(404)
     kwargs = get_filter_params(request.args, pagination=False)

@@ -13,5 +13,13 @@ class NamesConverter:
         return stringcase.pascalcase(table_name.split('.')[1])
 
     @staticmethod
-    def table_to_class(schema, table_name):
-        return stringcase.pascalcase(table_name)
+    def class_name(schema, entity_name):
+        return stringcase.pascalcase(schema + '_' + entity_name)
+
+    @staticmethod
+    def table_name(entity_name):
+        return stringcase.snakecase(stringcase.camelcase(entity_name))
+
+    @staticmethod
+    def attribute_name(name):
+        return stringcase.snakecase(stringcase.camelcase(name))
