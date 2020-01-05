@@ -64,16 +64,16 @@
         </attribute>
     </entity>
     <relation>
-        <name>is_author_to</name>
-        <side>
-            <idRef>0</idRef>
-            <isMandatory>true</isMandatory>
-            <isMultiple>false</isMultiple>
-        </side>
+        <name>is_authored_by</name>
         <side>
             <idRef>3</idRef>
             <isMandatory>false</isMandatory>
             <isMultiple>true</isMultiple>
+        </side>
+        <side>
+            <idRef>0</idRef>
+            <isMandatory>true</isMandatory>
+            <isMultiple>false</isMultiple>
         </side>
     </relation>
     <relation>

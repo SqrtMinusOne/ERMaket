@@ -1,7 +1,7 @@
 from typing import List
 
-from api.erd.er_entities import Attribute, Entity
-from api.erd.rd_entities import Column, Table
+from api.erd.er_entities import Attribute, Entity, Relation
+from api.erd.rd_entities import Column, Table, ForeignKey
 
 
 class Factory:
@@ -23,6 +23,16 @@ class Factory:
         table = Table(name=entity.name, columns=columns)
         if auto_pk:
             Factory.auto_pk(table)
+        return table
+
+    @staticmethod
+    def relation_to_table(relation: Relation, tables: List[Table]) -> Table:
+        if len(tables) == 2:
+            name = f"{tables[0].name}_{relation.name}_{tables[1].name}"
+        else:
+            name = relation.name
+        table = Table(name=name, columns=[])
+        [table.add_fk(ForeignKey(linked)) for linked in tables]
         return table
 
     @staticmethod

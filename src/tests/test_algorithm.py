@@ -15,3 +15,4 @@ class TestAlgorithm(unittest.TestCase):
         erd = ERD(self.xml)
         algorithm = Algorithm(erd)
         algorithm.run_algorithm()
+        print(algorithm)

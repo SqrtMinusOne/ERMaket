@@ -1,7 +1,9 @@
-from typing import List, Dict
+from typing import Dict, List
+
+from bs4 import BeautifulSoup
+from magic_repr import make_repr
 
 from api.erd.er_entities import Entity, Relation, XMLObject
-from bs4 import BeautifulSoup
 
 __all__ = ['ERD']
 
@@ -24,3 +26,13 @@ class ERD:
         self.relations = [
             Relation.from_xml(tag) for tag in self.soup.find_all('relation')
         ]
+
+    def iter_relations(self, filter_):
+        for relation in self.relations:
+            if filter_(relation):
+                yield relation
+            elif len(relation) == 2 and filter_(relation.invert()):
+                yield relation.invert()
+
+
+ERD.__repr__ = make_repr('entities', 'relations')

@@ -18,6 +18,13 @@ class Relation(XMLObject):
             tag.find('name').text,
             [Side.from_xml(t) for t in tag.find_all('side')])
 
+    def __len__(self):
+        return len(self.sides)
+
+    def invert(self):
+        assert len(self.sides) == 2
+        return Relation(self.name, self.sides[::-1])
+
     def to_xml(self):
         tag = self.soup.new_tag('relation')
         tag.append(self.new_tag('name', self.name))

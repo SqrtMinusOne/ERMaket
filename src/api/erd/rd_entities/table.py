@@ -11,6 +11,10 @@ class Table:
     def __init__(self, name, columns: List[Column]):
         self.name = name
         self.columns = columns
+        self.foreign_keys = []
+
+    def add_fk(self, fk):
+        self.foreign_keys.append(fk)
 
     @property
     def pk(self) -> Union[Column, List[Column]]:
@@ -22,4 +26,4 @@ class Table:
         return pks
 
 
-Table.__repr__ = make_repr('name', 'columns')
+Table.__repr__ = make_repr('name', 'columns', 'foreign_keys')
