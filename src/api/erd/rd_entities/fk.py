@@ -9,6 +9,7 @@ class ForeignKey:
                  table: Table,
                  column: Column = None,
                  name=None,
+                 pk=False,
                  onupdate='cascade',
                  ondelete='cascade',
                  unique=False):
@@ -17,14 +18,17 @@ class ForeignKey:
         self.name = name
         self.onupdate, self.ondelete = onupdate, ondelete
         self.unique = unique
+        self.pk = pk
 
     def __repr__(self):
         if self.column is not None:
             column_name = self.column.name
         else:
             column_name = "unresolved"
-            repr_ = (f'<ForeignKey table_name="{self.table.name}"'
-                     f' column_name="{column_name}"')
+        repr_ = (f'<ForeignKey table_name="{self.table.name}"'
+                 f' column_name="{column_name}"')
+        if self.pk:
+            repr_ += f' pk="{self.pk}"'
         if self.name is not None:
             repr_ += f' name="{self.name}"'
         if self.ondelete != "cascade":

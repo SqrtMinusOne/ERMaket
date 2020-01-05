@@ -16,7 +16,7 @@ class Column:
         self.not_null = not_null
         self.auto_inc = auto_inc
         self.unique = unique
-        self.pk = False
+        self.pk = pk
 
 
 Column.__repr__ = make_repr('name', 'type_', 'not_null', 'auto_inc', 'unique',

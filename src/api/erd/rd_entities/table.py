@@ -18,7 +18,9 @@ class Table:
 
     @property
     def pk(self) -> Union[Column, List[Column]]:
-        pks = [column for column in self.columns if column.pk]
+        pks = [
+            column for column in self.columns + self.foreign_keys if column.pk
+        ]
         if len(pks) == 0:
             return None
         if len(pks) == 1:

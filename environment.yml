@@ -9,6 +9,7 @@ dependencies:
   - pytest
   - pytest-cov
   - pip
+  - numpy
   - pip:
     - sqlalchemy
     - psycopg2-binary

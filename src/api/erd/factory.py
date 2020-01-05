@@ -41,6 +41,11 @@ class Factory:
             table.columns = [Factory._auto_id(), *table.columns]
 
     @staticmethod
+    def fk_as_pk(table, fk):
+        col = Column(fk.column.name, fk.column.type_, pk=True)
+        fk.self_column = col
+
+    @staticmethod
     def add_attributes(table: Table,
                        attributes: List[Attribute],
                        ignore_pk=False):

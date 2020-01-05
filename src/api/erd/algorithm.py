@@ -3,7 +3,7 @@ from typing import Dict
 from magic_repr import make_repr
 
 from api.erd.er_entities import Entity
-from api.erd.rd_entities import ForeignKey, Table
+from api.erd.rd_entities import Column, ForeignKey, Table
 
 from .error import ModelError
 from .factory import Factory
@@ -31,9 +31,8 @@ class Algorithm:
         self._make_nx_to_nx()
         self._make_non_binary()
 
-        return self._tables
-
-        # self._set_auto_pks()
+        self._set_pks()
+        self._resolve_fks()
 
     @property
     def tables(self):
@@ -64,12 +63,6 @@ class Algorithm:
                 Factory.add_columns(table, columns, ignore_pk=ignore_pk)
                 del self._tables[self._entities_to_tables[side.id_ref]]
                 self._entities_to_tables[side.id_ref] = table.name
-
-    def _set_auto_pks(self):
-        """Add auto ids where required"""
-        for table in self._tables.values():
-            if table.pk is None:
-                Factory.auto_pk(table)
 
     def _make_1m_to_1n(self):
         """1(mandatory):(1:non-mandatory)"""
@@ -153,6 +146,34 @@ class Algorithm:
         tables = [self._get_table(side.id_ref) for side in relation.sides]
         new_table = Factory.relation_to_table(relation, tables)
         self._tables[new_table.name] = new_table
+
+    def _set_pks(self):
+        unresolved = (t for t in self.tables.values() if t.pk is None)
+        for table in unresolved:
+            if not self._try_fk_as_pk(table):
+                Factory.auto_pk(table)
+
+    def _try_fk_as_pk(self, table):
+        if len(table.columns) == 0 and len(table.foreign_keys) > 0:
+            for fk in table.foreign_keys:
+                fk.pk = True
+            return True
+        for fk in table.foreign_keys:
+            if fk.unique:
+                fk.pk = True
+                return True
+        return False
+
+    def _resolve_fks(self):
+        for table in self.tables.values():
+            for fk in table.foreign_keys:
+                self._set_fk_column(fk)
+
+    def _set_fk_column(self, fk):
+        if fk.column is None:
+            assert (isinstance(fk.table.pk, Column)
+                    or isinstance(fk.table.pk, ForeignKey))
+            fk.column = fk.table.pk
 
 
 Algorithm.__repr__ = make_repr('_tables')
