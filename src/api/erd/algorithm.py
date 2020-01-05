@@ -31,7 +31,13 @@ class Algorithm:
         self._make_nx_to_nx()
         self._make_non_binary()
 
+        return self._tables
+
         # self._set_auto_pks()
+
+    @property
+    def tables(self):
+        return self._tables
 
     def _get_table(self, entity_id):
         return self._tables[self._entities_to_tables[entity_id]]
@@ -51,11 +57,12 @@ class Algorithm:
             for side in relation.sides
         ]))
         for relation in relations:
-            table = self.entities_to_tables[relation.sides[0].id_ref]
+            table = self._get_table(relation.sides[0].id_ref)
             for side in relation.sides[1:]:
                 ignore_pk = table.pk is not None
                 columns = self._get_table(side.id_ref).columns
                 Factory.add_columns(table, columns, ignore_pk=ignore_pk)
+                del self._tables[self._entities_to_tables[side.id_ref]]
                 self._entities_to_tables[side.id_ref] = table.name
 
     def _set_auto_pks(self):

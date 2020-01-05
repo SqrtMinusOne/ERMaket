@@ -6,6 +6,13 @@
         "database": "ermaket",
         "port": "5432"
     },
+    "XML": {
+        "rootAttributes": {
+            "xmlns": "ermaket",
+            "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+            "xsi:schemaLocation": "ermaket er.xsd"
+        }
+    },
     "Models": {
         "models_dir": "models",
         "model_prefix": "model_"

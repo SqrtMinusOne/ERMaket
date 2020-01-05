@@ -13,6 +13,10 @@ class Relation(XMLObject):
         self.sides = sides
 
     @classmethod
+    def make(cls, name, *sides):
+        return cls(name, [Side(*args) for args in sides])
+
+    @classmethod
     def from_xml(cls, tag):
         return cls(
             tag.find('name').text,

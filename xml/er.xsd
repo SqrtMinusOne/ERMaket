@@ -52,11 +52,11 @@
 
     <!-- Сторона связи -->
     <xs:complexType name="relationSideType">
-        <xs:sequence>
+        <xs:all>
             <xs:element name="idRef" type="xs:integer" />
             <xs:element name="isMandatory" type="xs:boolean" />
             <xs:element name="isMultiple" type="xs:boolean" />
-        </xs:sequence>
+        </xs:all>
     </xs:complexType>
 
     <!-- Связь -->
@@ -84,6 +84,10 @@
             <xs:selector xpath="ns:relation/ns:side/ns:idRef" />
             <xs:field xpath="." />
         </xs:keyref>
+        <xs:unique name="enitity-unique-name">
+            <xs:selector xpath="ns:entity/ns:name" />
+            <xs:field xpath="." />
+        </xs:unique>
     </xs:element>
 
 </xs:schema>

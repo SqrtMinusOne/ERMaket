@@ -39,4 +39,5 @@ class TestXML(unittest.TestCase):
 
     def test_ERD(self):
         erd = ERD(self.xml)
-        self.assertGreater(len(erd.entities), 0)
+        new_xml = erd.to_xml()
+        self.assertEqual(self.soup.prettify(), new_xml.prettify())
