@@ -114,8 +114,8 @@ class Faker:
             else:
                 attributes[name] = entry[0][0]
                 self._flush_faked(db)
-                attributes[backref_name] = \
-                    self._mixer.SELECT(**{column: entry[0][0]})
+                # attributes[backref_name] = \
+                #     self._mixer.SELECT(**{column: entry[0][0]})
         if resolved:
             faked = self._mixer.blend(model, **attributes)
             db.add(faked)

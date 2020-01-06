@@ -1,9 +1,14 @@
 import unittest
+
+from api.config import Config
 from api.database import DBConn
 from api.models import Models
 
 
 class ModelsTest(unittest.TestCase):
+    def setUp(self):
+        Config(reload=True)
+
     def test_connection(self):
         DBConn.reset()
         with self.assertRaises(TypeError):

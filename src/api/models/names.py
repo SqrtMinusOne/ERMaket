@@ -22,6 +22,7 @@ class NamesConverter:
 
     @staticmethod
     def attribute_name(name):
+        name = name.replace(' ', '_')
         return stringcase.snakecase(stringcase.camelcase(name))
 
     @staticmethod

@@ -30,10 +30,20 @@ class Generator:
                                        table=self._tables[name])
         return render
 
-    def generate_models(self, folder):
+    def generate_models(self):
+        files = {}
+        for name, table in self._tables.items():
+            files[name] = self._generate_model(name)
+        return files
+
+    def generate_folder(self, folder, prefix=None):
+        if prefix is None:
+            prefix = self._config.Models['model_prefix']
         if os.path.isdir(folder):
             shutil.rmtree(folder)
         os.mkdir(folder)
         for name, table in self._tables.items():
-            with open(os.path.join(folder, f"{name}.py"), 'w') as f:
+            with open(os.path.join(folder, f"{prefix}{name}.py"), 'w') as f:
                 f.write(self._generate_model(name))
+        with open(os.path.join(folder, "base.py"), 'w') as f:
+            f.write(self._env.get_template('base.tmpl.py').render())

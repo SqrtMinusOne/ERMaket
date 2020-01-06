@@ -2,12 +2,14 @@ import unittest
 
 from bs4 import BeautifulSoup
 
+from api.config import Config
 from api.erd.er_entities import Entity, Relation, XMLObject
 from api.erd import ERD
 
 
 class TestXML(unittest.TestCase):
     def setUp(self):
+        Config(reload=True)
         with open('../xml/example.xml', 'r') as f:
             self.xml = f.read()
         self.soup = BeautifulSoup(self.xml, 'xml')

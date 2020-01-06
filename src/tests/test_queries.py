@@ -1,13 +1,15 @@
-from api.database import DBConn
-from api.queries import QueryBuilder
-from api.models import Models, Seeder, Faker
-
 import unittest
+
+from api.config import Config
+from api.database import DBConn
+from api.models import Faker, Models, Seeder
+from api.queries import QueryBuilder
 
 
 class TestQueries(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        Config(reload=True)
         DBConn()
         models = Models()
         cls.MODEL = next(iter(models))
@@ -16,6 +18,7 @@ class TestQueries(unittest.TestCase):
 
         faker = Faker(models, verbose=True)
         seeder = Seeder(models)
+        seeder.drop_models()
         seeder.create_models()
         faker.fake_all(10)
 

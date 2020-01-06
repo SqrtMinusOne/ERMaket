@@ -25,8 +25,15 @@ class Models:
             DBConn()
         self.config = Config()
         self.schemas = {}
+        self.Base = None
         self._paths = {}
+        self._import_base()
         self._import()
+
+    def _import_base(self):
+        filename = f"{self.config.Models['models_dir']}.base".replace('/', '.')
+        module = importlib.import_module(filename)
+        self.Base = getattr(module, 'Base')
 
     def _import(self):
         loaded = 0

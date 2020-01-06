@@ -1,5 +1,4 @@
 from api.database import DBConn
-from models.base import Base
 
 from .models import Models
 
@@ -19,7 +18,7 @@ class Seeder:
         """
         for schema in self._models.schemas.keys():
             DBConn.engine.execute(f'CREATE SCHEMA IF NOT EXISTS {schema}')
-        Base.metadata.create_all(bind=DBConn.engine)
+        self._models.Base.metadata.create_all(bind=DBConn.engine)
 
     def drop_models(self, schema=None):
         """Drops models
