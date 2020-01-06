@@ -16,7 +16,8 @@ def erd_to_sqla_type(type_):
         'int4': 'Integer()',
         'int2': 'SmallInteger()',
         'time': 'Time()',
-        'text': 'Text()'
+        'text': 'Text()',
+        'timestamp': 'DateTime()'
     }
     try:
         return conv[type_]

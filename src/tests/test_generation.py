@@ -13,4 +13,4 @@ class TestGeneration(unittest.TestCase):
         tables = alg.tables
 
         gen = Generator(tables, 'er1')
-        print(gen.generate_model('user'))
+        gen.generate_models('_temp')

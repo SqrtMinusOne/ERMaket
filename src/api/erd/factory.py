@@ -28,6 +28,20 @@ class Factory:
         return table
 
     @staticmethod
+    def make_fk(table,
+                *args,
+                ondelete='cascade',
+                onupdate='cascade',
+                relation_name=None,
+                **kwargs):
+        return Column(fk=ForeignKey(table,
+                                    ondelete=ondelete,
+                                    onupdate=onupdate,
+                                    relation_name=relation_name),
+                      *args,
+                      **kwargs)
+
+    @staticmethod
     def relation_to_table(relation: Relation, tables: List[Table]) -> Table:
         if len(tables) == 2:
             name = f"{tables[0].name}_{relation.name}_{tables[1].name}"
@@ -35,7 +49,10 @@ class Factory:
             name = relation.name
         name = NamesConverter.table_name(name)
         table = Table(name=name, columns=[])
-        [table.add_fk(ForeignKey(linked)) for linked in tables]
+        [
+            table.add_fk(Factory.make_fk(linked, relation_name=relation.name))
+            for linked in tables
+        ]
         return table
 
     @staticmethod

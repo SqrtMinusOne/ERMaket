@@ -11,9 +11,9 @@ class Table:
     def __init__(self, name, columns: List[Column]):
         self.name = name
         self.columns = columns
-        self.foreign_keys = []
+        self.foreign_keys: List[Column] = []
 
-    def add_fk(self, fk):
+    def add_fk(self, fk: Column):
         self.foreign_keys.append(fk)
 
     @property

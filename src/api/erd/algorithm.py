@@ -101,7 +101,8 @@ class Algorithm:
             raise ModelError(f'Tables {table1}, {table2} cannot have relation'
                              'because they are one table')
         name = NamesConverter.attribute_name(name)
-        table2.add_fk(ForeignKey(table1, name=name, unique=unique))
+        table2.add_fk(
+            Factory.make_fk(table1, relation_name=name, unique=unique))
 
     def _make_1n_to_1n(self):
         """1:1 non-mandatory"""
@@ -157,8 +158,8 @@ class Algorithm:
 
     def _try_fk_as_pk(self, table):
         if len(table.columns) == 0 and len(table.foreign_keys) > 0:
-            for fk in table.foreign_keys:
-                fk.pk = True
+            for fk_col in table.foreign_keys:
+                fk_col.pk = True
             return True
         for fk in table.foreign_keys:
             if fk.unique:
@@ -168,8 +169,11 @@ class Algorithm:
 
     def _resolve_fks(self):
         for table in self.tables.values():
-            for fk in table.foreign_keys:
-                self._set_fk_column(fk)
+            for fk_col in table.foreign_keys:
+                self._set_fk_column(fk_col.fk)
+                fk_col.resolve_type()
+                fk_col.name = NamesConverter.fk_name(fk_col.fk.table.name,
+                                                     fk_col.fk.column.name)
 
     def _set_fk_column(self, fk):
         if fk.column is None:
