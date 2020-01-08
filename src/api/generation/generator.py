@@ -1,5 +1,6 @@
+import glob
+import logging
 import os
-import shutil
 
 from jinja2 import Environment, FileSystemLoader
 
@@ -36,14 +37,34 @@ class Generator:
             files[name] = self._generate_model(name)
         return files
 
-    def generate_folder(self, folder, prefix=None):
+    def clear_folder(self, folder=None, prefix=None, schema=None):
+        if folder is None:
+            folder = self._config.Models['models_dir']
         if prefix is None:
             prefix = self._config.Models['model_prefix']
-        if os.path.isdir(folder):
-            shutil.rmtree(folder)
-        os.mkdir(folder)
+        path = f"{folder}/{prefix}"
+        if schema:
+            path += schema
+        path += '*'
+        for f in glob.glob(path):
+            os.remove(f)
+            logging.info(f'Removed file: {f}')
+
+    def generate_folder(self, folder=None, prefix=None):
+        if folder is None:
+            folder = self._config.Models['models_dir']
+        if prefix is None:
+            prefix = self._config.Models['model_prefix']
+        self.clear_folder(folder, prefix, self._schema)
+        if not os.path.isdir(folder):
+            os.mkdir(folder)
         for name, table in self._tables.items():
-            with open(os.path.join(folder, f"{prefix}{name}.py"), 'w') as f:
+            filename = f"{prefix}{self._schema}_{name}.py"
+            path = os.path.join(folder, filename)
+            with open(path, 'w') as f:
                 f.write(self._generate_model(name))
-        with open(os.path.join(folder, "base.py"), 'w') as f:
+                logging.info(f'Created file {path}')
+        base_name = os.path.join(folder, "base.py")
+        with open(base_name, 'w') as f:
             f.write(self._env.get_template('base.tmpl.py').render())
+            logging.info(f'Created file {base_name}')

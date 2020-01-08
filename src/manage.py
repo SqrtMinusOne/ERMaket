@@ -1,9 +1,13 @@
-from api.database import DBConn
-from api.models import Models, Seeder, Faker
+import logging
 
 import click
-import logging
 import simplejson as json
+
+from api.config import Config
+from api.database import DBConn
+from api.erd import ERD, Algorithm
+from api.generation import Generator
+from api.models import Faker, Models, Seeder
 
 
 @click.group()
@@ -12,6 +16,12 @@ def cli(log):
     if log:
         logger = logging.getLogger('sqlalchemy.engine')
         logger.setLevel(logging.INFO)
+
+        config = Config()
+        logging.basicConfig(
+            level=logging.DEBUG,
+            format=config.Logging['formatters']['single-line']['format'],
+            datefmt='%I:%M:%S')
 
 
 @cli.command(help='Check connection & models')
@@ -38,17 +48,52 @@ def create():
     seeder.create_models()
 
 
+@cli.command(help='Generate models by xml schema')
+@click.option("--xml",
+              required=True,
+              help="XML file with schema",
+              type=click.Path())
+@click.option("--schema", required=True, help="Name of schema")
+def generate(xml, schema):
+    with open(xml, 'r') as f:
+        xml = f.read()
+    erd = ERD(xml)
+    alg = Algorithm(erd)
+    alg.run_algorithm()
+
+    gen = Generator(alg.tables, schema)
+    gen.generate_folder()
+
+    click.echo(
+        'Generation complete. Run --check to make sure everything is OK')
+
+
+@cli.command(help='Clear generated models')
+@click.option("--folder", help="Folder to clear", type=click.Path())
+@click.option("--schema", help="Schema to clear")
+def clear(folder, schema):
+    gen = Generator(None, None)
+    gen.clear_folder(folder=folder, schema=schema)
+
+
 @cli.command(help='Fake data')
-@click.option('--all', help='Create data in all schemas', default=False,
+@click.option('--all',
+              help='Create data in all schemas',
+              default=False,
               is_flag=True)
 @click.option('--schema', help='Create data only in given schema instead')
-@click.option('--num', help='Default number of entries to be created',
+@click.option('--num',
+              help='Default number of entries to be created',
               default=5)
 @click.option('--config',
               help='JSON file with creation settings (only for schema)')
-@click.option('--fake', help='Make human-readable data', default=False,
+@click.option('--fake',
+              help='Make human-readable data',
+              default=False,
               is_flag=True)
-@click.option('--refill', help='Drop & create tables before', default=False,
+@click.option('--refill',
+              help='Drop & create tables before',
+              default=False,
               is_flag=True)
 def fake(all, schema, num, config, fake, refill):
     DBConn()
