@@ -1,7 +1,8 @@
+from itertools import combinations
 from typing import List
 
 from api.erd.er_entities import Attribute, Entity, Relation
-from api.erd.rd_entities import Column, ForeignKey, Table
+from api.erd.rd_entities import Column, ForeignKey, Table, Secondary
 from api.models import NamesConverter
 
 
@@ -33,11 +34,13 @@ class Factory:
                 ondelete='cascade',
                 onupdate='cascade',
                 relation_name=None,
+                add_backref=True,
                 **kwargs):
         return Column(fk=ForeignKey(table,
                                     ondelete=ondelete,
                                     onupdate=onupdate,
-                                    relation_name=relation_name),
+                                    relation_name=relation_name,
+                                    add_backref=add_backref),
                       *args,
                       **kwargs)
 
@@ -50,8 +53,20 @@ class Factory:
         name = NamesConverter.table_name(name)
         table = Table(name=name, columns=[])
         [
-            table.add_fk(Factory.make_fk(linked, relation_name=relation.name))
+            table.add_fk(
+                Factory.make_fk(linked,
+                                relation_name=relation.name,
+                                add_backref=False))
             for linked in tables
+        ]
+        [
+            table1.add_secondary(Secondary(
+                ref_table=table1,
+                link_table=table,
+                backref_table=table2,
+                relation_name=relation.name
+            ))
+            for table1, table2 in combinations(tables, 2)
         ]
         return table
 

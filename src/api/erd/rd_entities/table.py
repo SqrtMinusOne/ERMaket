@@ -3,6 +3,7 @@ from typing import List, Union
 from magic_repr import make_repr
 
 from .column import Column
+from .secondary import Secondary
 
 __all__ = ['Table']
 
@@ -12,9 +13,13 @@ class Table:
         self.name = name
         self.columns = columns
         self.foreign_keys: List[Column] = []
+        self.secondary: List[Secondary] = []
 
     def add_fk(self, fk: Column):
         self.foreign_keys.append(fk)
+
+    def add_secondary(self, secondary: Secondary):
+        self.secondary.append(secondary)
 
     @property
     def pk(self) -> Union[Column, List[Column]]:

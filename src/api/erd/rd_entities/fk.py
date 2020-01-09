@@ -10,11 +10,13 @@ class ForeignKey:
                  column: Column = None,
                  onupdate='cascade',
                  ondelete='cascade',
-                 relation_name=None):
+                 relation_name=None,
+                 add_backref=True):
         self.table = table
         self.column = column
         self.onupdate, self.ondelete = onupdate, ondelete
         self.relation_name = relation_name
+        self.add_backref = add_backref
 
     def __repr__(self):
         if self.column is not None:

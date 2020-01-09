@@ -12,3 +12,5 @@ class Er1User(Base):
 
     name = sa.Column(sa.String(256), primary_key=True, nullable=False, unique=True, autoincrement=False)
 
+
+    task_is_assigned_to = sa.orm.relationship('Er1Task', secondary='er1.user_is_assigned_to_task', backref='user_is_assigned_to')
