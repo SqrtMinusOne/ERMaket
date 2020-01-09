@@ -21,8 +21,6 @@
         "model_prefix": "model_"
     },
     "Flask": {
-        "ENV": "development",
-        "DEBUG": false,
         "SECRET_KEY": "afa664c8cfac924818df7ee8cf8e1d94"
     },
     "Logging": {

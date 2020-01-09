@@ -1,10 +1,14 @@
-from flask import abort, request, jsonify
 import simplejson as json
+from flask import Blueprint, abort, jsonify, request
 
-from app import app, models
 from api.database import DBConn
-from api.models import NamesConverter
+from api.models import NamesConverter, Models
 from api.queries import QueryBuilder
+
+models = Models()
+
+__all__ = ['tables']
+tables = Blueprint('tables', 'tables', url_prefix='/tables')
 
 
 def get_filter_params(args, pagination=True):
@@ -20,10 +24,10 @@ def get_filter_params(args, pagination=True):
     return kwargs
 
 
-@app.route('/table/<schema>/<table>')
+@tables.route('/table/<schema>/<table>')
 def get_table(schema, table):
     try:
-        model = models[schema][NamesConverter.table_to_class(schema, table)]
+        model = models[schema][NamesConverter.class_name(schema, table)]
     except KeyError:
         abort(404)
     kwargs = get_filter_params(request.args)
@@ -33,7 +37,7 @@ def get_table(schema, table):
     return jsonify(result)
 
 
-@app.route('/entry/<schema>/<table>')
+@tables.route('/entry/<schema>/<table>')
 def get_entry(schema, table):
     try:
         model = models[schema][NamesConverter.class_name(schema, table)]
