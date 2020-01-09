@@ -2,7 +2,7 @@ import simplejson as json
 from flask import Blueprint, abort, jsonify, request
 
 from api.database import DBConn
-from api.models import NamesConverter, Models
+from api.models import Models, NamesConverter
 from api.queries import QueryBuilder
 
 models = Models()
@@ -14,13 +14,15 @@ tables = Blueprint('tables', 'tables', url_prefix='/tables')
 def get_filter_params(args, pagination=True):
     kwargs = {}
     kwargs['filter_by'] = json.loads(
-        request.args.get('filter_by', default='[]', type=str))
+        request.args.get('filter_by', default='[]', type=str)
+    )
 
     if pagination:
         kwargs['page'] = request.args.get('page', default=1, type=int)
         kwargs['per_page'] = request.args.get('per_page', default=10, type=int)
         kwargs['order_by'] = json.loads(
-            request.args.get('order_by', default='[]', type=str))
+            request.args.get('order_by', default='[]', type=str)
+        )
     return kwargs
 
 

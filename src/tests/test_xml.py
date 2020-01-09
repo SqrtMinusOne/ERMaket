@@ -3,8 +3,8 @@ import unittest
 from bs4 import BeautifulSoup
 
 from api.config import Config
-from api.erd.er_entities import Entity, Relation, XMLObject
 from api.erd import ERD
+from api.erd.er_entities import Entity, Relation, XMLObject
 
 
 class TestXML(unittest.TestCase):
@@ -31,12 +31,14 @@ class TestXML(unittest.TestCase):
         [
             self.assertEqual(
                 Entity.from_xml(tag).to_xml().prettify(),
-                tag.prettify()[:-1]) for tag in entities_tags
+                tag.prettify()[:-1]
+            ) for tag in entities_tags
         ]
         [
             self.assertEqual(
                 Relation.from_xml(tag).to_xml().prettify(),
-                tag.prettify()[:-1]) for tag in rel_tags
+                tag.prettify()[:-1]
+            ) for tag in rel_tags
         ]
 
     def test_ERD(self):

@@ -1,10 +1,7 @@
 class ORMRelationship:
-    def __init__(self,
-                 table,
-                 ref_table,
-                 name,
-                 fk_col=None,
-                 secondary_table=None):
+    def __init__(
+        self, table, ref_table, name, fk_col=None, secondary_table=None
+    ):
         self.table = table
         self.ref_table = ref_table
         self.name = name

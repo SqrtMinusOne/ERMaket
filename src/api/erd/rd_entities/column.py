@@ -4,14 +4,16 @@ __all__ = ['Column']
 
 
 class Column:
-    def __init__(self,
-                 name=None,
-                 type_=None,
-                 not_null=True,
-                 auto_inc=False,
-                 unique=False,
-                 pk=False,
-                 fk=None):
+    def __init__(
+        self,
+        name=None,
+        type_=None,
+        not_null=True,
+        auto_inc=False,
+        unique=False,
+        pk=False,
+        fk=None
+    ):
         self.name = name
         self.type_ = type_
         self._not_null = not_null
@@ -32,5 +34,6 @@ class Column:
         self.type_ = self.fk.column.type_
 
 
-Column.__repr__ = make_repr('name', 'type_', 'not_null', 'auto_inc', 'unique',
-                            'pk', 'fk')
+Column.__repr__ = make_repr(
+    'name', 'type_', 'not_null', 'auto_inc', 'unique', 'pk', 'fk'
+)

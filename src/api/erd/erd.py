@@ -17,8 +17,10 @@ class ERD:
         else:
             self.soup = BeautifulSoup(features='xml')
             self.soup.append(
-                self.soup.new_tag('erModel',
-                                  **self._config.XML['rootAttributes']))
+                self.soup.new_tag(
+                    'erModel', **self._config.XML['rootAttributes']
+                )
+            )
         XMLObject.soup = self.soup
 
         self.entities: Dict[int, Entity] = {}
@@ -52,7 +54,8 @@ class ERD:
     def to_xml(self):
         soup = BeautifulSoup(features='xml')
         soup.append(
-            soup.new_tag('erModel', **self._config.XML['rootAttributes']))
+            soup.new_tag('erModel', **self._config.XML['rootAttributes'])
+        )
         root = soup.find('erModel')
         for entity in self.entities.values():
             root.append(entity.to_xml())

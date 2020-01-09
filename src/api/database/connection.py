@@ -1,9 +1,9 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, scoped_session
-
-from api import Config
 from contextlib import contextmanager
 
+from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session, sessionmaker
+
+from api import Config
 
 __all__ = ['DBConn']
 
@@ -68,10 +68,8 @@ class DBConn:
         """
         config = Config()
         url = "postgresql://{0}:{1}@{2}:{3}/{4}".format(
-            config.Database['user'],
-            config.Database['password'],
-            config.Database['host'],
-            config.Database['port'],
+            config.Database['user'], config.Database['password'],
+            config.Database['host'], config.Database['port'],
             config.Database['database']
         )
         return create_engine(url, **kwargs)

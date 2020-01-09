@@ -17,7 +17,8 @@ def cli(log):
         logging.basicConfig(
             level=logging.DEBUG,
             format=config.Logging['formatters']['single-line']['format'],
-            datefmt='%I:%M:%S')
+            datefmt='%I:%M:%S'
+        )
 
 
 cli.add_command(db)

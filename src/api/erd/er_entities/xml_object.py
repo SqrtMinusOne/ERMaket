@@ -2,7 +2,6 @@ from abc import ABC, abstractmethod
 
 import bs4
 
-
 __all__ = ['XMLObject']
 
 

@@ -1,6 +1,6 @@
-from mixer.backend.sqlalchemy import Mixer
 import sqlalchemy as sa
 import tqdm
+from mixer.backend.sqlalchemy import Mixer
 
 from api.database import DBConn
 
@@ -16,8 +16,8 @@ class ResolveError(Exception):
 class Faker:
     """
     Class for automatic filling the database with test data
-    """
 
+    """
     def __init__(self, models: Models, verbose=False, fake=False):
         self._models = models
         self._verbose = verbose
@@ -48,8 +48,12 @@ class Faker:
         generated = {name: 0 for name in self._models[schema].keys()}
         not_resolved = {name: 0 for name in self._models[schema].keys()}
 
-        total = sum([entries.get(name, default_num)
-                     for name in self._models[schema].keys()])
+        total = sum(
+            [
+                entries.get(name, default_num)
+                for name in self._models[schema].keys()
+            ]
+        )
         try:
             if self._verbose:
                 bar = tqdm.tqdm(total=total)
@@ -103,11 +107,13 @@ class Faker:
             else:
                 continue
             table_name = '.'.join(fk._column_tokens[:-1])
-            backref_name = fk._column_tokens[1]
+            # backref_name = fk._column_tokens[1]
             column = fk._column_tokens[-1]
-            entry = list(db.execute(
-                f"SELECT {column} FROM {table_name} ORDER BY RANDOM() LIMIT 1"
-            ))
+            entry = list(
+                db.execute(
+                    f"SELECT {column} FROM {table_name} ORDER BY RANDOM() LIMIT 1"
+                )
+            )
             if not entry:
                 resolved = False
                 break

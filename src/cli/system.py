@@ -12,8 +12,9 @@ def system():
 
 @system.command(help='Add user')
 @click.option("--login", prompt=True)
-@click.option("--password", prompt=True, hide_input=True,
-              confirmation_prompt=True)
+@click.option(
+    "--password", prompt=True, hide_input=True, confirmation_prompt=True
+)
 def useradd(login, password):
     UserManager().add_user(login, password)
 

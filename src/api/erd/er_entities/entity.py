@@ -3,7 +3,6 @@ from magic_repr import make_repr
 from .attribute import Attribute
 from .xml_object import XMLObject
 
-
 __all__ = ['Entity']
 
 
@@ -16,9 +15,11 @@ class Entity(XMLObject):
     @classmethod
     def from_xml(cls, tag):
         attributes = [Attribute.from_xml(t) for t in tag.find_all('attribute')]
-        return cls(_id=int(tag['id']),
-                   name=tag.find('name').text,
-                   attributes=attributes)
+        return cls(
+            _id=int(tag['id']),
+            name=tag.find('name').text,
+            attributes=attributes
+        )
 
     def to_xml(self):
         tag = self.soup.new_tag('entity', id=self._id)

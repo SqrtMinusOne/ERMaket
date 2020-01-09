@@ -2,7 +2,6 @@ from api.database import DBConn
 # from api.models import Models
 from models import User
 
-
 __all__ = ['UserManager']
 
 

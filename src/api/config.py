@@ -1,8 +1,6 @@
 import json
 
-
 __all__ = ['Config']
-
 
 _configs = {}
 

@@ -52,10 +52,14 @@ class Algorithm:
 
     def _merge_tables(self):
         """Merge tables where possible (1:1 mandatory relationships)"""
-        relations = self.erd.iter_relations(lambda relation: all([
-            side.is_mandatory and not side.is_multiple
-            for side in relation.sides
-        ]))
+        relations = self.erd.iter_relations(
+            lambda relation: all(
+                [
+                    side.is_mandatory and not side.is_multiple
+                    for side in relation.sides
+                ]
+            )
+        )
         for relation in relations:
             table = self._get_table(relation.sides[0].id_ref)
             for side in relation.sides[1:]:
@@ -68,10 +72,12 @@ class Algorithm:
     def _make_1m_to_1n(self):
         """1(mandatory):(1:non-mandatory)"""
         def filter_condition(relation):
-            return (len(relation) == 2 and not relation.sides[0].is_multiple
-                    and not relation.sides[1].is_multiple
-                    and relation.sides[0].is_mandatory
-                    and not relation.sides[1].is_mandatory)
+            return (
+                len(relation) == 2 and not relation.sides[0].is_multiple and
+                not relation.sides[1].is_multiple and
+                relation.sides[0].is_mandatory and
+                not relation.sides[1].is_mandatory
+            )
 
         for relation in self.erd.iter_relations(filter_condition):
             table1 = self._get_table(relation.sides[0].id_ref)  # mandatory
@@ -81,9 +87,11 @@ class Algorithm:
     def _make_1x_to_nm(self):
         """1(any):n(mandatory)"""
         def filter_condition(relation):
-            return (len(relation) == 2 and relation.sides[0].is_multiple
-                    and not relation.sides[1].is_multiple
-                    and relation.sides[0].is_mandatory)
+            return (
+                len(relation) == 2 and relation.sides[0].is_multiple and
+                not relation.sides[1].is_multiple and
+                relation.sides[0].is_mandatory
+            )
 
         for relation in self.erd.iter_relations(filter_condition):
             table1 = self._get_table(relation.sides[0].id_ref)  # n
@@ -98,19 +106,26 @@ class Algorithm:
         :param recurvise:
         """
         if not recursive and table1 == table2:
-            raise ModelError(f'Tables {table1}, {table2} cannot have relation'
-                             'because they are one table')
+            raise ModelError(
+                f'Tables {table1}, {table2} cannot have relation'
+                'because they are one table'
+            )
         name = NamesConverter.attribute_name(name)
         table2.add_fk(
-            Factory.make_fk(table1, relation_name=name, unique=unique))
+            Factory.make_fk(table1, relation_name=name, unique=unique)
+        )
 
     def _make_1n_to_1n(self):
         """1:1 non-mandatory"""
         def filter_condition(relation):
-            return (len(relation) == 2 and all([
-                not side.is_mandatory and not side.is_multiple
-                for side in relation.sides
-            ]))
+            return (
+                len(relation) == 2 and all(
+                    [
+                        not side.is_mandatory and not side.is_multiple
+                        for side in relation.sides
+                    ]
+                )
+            )
 
         for relation in self.erd.iter_relations(filter_condition):
             self._make_link_table(relation)
@@ -118,9 +133,11 @@ class Algorithm:
     def _make_1x_to_nn(self):
         """1 (any): n(non-mandatory)"""
         def filter_condition(relation):
-            return (len(relation) == 2 and relation.sides[0].is_multiple
-                    and not relation.sides[1].is_multiple
-                    and not relation.sides[0].is_mandatory)
+            return (
+                len(relation) == 2 and relation.sides[0].is_multiple and
+                not relation.sides[1].is_multiple and
+                not relation.sides[0].is_mandatory
+            )
 
         for relation in self.erd.iter_relations(filter_condition):
             if self.options['1x_to_nn_as_3']:
@@ -132,8 +149,10 @@ class Algorithm:
 
     def _make_nx_to_nx(self):
         def filter_condition(relation):
-            return (len(relation) == 2 and relation.sides[0].is_multiple
-                    and relation.sides[1].is_multiple)
+            return (
+                len(relation) == 2 and relation.sides[0].is_multiple and
+                relation.sides[1].is_multiple
+            )
 
         for relation in self.erd.iter_relations(filter_condition):
             self._make_link_table(relation)
@@ -172,15 +191,18 @@ class Algorithm:
             for fk_col in table.foreign_keys:
                 self._set_fk_column(fk_col.fk)
                 fk_col.resolve_type()
-                fk_col.name = NamesConverter.fk_name(fk_col.fk.table.name,
-                                                     fk_col.fk.column.name)
+                fk_col.name = NamesConverter.fk_name(
+                    fk_col.fk.table.name, fk_col.fk.column.name
+                )
                 if fk_col.fk.add_rel:
                     Factory.make_rel(table, fk_col)
 
     def _set_fk_column(self, fk):
         if fk.column is None:
-            assert (isinstance(fk.table.pk, Column)
-                    or isinstance(fk.table.pk, ForeignKey))
+            assert (
+                isinstance(fk.table.pk, Column) or
+                isinstance(fk.table.pk, ForeignKey)
+            )
             fk.column = fk.table.pk
 
 

@@ -4,7 +4,7 @@ from api.config import Config
 from api.database import DBConn
 from api.erd import ERD, Algorithm
 from api.generation import Generator
-from api.models import Models, Seeder, Faker
+from api.models import Faker, Models, Seeder
 
 from .dummies import binary_erd
 

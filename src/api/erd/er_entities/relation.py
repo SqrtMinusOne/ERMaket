@@ -3,7 +3,6 @@ from magic_repr import make_repr
 from .side import Side
 from .xml_object import XMLObject
 
-
 __all__ = ['Relation']
 
 
@@ -20,7 +19,8 @@ class Relation(XMLObject):
     def from_xml(cls, tag):
         return cls(
             tag.find('name').text,
-            [Side.from_xml(t) for t in tag.find_all('side')])
+            [Side.from_xml(t) for t in tag.find_all('side')]
+        )
 
     def __len__(self):
         return len(self.sides)

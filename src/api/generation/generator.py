@@ -16,8 +16,11 @@ __all__ = ['Generator']
 class Generator:
     def __init__(self, tables, schema):
         self._config = Config()
-        self._env = Environment(loader=FileSystemLoader(
-            self._config.Generation['templates_folder']))
+        self._env = Environment(
+            loader=FileSystemLoader(
+                self._config.Generation['templates_folder']
+            )
+        )
         self._env.globals['Names'] = NamesConverter
         self._env.globals['sa_type'] = erd_to_sqla_type
         # self._env.trim_blocks = True
@@ -28,8 +31,9 @@ class Generator:
         self._schema = schema
 
     def _generate_model(self, name):
-        render = self._template.render(schema=self._schema,
-                                       table=self._tables[name])
+        render = self._template.render(
+            schema=self._schema, table=self._tables[name]
+        )
         return self._postprocess_python(render)
 
     def _postprocess_python(self, code):

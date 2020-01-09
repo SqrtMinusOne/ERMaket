@@ -23,13 +23,15 @@ class Table:
 
     @property
     def primary_rels(self):
-        return filter(lambda rel: rel.secondary_table is None,
-                      self.relationships)
+        return filter(
+            lambda rel: rel.secondary_table is None, self.relationships
+        )
 
     @property
     def secondary_rels(self):
-        return filter(lambda rel: rel.secondary_table is not None,
-                      self.relationships)
+        return filter(
+            lambda rel: rel.secondary_table is not None, self.relationships
+        )
 
     @property
     def pk(self) -> Union[Column, List[Column]]:

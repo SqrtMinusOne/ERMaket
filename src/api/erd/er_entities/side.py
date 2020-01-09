@@ -13,8 +13,10 @@ class Side(XMLObject):
 
     @classmethod
     def from_xml(cls, tag):
-        return cls(int(tag.idRef.text), tag.isMandatory.text == 'true',
-                   tag.isMultiple.text == 'true')
+        return cls(
+            int(tag.idRef.text), tag.isMandatory.text == 'true',
+            tag.isMultiple.text == 'true'
+        )
 
     def to_xml(self):
         tag = self.soup.new_tag('side')

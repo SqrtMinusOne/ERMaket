@@ -22,43 +22,52 @@ class Factory:
         columns = [
             Factory._attribute_to_column(attr) for attr in entity.attributes
         ]
-        table = Table(name=NamesConverter.table_name(entity.name),
-                      columns=columns)
+        table = Table(
+            name=NamesConverter.table_name(entity.name), columns=columns
+        )
         if auto_pk:
             Factory.auto_pk(table)
         return table
 
     @staticmethod
-    def make_fk(table,
-                *args,
-                ondelete='cascade',
-                onupdate='cascade',
-                relation_name=None,
-                add_rel=True,
-                **kwargs):
-        return Column(fk=ForeignKey(table,
-                                    ondelete=ondelete,
-                                    onupdate=onupdate,
-                                    relation_name=relation_name,
-                                    add_rel=add_rel),
-                      *args,
-                      **kwargs)
+    def make_fk(
+        table,
+        *args,
+        ondelete='cascade',
+        onupdate='cascade',
+        relation_name=None,
+        add_rel=True,
+        **kwargs
+    ):
+        return Column(
+            fk=ForeignKey(
+                table,
+                ondelete=ondelete,
+                onupdate=onupdate,
+                relation_name=relation_name,
+                add_rel=add_rel
+            ),
+            *args,
+            **kwargs
+        )
 
     @staticmethod
     def make_rel(table, fk_col):
         fk = fk_col.fk
         assert fk.add_rel is True
-        table.add_rel(ORMRelationship(
-            table=table,
-            ref_table=fk.table,
-            name=fk.relation_name,
-            fk_col=fk_col
-        ))
-        fk.table.add_rel(ORMRelationship(
-            table=fk.table,
-            ref_table=table,
-            name=fk.relation_name
-        ))
+        table.add_rel(
+            ORMRelationship(
+                table=table,
+                ref_table=fk.table,
+                name=fk.relation_name,
+                fk_col=fk_col
+            )
+        )
+        fk.table.add_rel(
+            ORMRelationship(
+                table=fk.table, ref_table=table, name=fk.relation_name
+            )
+        )
 
     @staticmethod
     def relation_to_table(relation: Relation, tables: List[Table]) -> Table:
@@ -70,19 +79,20 @@ class Factory:
         table = Table(name=name, columns=[])
         [
             table.add_fk(
-                Factory.make_fk(linked,
-                                relation_name=relation.name,
-                                add_rel=False))
-            for linked in tables
+                Factory.make_fk(
+                    linked, relation_name=relation.name, add_rel=False
+                )
+            ) for linked in tables
         ]
         [
-            table1.add_rel(ORMRelationship(
-                table=table1,
-                ref_table=table2,
-                name=name,
-                secondary_table=table
-            ))
-            for table1, table2 in permutations(tables, 2)
+            table1.add_rel(
+                ORMRelationship(
+                    table=table1,
+                    ref_table=table2,
+                    name=name,
+                    secondary_table=table
+                )
+            ) for table1, table2 in permutations(tables, 2)
         ]
         return table
 
@@ -97,9 +107,9 @@ class Factory:
         fk.self_column = col
 
     @staticmethod
-    def add_attributes(table: Table,
-                       attributes: List[Attribute],
-                       ignore_pk=False):
+    def add_attributes(
+        table: Table, attributes: List[Attribute], ignore_pk=False
+    ):
         """Add attributes to existing table
 
         :param table:
@@ -109,8 +119,7 @@ class Factory:
         :param ignore_pk: Whether to ignore primary keys for attributes
         """
         columns = [
-            Factory._attribute_to_column(attr, ignore_pk)
-            for attr in attributes
+            Factory._attribute_to_column(a, ignore_pk) for a in attributes
         ]
         table.columns.extend(columns)
 

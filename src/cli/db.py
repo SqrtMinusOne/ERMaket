@@ -6,7 +6,6 @@ from api.erd import ERD, Algorithm
 from api.generation import Generator
 from api.models import Faker, Models, Seeder
 
-
 __all__ = ['db']
 
 
@@ -44,10 +43,9 @@ def create():
 
 
 @db.command(help='Generate models by xml schema')
-@click.option("--xml",
-              prompt=True,
-              help="XML file with schema",
-              type=click.Path())
+@click.option(
+    "--xml", prompt=True, help="XML file with schema", type=click.Path()
+)
 @click.option("--schema", prompt=True, help="Name of schema")
 def generate(xml, schema):
     with open(xml, 'r') as f:
@@ -59,8 +57,7 @@ def generate(xml, schema):
     gen = Generator(alg.tables, schema)
     gen.generate_folder()
 
-    click.echo(
-        'Generation complete. Run --check to make sure everything is OK')
+    click.echo('Generation complete. Run check to make sure everything is OK')
 
 
 @db.command(help='Clear generated models')
@@ -72,24 +69,22 @@ def clear(folder, schema):
 
 
 @db.command(help='Fake data')
-@click.option('--all',
-              help='Create data in all schemas',
-              default=False,
-              is_flag=True)
+@click.option(
+    '--all', help='Create data in all schemas', default=False, is_flag=True
+)
 @click.option('--schema', help='Create data only in given schema instead')
-@click.option('--num',
-              help='Default number of entries to be created',
-              default=5)
-@click.option('--config',
-              help='JSON file with creation settings (only for schema)')
-@click.option('--fake',
-              help='Make human-readable data',
-              default=False,
-              is_flag=True)
-@click.option('--refill',
-              help='Drop & create tables before',
-              default=False,
-              is_flag=True)
+@click.option(
+    '--num', help='Default number of entries to be created', default=5
+)
+@click.option(
+    '--config', help='JSON file with creation settings (only for schema)'
+)
+@click.option(
+    '--fake', help='Make human-readable data', default=False, is_flag=True
+)
+@click.option(
+    '--refill', help='Drop & create tables before', default=False, is_flag=True
+)
 def fake(all, schema, num, config, fake, refill):
     DBConn()
     models = Models()

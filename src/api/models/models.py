@@ -1,11 +1,11 @@
-from api import Config
-from api.database import DBConn
-
-from marshmallow_sqlalchemy import ModelConversionError, ModelSchema
 import glob
 import importlib
 import logging
 
+from marshmallow_sqlalchemy import ModelConversionError, ModelSchema
+
+from api import Config
+from api.database import DBConn
 
 __all__ = ['Models']
 
@@ -19,7 +19,6 @@ class Models:
 
     related config.json parameters: Models
     """
-
     def __init__(self):
         if DBConn.engine is None:
             DBConn()
@@ -37,10 +36,12 @@ class Models:
 
     def _import(self):
         loaded = 0
-        for filename in glob.glob("{0}/{1}*.py".format(
-            self.config.Models['models_dir'],
-            self.config.Models['model_prefix']
-        )):
+        for filename in glob.glob(
+            "{0}/{1}*.py".format(
+                self.config.Models['models_dir'],
+                self.config.Models['model_prefix']
+            )
+        ):
             module_name = filename.replace('/', '.')[:-3]
             module = importlib.import_module(module_name)
 
@@ -76,7 +77,7 @@ class Models:
             sqla_session = DBConn.scoped_session
 
         schema_class_name = "%sSchema" % class_.__name__
-        schema_class = type(schema_class_name, (ModelSchema,), {"Meta": Meta})
+        schema_class = type(schema_class_name, (ModelSchema, ), {"Meta": Meta})
         setattr(class_, "__marshmallow__", schema_class)
 
     def __getattr__(self, key):

@@ -1,6 +1,7 @@
-from api.database import DBConn
-from models import Base, User, UserHasRoles, Role
 import logging
+
+from api.database import DBConn
+from models import Base, Role, User, UserHasRoles
 
 __all__ = ['SystemManager']
 

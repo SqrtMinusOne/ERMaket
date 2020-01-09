@@ -6,8 +6,9 @@ class QueryBuilder:
         self._session = session
 
     def _build_query(self, model, page, per_page, **kwargs):
-        search_obj = Search(self._session, model.__module_name__, (model, ),
-                            **kwargs)
+        search_obj = Search(
+            self._session, model.__module_name__, (model, ), **kwargs
+        )
         return search_obj.query().offset(per_page * page).limit(per_page)
 
     def fetch_data(self, model, page=0, per_page=10, **kwargs):

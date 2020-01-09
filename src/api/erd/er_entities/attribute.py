@@ -2,7 +2,6 @@ from magic_repr import make_repr
 
 from .xml_object import XMLObject
 
-
 __all__ = ['Attribute']
 
 

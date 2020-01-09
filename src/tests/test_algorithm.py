@@ -1,11 +1,11 @@
 import unittest
+
 import numpy as np
 
 from api.erd import ERD, Algorithm
 from api.erd.er_entities import Relation
 
-
-from .dummies import binary_erd, non_binary_erds, DummyEntity
+from .dummies import DummyEntity, binary_erd, non_binary_erds
 
 
 class TestAlgorithm(unittest.TestCase):
@@ -26,9 +26,11 @@ class TestAlgorithm(unittest.TestCase):
         erd.add_entity(DummyEntity(1))
         erd.add_entity(DummyEntity(2))
         erd.add_relation(
-            Relation.make('m0', [0, True, False], [1, True, False]))
+            Relation.make('m0', [0, True, False], [1, True, False])
+        )
         erd.add_relation(
-            Relation.make('m1', [1, True, False], [2, True, False]))
+            Relation.make('m1', [1, True, False], [2, True, False])
+        )
 
         alg = Algorithm(erd)
         alg.run_algorithm()

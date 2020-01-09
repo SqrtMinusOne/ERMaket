@@ -9,7 +9,6 @@ class Seeder:
     """
     Class for initializing or clearing the database
     """
-
     def __init__(self, models: Models):
         self._models = models
 

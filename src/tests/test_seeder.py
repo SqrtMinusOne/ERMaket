@@ -2,7 +2,7 @@ import unittest
 
 from api.config import Config
 from api.database import DBConn
-from api.models import Models, Seeder, Faker
+from api.models import Faker, Models, Seeder
 
 
 class TestSeeder(unittest.TestCase):
