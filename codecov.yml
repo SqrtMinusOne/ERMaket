@@ -9,8 +9,6 @@ coverage:
         enabled: yes
         target: 90
         threshold: null
-        if_not_found:
-        if_ci_failed:
     patch:
       default:
         enabled: no

@@ -1,8 +1,8 @@
-from itertools import combinations
+from itertools import permutations
 from typing import List
 
 from api.erd.er_entities import Attribute, Entity, Relation
-from api.erd.rd_entities import Column, ForeignKey, Table, Secondary
+from api.erd.rd_entities import Column, ForeignKey, ORMRelationship, Table
 from api.models import NamesConverter
 
 
@@ -34,15 +34,31 @@ class Factory:
                 ondelete='cascade',
                 onupdate='cascade',
                 relation_name=None,
-                add_backref=True,
+                add_rel=True,
                 **kwargs):
         return Column(fk=ForeignKey(table,
                                     ondelete=ondelete,
                                     onupdate=onupdate,
                                     relation_name=relation_name,
-                                    add_backref=add_backref),
+                                    add_rel=add_rel),
                       *args,
                       **kwargs)
+
+    @staticmethod
+    def make_rel(table, fk_col):
+        fk = fk_col.fk
+        assert fk.add_rel is True
+        table.add_rel(ORMRelationship(
+            table=table,
+            ref_table=fk.table,
+            name=fk.relation_name,
+            fk_col=fk_col
+        ))
+        fk.table.add_rel(ORMRelationship(
+            table=fk.table,
+            ref_table=table,
+            name=fk.relation_name
+        ))
 
     @staticmethod
     def relation_to_table(relation: Relation, tables: List[Table]) -> Table:
@@ -56,17 +72,17 @@ class Factory:
             table.add_fk(
                 Factory.make_fk(linked,
                                 relation_name=relation.name,
-                                add_backref=False))
+                                add_rel=False))
             for linked in tables
         ]
         [
-            table1.add_secondary(Secondary(
-                ref_table=table1,
-                link_table=table,
-                backref_table=table2,
-                relation_name=relation.name
+            table1.add_rel(ORMRelationship(
+                table=table1,
+                ref_table=table2,
+                name=name,
+                secondary_table=table
             ))
-            for table1, table2 in combinations(tables, 2)
+            for table1, table2 in permutations(tables, 2)
         ]
         return table
 

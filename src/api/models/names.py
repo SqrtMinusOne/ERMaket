@@ -30,9 +30,9 @@ class NamesConverter:
         return NamesConverter.attribute_name(table + '_' + column)
 
     @staticmethod
-    def rel_name(table, relation_name):
+    def referral_rel_name(table, relation_name):
         return NamesConverter.attribute_name(table + '_' + relation_name)
 
     @staticmethod
-    def backref_name(table, relation_name):
-        return NamesConverter.attribute_name(relation_name)
+    def referrer_rel_name(table, relation_name):
+        return NamesConverter.attribute_name(relation_name + '_' + table)

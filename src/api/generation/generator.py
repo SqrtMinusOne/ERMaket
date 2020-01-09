@@ -3,6 +3,7 @@ import logging
 import os
 
 from jinja2 import Environment, FileSystemLoader
+from yapf.yapflib.yapf_api import FormatCode
 
 from api.config import Config
 from api.models import NamesConverter
@@ -29,7 +30,13 @@ class Generator:
     def _generate_model(self, name):
         render = self._template.render(schema=self._schema,
                                        table=self._tables[name])
-        return render
+        return self._postprocess_python(render)
+
+    def _postprocess_python(self, code):
+        # while re.search('\n\n\n', code):
+        #     code = re.sub('\n\n\n', '\n\n', code)
+        code, _ = FormatCode(code, style_config='facebook')
+        return code
 
     def generate_models(self):
         files = {}

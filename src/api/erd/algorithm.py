@@ -174,6 +174,8 @@ class Algorithm:
                 fk_col.resolve_type()
                 fk_col.name = NamesConverter.fk_name(fk_col.fk.table.name,
                                                      fk_col.fk.column.name)
+                if fk_col.fk.add_rel:
+                    Factory.make_rel(table, fk_col)
 
     def _set_fk_column(self, fk):
         if fk.column is None:

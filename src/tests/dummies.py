@@ -18,8 +18,9 @@ def binary_erd():
         a1, a2, b1, b2 = [a == "1" for a in params]
         erd.add_entity(DummyEntity(i * 2))
         erd.add_entity(DummyEntity(i * 2 + 1))
+        name = params.replace('0', 'A').replace('1', 'B')
         erd.add_relation(
-            Relation.make(params, [i * 2, a1, a2], [i * 2 + 1, b1, b2]))
+            Relation.make(name, [i * 2, a1, a2], [i * 2 + 1, b1, b2]))
     return erd
 
 

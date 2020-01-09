@@ -45,6 +45,5 @@ class TestGeneration(unittest.TestCase):
         alg = Algorithm(erd)
         alg.run_algorithm()
         gen = Generator(alg.tables, 'er1')
-        gen.generate_models()
         models = gen.generate_models()
         self.assertGreater(len(models), 0)
