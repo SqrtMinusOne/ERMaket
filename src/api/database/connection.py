@@ -48,6 +48,19 @@ class DBConn:
         session.close()
 
     @staticmethod
+    @contextmanager
+    def ensure_session(session):
+        """
+        If session is None, make a new one
+        """
+        if session is None:
+            session = DBConn.Session()
+            yield session
+            session.close()
+        else:
+            yield session
+
+    @staticmethod
     def get_engine(**kwargs):
         """Initialize SQLAlchemy engine from configuration parameters
 
