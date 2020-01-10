@@ -14,6 +14,7 @@ class Table:
         self.columns = columns
         self.foreign_keys: List[Column] = []
         self.relationships: List[ORMRelationship] = []
+        self._system_ref = None
 
     def add_fk(self, fk: Column):
         self.foreign_keys.append(fk)

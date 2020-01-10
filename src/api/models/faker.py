@@ -1,3 +1,4 @@
+import logging
 import sqlalchemy as sa
 import tqdm
 from mixer.backend.sqlalchemy import Mixer
@@ -23,6 +24,7 @@ class Faker:
         self._verbose = verbose
         self._mixer = None
         self._fake = fake
+        self._silence_system_warn = False
 
     def _init_mixer(self, db):
         self._mixer = Mixer(session=db, commit=False, fake=self._fake)
@@ -32,8 +34,14 @@ class Faker:
 
         :param default_num: number of entries per table
         """
-        for schema in self._models.schemas.keys():
+        schemas = list(self._models.schemas.keys())
+        if 'system' in schemas:
+            self.fake_schema('system', default_num=default_num)
+            schemas.remove('system')
+            self._silence_system_warn = True
+        for schema in schemas:
             self.fake_schema(schema, default_num=default_num)
+        self._silence_system_warn = False
 
     def fake_schema(self, schema, entries={}, default_num=5):
         """Fill the database schema tables with fake data
@@ -45,6 +53,9 @@ class Faker:
         model_name is generated camelCase
         :param default_num: number of entries, if table_name is not in entries
         """
+        if 'system' in self._models.schemas and not self._silence_system_warn:
+            logging.warning('If the model has references to system tables, '
+                            'it may be required to fake schema `system` first')
         generated = {name: 0 for name in self._models[schema].keys()}
         not_resolved = {name: 0 for name in self._models[schema].keys()}
 
@@ -109,6 +120,7 @@ class Faker:
             table_name = '.'.join(fk._column_tokens[:-1])
             # backref_name = fk._column_tokens[1]
             column = fk._column_tokens[-1]
+            # TODO check unique constraint
             entry = list(
                 db.execute(
                     f"SELECT {column} FROM {table_name} ORDER BY RANDOM() LIMIT 1"

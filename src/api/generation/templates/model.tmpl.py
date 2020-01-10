@@ -1,3 +1,8 @@
+{% macro roles_ref() -%}
+    user_login = sa.Column(sa.String(256), sa.ForeignKey('system.user.login'), unique=True)
+
+    linked_user = sa.orm.relationship('User', foreign_keys=[user_login], backref='linked_{{ table.name }}')
+{%- endmacro %}
 import sqlalchemy as sa
 
 from .base import Base
@@ -24,3 +29,6 @@ class {{ Names.class_name(schema, table.name) }}(Base):
     {%- for rel in table.secondary_rels %}
     {{ Names.referrer_rel_name(rel.ref_table.name, rel.name) }} = sa.orm.relationship('{{ Names.class_name(schema, rel.ref_table.name) }}', secondary='{{ schema }}.{{ rel.secondary_table.name }}', back_populates='{{ Names.referrer_rel_name(table.name, rel.name) }}')
     {% endfor -%}
+    {% if table._system_ref == '__user' %}
+    {{ roles_ref() }}
+    {% endif %}

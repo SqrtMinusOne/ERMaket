@@ -1,6 +1,6 @@
 import sqlalchemy as sa
 
-from .system_base import Base
+from .base import Base
 
 __all__ = ['UserHasRoles']
 

@@ -60,8 +60,8 @@ class Er1Task(Base):
         'Er1Attachment', back_populates='is_attached_task'
     )
 
-    user_is_assigned_to_task_user = sa.orm.relationship(
+    is_assigned_to_user = sa.orm.relationship(
         'Er1User',
         secondary='er1.user_is_assigned_to_task',
-        back_populates='user_is_assigned_to_task_task'
+        back_populates='is_assigned_to_task'
     )

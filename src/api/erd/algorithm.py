@@ -1,3 +1,4 @@
+import logging
 from typing import Dict
 
 from magic_repr import make_repr
@@ -31,9 +32,18 @@ class Algorithm:
         self._make_1x_to_nn()
         self._make_nx_to_nx()
         self._make_non_binary()
-
         self._set_pks()
         self._resolve_fks()
+
+        logging.info(
+            f'Converted {len(self.erd.entities)} entities'
+            f' and {len(self.erd.relations)}'
+            f' relations to {len(self._tables)} tables'
+        )
+
+    def inject_role_ref(self, entity_id):
+        table = self._get_table(entity_id)
+        table._system_ref = '__user'
 
     @property
     def tables(self):

@@ -61,6 +61,18 @@ class Generator:
             os.remove(f)
             logging.info(f'Removed file: {f}')
 
+    def generate_system_models(self, folder=None, prefix=None):
+        if folder is None:
+            folder = self._config.Models['models_dir']
+        if prefix is None:
+            prefix = self._config.Models['system_prefix']
+            for system_template in self._config.Generation['system_templates']:
+                filename = system_template[:-8] + '.py'
+                self._save_file(
+                    folder, filename,
+                    self._env.get_template(system_template).render()
+                )
+
     def generate_folder(self, folder=None, prefix=None):
         if folder is None:
             folder = self._config.Models['models_dir']
@@ -71,11 +83,15 @@ class Generator:
             os.mkdir(folder)
         for name, table in self._tables.items():
             filename = f"{prefix}{self._schema}_{name}.py"
-            path = os.path.join(folder, filename)
-            with open(path, 'w') as f:
-                f.write(self._generate_model(name))
-                logging.info(f'Created file {path}')
-        base_name = os.path.join(folder, "base.py")
-        with open(base_name, 'w') as f:
-            f.write(self._env.get_template('base.tmpl.py').render())
-            logging.info(f'Created file {base_name}')
+            self._save_file(folder, filename, self._generate_model(name))
+        base_name = "base.py"
+        self._save_file(
+            folder, base_name,
+            self._env.get_template('base.tmpl.py').render()
+        )
+
+    def _save_file(self, folder, filename, content):
+        path = os.path.join(folder, filename)
+        with open(path, 'w') as f:
+            f.write(content)
+            logging.info(f'Created file {path}')

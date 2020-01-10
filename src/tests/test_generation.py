@@ -21,14 +21,16 @@ class TestGeneration(unittest.TestCase):
         erd = ERD(xml)
         alg = Algorithm(erd)
         alg.run_algorithm()
+        alg.inject_role_ref(0)
         tables = alg.tables
 
         gen = Generator(tables, 'er1')
         gen.generate_folder('_temp')
+        gen.generate_system_models('_temp')
 
         DBConn()
         models = Models()
-        self.assertEqual(len(list(models)), len(tables))
+        self.assertEqual(len(list(models)) - len(models['system']), len(tables))
 
         seeder = Seeder(models)
         seeder.drop_models()
@@ -39,6 +41,10 @@ class TestGeneration(unittest.TestCase):
         with DBConn.get_session() as db:
             for table in iter(models):
                 self.assertTrue(db.query(table).first())
+
+        self.assertIsNotNone(repr(erd))
+        self.assertIsNotNone(repr(alg))
+        self.assertIsNotNone(repr(gen))
 
     def test_dummies(self):
         erd = binary_erd()

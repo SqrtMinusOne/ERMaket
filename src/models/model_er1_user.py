@@ -21,8 +21,8 @@ class Er1User(Base):
         'Er1Comment', back_populates='is_authored_by_user'
     )
 
-    user_is_assigned_to_task_task = sa.orm.relationship(
+    is_assigned_to_task = sa.orm.relationship(
         'Er1Task',
         secondary='er1.user_is_assigned_to_task',
-        back_populates='user_is_assigned_to_task_user'
+        back_populates='is_assigned_to_user'
     )

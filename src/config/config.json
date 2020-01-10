@@ -14,11 +14,17 @@
         }
     },
     "Generation": {
-        "templates_folder": "api/generation/templates/"
+        "templates_folder": "api/generation/templates/",
+        "system_templates": [
+            "system_role.tmpl.py",
+            "system_user.tmpl.py",
+            "system_user_has_role.tmpl.py"
+        ]
     },
     "Models": {
         "models_dir": "models",
-        "model_prefix": "model_"
+        "model_prefix": "model_",
+        "system_prefix": "system_"
     },
     "Flask": {
         "SECRET_KEY": "afa664c8cfac924818df7ee8cf8e1d94"

@@ -5,6 +5,8 @@ from api.erd.er_entities import Attribute, Entity, Relation
 from api.erd.rd_entities import Column, ForeignKey, ORMRelationship, Table
 from api.models import NamesConverter
 
+__all__ = ['Factory']
+
 
 class Factory:
     """A class for converting ER entities to RD"""
@@ -89,7 +91,7 @@ class Factory:
                 ORMRelationship(
                     table=table1,
                     ref_table=table2,
-                    name=name,
+                    name=relation.name,
                     secondary_table=table
                 )
             ) for table1, table2 in permutations(tables, 2)

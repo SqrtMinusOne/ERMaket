@@ -35,13 +35,25 @@ class Models:
         self.Base = getattr(module, 'Base')
 
     def _import(self):
-        loaded = 0
-        for filename in glob.glob(
+        loaded = self._import_files(glob.glob(
             "{0}/{1}*.py".format(
                 self.config.Models['models_dir'],
                 self.config.Models['model_prefix']
             )
-        ):
+        ))
+        loaded += self._import_files(glob.glob(
+            "{0}/{1}*.py".format(
+                self.config.Models['models_dir'],
+                self.config.Models['system_prefix']
+            )
+        ))
+        self._setup_marshmallows()
+        logging.info(f'Schemas loaded: {len(self.schemas)}')
+        logging.info(f'Models loaded: {loaded}')
+
+    def _import_files(self, files):
+        loaded = 0
+        for filename in files:
             module_name = filename.replace('/', '.')[:-3]
             module = importlib.import_module(module_name)
 
@@ -56,10 +68,7 @@ class Models:
                     self._paths[schema] = {class_name: module_name}
                 loaded += 1
                 setattr(model, '__module_name__', module_name)
-
-        self._setup_marshmallows()
-        logging.info(f'Schemas loaded: {len(self.schemas)}')
-        logging.info(f'Models loaded: {loaded}')
+        return loaded
 
     def _setup_marshmallows(self):
         for model in self.__iter__():
