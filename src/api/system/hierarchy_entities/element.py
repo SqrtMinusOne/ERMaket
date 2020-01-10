@@ -1,12 +1,12 @@
-from collections import namedtuple
 from typing import List
 
 from api.erd.er_entities import XMLObject
+from .xmltuple import xmltuple
 
 __all__ = ['Element', 'Button', 'Trigger']
 
-Button = namedtuple('Button', ['text', 'location'])
-Trigger = namedtuple('Trigger', ['activation', 'scriptId'])
+Button = xmltuple('Button', 'button', ['text', 'location'])
+Trigger = xmltuple('Trigger', 'button', ['activation', 'scriptId'])
 
 
 class Element(XMLObject):

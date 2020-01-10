@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from api.config import Config
 from api.erd import ERD
 from api.erd.er_entities import Entity, Relation, XMLObject
-from api.system.hierarchy_entities import xmltuple
+from api.system.hierarchy_entities import xmllist, xmltuple
 
 
 class TestXML(unittest.TestCase):
@@ -56,3 +56,31 @@ class TestXML(unittest.TestCase):
         self.assertEqual(tag.to_xml(), tag2.to_xml())
 
         self.assertEqual(tag.to_xml(), Tag.from_xml(tag.to_xml()).to_xml())
+
+    def test_nested_tuple(self):
+        Tag1 = xmltuple('Tag1', 'tag1', ['foo', 'bar'])
+        Tag2 = xmltuple('Tag2', 'tag2', ['boo'])
+        Tag = xmltuple(
+            'Tag', 'tag', ['tag1', 'tag2'], {
+                'tag1': Tag1,
+                'tag2': Tag2
+            }
+        )
+        tag = Tag(tag1=Tag1(foo='a', bar='b'), tag2=Tag2(boo='c'))
+        self.assertEqual(tag.to_xml(), Tag.from_xml(tag.to_xml()).to_xml())
+
+    def test_list(self):
+        Tag = xmltuple('Tag', 'tag', ['foo', 'bar'])
+        List = xmllist('List', 'list', Tag)
+        list_ = List([Tag(1, 2), Tag(3, 4), Tag(5, 6)])
+        self.assertEqual(
+            list_.to_xml(),
+            List.from_xml(list_.to_xml()).to_xml()
+        )
+
+        List2 = xmllist('List2', 'list2', 'tag')
+        list2 = List2([1, 2, 3, 4])
+        self.assertEqual(
+            list2.to_xml(),
+            List2.from_xml(list2.to_xml()).to_xml()
+        )
