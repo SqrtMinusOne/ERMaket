@@ -7,10 +7,15 @@
         "port": "5432"
     },
     "XML": {
-        "rootAttributes": {
+        "ErRootAttributes": {
             "xmlns": "ermaket",
             "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
             "xsi:schemaLocation": "ermaket er.xsd"
+        },
+        "HierarchyAttributes": {
+            "xmlns": "ermaket_hierarchy",
+            "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+            "xsi:schemaLocation": "ermaket_hierarchy settings.xsd"
         }
     },
     "Generation": {

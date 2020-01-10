@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 from api.config import Config
 from api.erd import ERD
 from api.erd.er_entities import Entity, Relation, XMLObject
+from api.system.hierarchy_entities import xmltuple
 
 
 class TestXML(unittest.TestCase):
@@ -45,3 +46,13 @@ class TestXML(unittest.TestCase):
         erd = ERD(self.xml)
         new_xml = erd.to_xml()
         self.assertEqual(self.soup.prettify(), new_xml.prettify())
+
+    def test_tuple(self):
+        Tag = xmltuple('Tag', 'tag', ['a', 'b'])
+        tag = Tag(1, 2)
+        tag2 = Tag(a=1, b=2)
+        self.assertEqual(tag.a, 1)
+        self.assertEqual(tag2.b, 2)
+        self.assertEqual(tag.to_xml(), tag2.to_xml())
+
+        self.assertEqual(tag.to_xml(), Tag.from_xml(tag.to_xml()).to_xml())

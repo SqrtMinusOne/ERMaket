@@ -18,7 +18,7 @@ class ERD:
             self.soup = BeautifulSoup(features='xml')
             self.soup.append(
                 self.soup.new_tag(
-                    'erModel', **self._config.XML['rootAttributes']
+                    'erModel', **self._config.XML['ErRootAttributes']
                 )
             )
         XMLObject.soup = self.soup
@@ -54,9 +54,10 @@ class ERD:
     def to_xml(self):
         soup = BeautifulSoup(features='xml')
         soup.append(
-            soup.new_tag('erModel', **self._config.XML['rootAttributes'])
+            soup.new_tag('erModel', **self._config.XML['ErRootAttributes'])
         )
         root = soup.find('erModel')
+        XMLObject.soup = self.soup
         for entity in self.entities.values():
             root.append(entity.to_xml())
         for relation in self.relations:
