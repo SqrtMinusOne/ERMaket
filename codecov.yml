@@ -3,7 +3,7 @@ coverage:
   round: down
   precision: 2
   ignore:
-    "*.tmpl.py"
+    - "*.tmpl.py"
 
   status:
     project:
