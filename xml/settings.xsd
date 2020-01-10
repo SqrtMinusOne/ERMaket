@@ -1,0 +1,223 @@
+<?xml version="1.0" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="ermaket_settings" xmlns="ermaket_settings" xmlns:ns="ermaket_settings" elementFormDefault="qualified">
+    <!-- Кнопка -->
+    <!-- Связь с id запускаемого скрипта -->
+    <!-- Проверка допустимости location -->
+    <xs:complexType name="button">
+        <xs:sequence>
+            <xs:element name="text" type="xs:string" />
+            <xs:element name="location" type="xs:string" />
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:integer" use="required" />
+    </xs:complexType>
+
+    <!-- Список кнопок -->
+    <xs:complexType name="buttonList">
+        <xs:sequence>
+            <xs:element name="button" type="button" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- Возможные права доступа -->
+    <xs:simpleType name="accessType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="view" />
+            <xs:enumeration value="change" />
+            <xs:enumeration value="delete" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- Право доступа -->
+    <!-- Связь с именем роли -->
+    <xs:complexType name="roleAccess">
+        <xs:sequence>
+            <xs:element name="roleName" type="xs:string" />
+            <xs:element name="access" type="accessType" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- Права доступа -->
+    <xs:complexType name="accessRights">
+        <xs:sequence>
+            <xs:element name="roleAccess" type="roleAccess" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attribute name="inherit" type="xs:boolean" />
+    </xs:complexType>
+
+    <!-- Триггер -->
+    <!-- Связь с названием скрипта -->
+    <!-- Проверка доступности activation -->
+    <xs:complexType name="trigger">
+        <xs:sequence>
+            <xs:element name="activation" type="xs:string" />
+            <xs:element name="scriptId" type="xs:integer" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- Список триггеров -->
+    <xs:complexType name="triggerList">
+        <xs:sequence>
+            <xs:element name="trigger" type="trigger" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- Абстрактный элемент иерархии -->
+    <xs:complexType name="hierarchyElement" abstract="true">
+        <xs:sequence>
+            <xs:element name="accessRights" type="accessRights" />
+            <xs:element name="buttonList" type="buttonList" minOccurs="0" />
+            <xs:element name="triggerList" type="triggerList" minOccurs="0" />
+            <xs:element name="name" type="xs:string" />
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:integer" use="required" />
+    </xs:complexType>
+
+    <!-- Список детей -->
+    <xs:complexType name="childrenList">
+        <xs:sequence>
+            <xs:element name="childId" type="xs:integer" minOccurs="1" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- Раздел иерархии -->
+    <xs:complexType name="section">
+        <xs:complexContent>
+            <xs:extension base="hierarchyElement">
+                <xs:sequence>
+                    <xs:element name="children" type="childrenList" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!-- Простое поле таблицы -->
+    <xs:complexType name="simpleField">
+        <xs:sequence>
+            <xs:element name="tableField" type="xs:string" />
+            <xs:element name="text" type="xs:string" />
+            <xs:element name="isEditable" type="xs:boolean" default="false" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- Типы справочников -->
+    <xs:simpleType name="referenceType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="simple" />
+            <xs:enumeration value="dropdown" />
+            <xs:enumeration value="linkedTable" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- Связанное поле -->
+    <xs:complexType name="linkedField">
+        <xs:complexContent>
+            <xs:extension base="simpleField">
+                <xs:sequence>
+                    <xs:element name="linkType" type="referenceType" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!-- Поля формы -->
+    <xs:complexType name="formFields">
+        <xs:sequence>
+            <xs:element name="simpleField" type="simpleField" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="linkedField" type="simpleField" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- Форма -->
+    <xs:complexType name="formDescription">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string" />
+            <xs:element name="fields" type="formFields" />
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:integer" use="required" />
+    </xs:complexType>
+
+    <!-- Форма в иерархии -->
+    <!-- Связь с именем таблицы -->
+    <xs:complexType name="formEntry">
+        <xs:complexContent>
+            <xs:extension base="hierarchyElement">
+                <xs:sequence>
+                    <xs:element name="tableName" type="xs:string" />
+                    <xs:element name="form" type="formDescription" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!-- Таблица в иерархии -->
+    <!-- Связь с именем таблицы -->
+    <xs:complexType name="tableEntry">
+        <xs:complexContent>
+            <xs:extension base="hierarchyElement">
+                <xs:sequence>
+                    <xs:element name="tableName" type="xs:string" />
+                    <xs:element name="isSort" type="xs:boolean" default="true" minOccurs="0" />
+                    <xs:element name="isFilter" type="xs:boolean" default="true" minOccurs="0" />
+                    <xs:element name="linesOnPage" type="xs:integer" default="50" minOccurs="0" />
+                    <xs:element name="form" type="formDescription" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!-- Пользовательская страница в иерархии -->
+    <xs:complexType name="pageEntry">
+        <xs:complexContent>
+            <xs:extension base="hierarchyElement">
+                <xs:sequence>
+                    <xs:element name="componentName" type="xs:string" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!-- Типы встроенных страниц -->
+    <xs:simpleType name="prebuiltPageType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="sql" />
+            <xs:enumeration value="users" />
+            <xs:enumeration value="status" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- Встроенная страница в иерархии -->
+    <xs:complexType name="prebuiltPageEntry">
+        <xs:complexContent>
+            <xs:extension base="hierarchyElement">
+                <xs:sequence>
+                    <xs:element name="type" type="prebuiltPageType" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!-- Иерархия -->
+    <xs:element name="hierarchy">
+        <xs:complexType>
+            <xs:choice maxOccurs="unbounded">
+                <xs:element name="section" type="section" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element name="formEntry" type="formEntry" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element name="tableEntry" type="tableEntry" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element name="pageEntry" type="pageEntry" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element name="prebuiltPageEntry" type="prebuiltPageEntry" minOccurs="0" maxOccurs="unbounded" />
+            </xs:choice>
+        </xs:complexType>
+        <xs:unique name="unique-id">
+            <xs:selector xpath="*" />
+            <xs:field xpath="@id" />
+        </xs:unique>
+        <xs:key name="element-key">
+            <xs:selector xpath="*" />
+            <xs:field xpath="@id" />
+        </xs:key>
+        <xs:keyref name="element-keyref" refer="element-key">
+            <xs:selector xpath="ns:section/ns:children/ns:childId" />
+            <xs:field xpath="."></xs:field>
+        </xs:keyref>
+    </xs:element>
+</xs:schema>
