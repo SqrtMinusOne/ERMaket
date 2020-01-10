@@ -1,9 +1,11 @@
+# This file was generated automatically and will be overwritten
+# with next generation. Make changes with caution
+
 import sqlalchemy as sa
 from flask_login import UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from .base import Base
-
 
 __all__ = ['User']
 
@@ -15,9 +17,9 @@ class User(Base, UserMixin):
     login = sa.Column(sa.String(256), primary_key=True)
     password_hash = sa.Column(sa.String(256), nullable=False)
 
-    roles = sa.orm.relationship('Role',
-                                secondary='system.user_has_roles',
-                                backref='users')
+    roles = sa.orm.relationship(
+        'Role', secondary='system.user_has_roles', backref='users'
+    )
 
     def change_password(self, old, new) -> bool:
         if self.check_password(old):

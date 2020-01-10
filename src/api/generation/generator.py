@@ -39,6 +39,8 @@ class Generator:
     def _postprocess_python(self, code):
         # while re.search('\n\n\n', code):
         #     code = re.sub('\n\n\n', '\n\n', code)
+        warning = '\n'.join(self._config.Generation['warning']) + '\n'
+        code = warning + code
         code, _ = FormatCode(code, style_config='facebook')
         return code
 
@@ -68,10 +70,9 @@ class Generator:
             prefix = self._config.Models['system_prefix']
             for system_template in self._config.Generation['system_templates']:
                 filename = system_template[:-8] + '.py'
-                self._save_file(
-                    folder, filename,
-                    self._env.get_template(system_template).render()
-                )
+                render = self._env.get_template(system_template).render()
+                render = self._postprocess_python(render)
+                self._save_file(folder, filename, render)
 
     def generate_folder(self, folder=None, prefix=None):
         if folder is None:

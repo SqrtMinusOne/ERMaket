@@ -47,7 +47,13 @@ def create():
     "--xml", prompt=True, help="XML file with schema", type=click.Path()
 )
 @click.option("--schema", prompt=True, help="Name of schema")
-def generate(xml, schema):
+@click.option(
+    "--no-system",
+    default=False,
+    is_flag=True,
+    help='Do not generate system tables'
+)
+def generate(xml, schema, no_system):
     with open(xml, 'r') as f:
         xml = f.read()
     erd = ERD(xml)
@@ -56,6 +62,8 @@ def generate(xml, schema):
 
     gen = Generator(alg.tables, schema)
     gen.generate_folder()
+    if not no_system:
+        gen.generate_system_models()
 
     click.echo('Generation complete. Run check to make sure everything is OK')
 

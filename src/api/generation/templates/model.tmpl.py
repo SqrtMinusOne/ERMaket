@@ -1,8 +1,8 @@
-{% macro roles_ref() -%}
+{%- macro roles_ref() %}
     user_login = sa.Column(sa.String(256), sa.ForeignKey('system.user.login'), unique=True)
 
     linked_user = sa.orm.relationship('User', foreign_keys=[user_login], backref='linked_{{ table.name }}')
-{%- endmacro %}
+{% endmacro -%}
 import sqlalchemy as sa
 
 from .base import Base
