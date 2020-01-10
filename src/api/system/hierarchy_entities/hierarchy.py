@@ -3,8 +3,6 @@ from bs4 import BeautifulSoup
 from api import Config
 from api.erd.er_entities import XMLObject
 
-from .section import Section
-from .table import Table
 
 __all__ = ['Hierachy']
 
