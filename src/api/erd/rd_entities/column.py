@@ -28,7 +28,9 @@ class Column:
 
     @property
     def unique(self):
-        return self._unique if not self.pk else True
+        if self.pk and self.fk is None:
+            return True
+        return self._unique
 
     def resolve_type(self):
         self.type_ = self.fk.column.type_

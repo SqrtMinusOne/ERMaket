@@ -8,6 +8,18 @@ from api.erd.er_entities import Relation
 from .dummies import DummyEntity, binary_erd, non_binary_erds
 
 
+class TestingERD(ERD):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.successful_iters = 0
+
+    def iter_relations(self, *args, **kwargs):
+        ret = list(super().iter_relations(*args, **kwargs))
+        if len(ret) > 0:
+            self.successful_iters += 1
+        return ret
+
+
 class TestAlgorithm(unittest.TestCase):
     def setUp(self):
         np.random.seed(42)
@@ -38,9 +50,13 @@ class TestAlgorithm(unittest.TestCase):
         # print(alg)
 
     def test_binary(self):
-        erd = binary_erd()
-        alg = Algorithm(erd)
-        alg.run_algorithm()
+        erds = binary_erd()
+        for erd in erds:
+            test_erd = TestingERD(str(erd.to_xml()))
+            alg = Algorithm(test_erd)
+            alg.run_algorithm()
+            self.assertGreater(len(alg.tables), 0)
+            self.assertEqual(test_erd.successful_iters, 1)
 
     def test_non_binary(self):
         for erd in non_binary_erds(range(3, 10)):

@@ -82,7 +82,8 @@ class Factory:
         [
             table.add_fk(
                 Factory.make_fk(
-                    linked, relation_name=relation.name, add_rel=False
+                    linked, relation_name=relation.name, add_rel=False,
+                    unique=False
                 )
             ) for linked in tables
         ]

@@ -16,11 +16,11 @@ class Er1UserIsAssignedToTask(Base):
         sa.String(256),
         sa.ForeignKey('er1.user.name', ondelete='cascade', onupdate='cascade'),
         primary_key=True,
-        unique=True
+        unique=False
     )
     task_id = sa.Column(
         sa.BigInteger(),
         sa.ForeignKey('er1.task.id', ondelete='cascade', onupdate='cascade'),
         primary_key=True,
-        unique=True
+        unique=False
     )

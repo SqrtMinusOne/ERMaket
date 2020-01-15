@@ -30,7 +30,9 @@ class TestGeneration(unittest.TestCase):
 
         DBConn()
         models = Models()
-        self.assertEqual(len(list(models)) - len(models['system']), len(tables))
+        self.assertEqual(
+            len(list(models)) - len(models['system']), len(tables)
+        )
 
         seeder = Seeder(models)
         seeder.drop_models()
@@ -47,9 +49,10 @@ class TestGeneration(unittest.TestCase):
         self.assertIsNotNone(repr(gen))
 
     def test_dummies(self):
-        erd = binary_erd()
-        alg = Algorithm(erd)
-        alg.run_algorithm()
-        gen = Generator(alg.tables, 'er1')
-        models = gen.generate_models()
-        self.assertGreater(len(models), 0)
+        erds = binary_erd()
+        for i, erd in enumerate(erds):
+            alg = Algorithm(erd)
+            alg.run_algorithm()
+            gen = Generator(alg.tables, 'er1')
+            models = gen.generate_models()
+            self.assertGreater(len(models), 0)
