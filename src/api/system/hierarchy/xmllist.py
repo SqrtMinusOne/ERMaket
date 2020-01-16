@@ -1,3 +1,4 @@
+from collections.abc import Iterable
 from magic_repr import make_repr
 
 from api.erd.er_entities import XMLObject
@@ -6,7 +7,9 @@ __all__ = ['xmllist']
 
 
 def make_init(kws):
-    def __init__(self, values, *args, **kwargs):
+    def __init__(self, values=[], *args, **kwargs):
+        if not isinstance(values, Iterable):
+            values = [values]
         [setattr(self, key, None) for key in kws]
         [setattr(self, key, value) for key, value in zip(kws, args)]
         [setattr(self, key, value) for key, value in kwargs.items()]
@@ -41,7 +44,7 @@ def make_from_xml(children_class):
             values = [children_class.from_xml(child) for child in tag.children]
         else:
             values = [child.text for child in tag.children]
-        return cls(values=values, **tag.attrs)
+        return cls._make_args(values=values, **tag.attrs)
 
     return from_xml
 
@@ -58,7 +61,7 @@ def xmllist(classname, tag_name, children, kws=[]):
                 make_init(kws),
             "to_xml":
                 make_to_xml(tag_name, children_class, children_tag),
-            "from_xml":
+            "_from_xml":
                 make_from_xml(children_class),
             "values": [],
             "__len__":
@@ -70,7 +73,10 @@ def xmllist(classname, tag_name, children, kws=[]):
             "__delitem__":
                 lambda self, key: self.values.__delitem__(key),
             "__iter__":
-                lambda self: self.value.__iter__
+                lambda self: self.value.__iter_,
+            "append":
+                lambda self, item: self.values.append(item),
+            "_tag_name": tag_name
         }
     )
     class_.__repr__ = make_repr('values', *kws)

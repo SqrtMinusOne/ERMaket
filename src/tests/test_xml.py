@@ -5,7 +5,9 @@ from bs4 import BeautifulSoup
 from api.config import Config
 from api.erd import ERD
 from api.erd.er_entities import Entity, Relation, XMLObject
-from api.system.hierarchy_entities import xmllist, xmltuple
+from api.system.hierarchy import xmlall, xmlenum, xmllist, xmltuple
+
+from utils import defaultify_init
 
 
 class TestXML(unittest.TestCase):
@@ -61,6 +63,29 @@ class TestXML(unittest.TestCase):
         tag2 = Tag2(1, 2, 3)
         self.assertEqual(tag2.to_xml(), Tag2.from_xml(tag2.to_xml()).to_xml())
 
+    def test_default(self):
+        Tag = xmltuple('Tag', 'tag', ['a', 'b'])
+        tag = Tag()
+        self.assertIsNone(tag.a)
+        self.assertIsNone(tag.b)
+
+        TagD = defaultify_init(Tag, 'Tagd', a=1, b=2)
+        tagD = TagD()
+        self.assertEqual(tagD.a, 1)
+        self.assertEqual(tagD.b, 2)
+
+        tagD2 = TagD(b=4)
+        self.assertEqual(tagD2.a, 1)
+        self.assertEqual(tagD2.b, 4)
+
+        tagD3 = TagD(a=4)
+        self.assertEqual(tagD3.a, 4)
+        self.assertEqual(tagD3.b, 2)
+
+        tagD4 = TagD(a=5, b=6)
+        self.assertEqual(tagD4.a, 5)
+        self.assertEqual(tagD4.b, 6)
+
     def test_nested_tuple(self):
         Tag1 = xmltuple('Tag1', 'tag1', ['foo', 'bar'])
         Tag2 = xmltuple('Tag2', 'tag2', ['boo'])
@@ -72,6 +97,10 @@ class TestXML(unittest.TestCase):
         )
         tag = Tag(tag1=Tag1(foo='a', bar='b'), tag2=Tag2(boo='c'))
         self.assertEqual(tag.to_xml(), Tag.from_xml(tag.to_xml()).to_xml())
+
+        TagL = xmltuple('Tag', 'tag', ['tag1', 'tag2'], (Tag1, Tag2))
+        tagL = TagL.from_xml(tag.to_xml())
+        self.assertEqual(tag.to_xml(), tagL.to_xml())
 
     def test_list(self):
         Tag = xmltuple('Tag', 'tag', ['foo', 'bar'])
@@ -95,3 +124,42 @@ class TestXML(unittest.TestCase):
             list3.to_xml(),
             List3.from_xml(list3.to_xml()).to_xml()
         )
+
+    def test_enum(self):
+        Enum = xmlenum('Enum', 'enum', a='a', b='b', c='c')
+        a1 = Enum(Enum.a)
+        a2 = Enum(Enum.a)
+        b = Enum(Enum.b)
+
+        self.assertEqual(a1, a2)
+        self.assertEqual(str(a1), str(a2))
+        self.assertEqual(repr(a1), repr(a2))
+        self.assertEqual(a1, Enum.a)
+        self.assertNotEqual(a1, b)
+        self.assertNotEqual(a1, Enum.b)
+
+        self.assertEqual(a1.to_xml(), a2.to_xml())
+
+        a3 = Enum(a1)
+        self.assertEqual(a1, a3)
+
+        a4 = Enum.from_xml(a1.to_xml())
+        self.assertEqual(a1, a4)
+
+    def test_all(self):
+        Tag1 = xmltuple('Tag1', 'tag1', ['a'])
+        Tag2 = xmltuple('Tag2', 'tag2', ['b'])
+        Tag3 = xmltuple('Tag3', 'tag3', ['c'])
+
+        All = xmlall(
+            'All',
+            'all',
+            tags1=Tag1,
+            tags2=Tag2,
+            tags3=Tag3
+        )
+
+        all_ = All(tags1=[Tag1(1), Tag1(2), Tag2(3)],
+                   tags2=[Tag2('a'), Tag2('b'), Tag2('c')],
+                   tags3=[Tag3('x'), Tag3('y'), Tag3('z')])
+        self.assertEqual(all_.to_xml(), All.from_xml(all_.to_xml()).to_xml())

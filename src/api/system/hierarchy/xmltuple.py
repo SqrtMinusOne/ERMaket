@@ -37,7 +37,7 @@ def make_from_xml(children_classes):
             children_classes.get(child.name, TextTag).from_xml(child)
             for child in tag.children
         }
-        return cls(**attrs, **tag.attrs)
+        return cls._make_args(**attrs, **tag.attrs)
 
     return from_xml
 
@@ -52,11 +52,14 @@ def make_init(attributes):
 
 
 def xmltuple(classname, tag_name, attributes, children_classes=None, kws=None):
+    if isinstance(children_classes, (list, tuple)):
+        children_classes = {c_._tag_name: c_ for c_ in children_classes}
     class_ = type(
         classname, (XMLObject, ), {
             "__init__": make_init(attributes),
             "to_xml": make_to_xml(tag_name, attributes, kws),
-            "from_xml": make_from_xml(children_classes),
+            "_from_xml": make_from_xml(children_classes),
+            "_tag_name": tag_name,
             **{key: None
                for key in attributes}
         }

@@ -105,6 +105,8 @@
             <xs:enumeration value="simple" />
             <xs:enumeration value="dropdown" />
             <xs:enumeration value="linkedTable" />
+            <xs:enumeration value="linkedForm" />
+            <xs:enumeration value="groupedForm" />
         </xs:restriction>
     </xs:simpleType>
 
@@ -131,6 +133,7 @@
     <xs:complexType name="formDescription">
         <xs:sequence>
             <xs:element name="name" type="xs:string" />
+            <xs:element name="tableName" type="xs:string" />
             <xs:element name="fields" type="formFields" />
         </xs:sequence>
         <xs:attribute name="id" type="xs:integer" use="required" />
@@ -142,11 +145,29 @@
         <xs:complexContent>
             <xs:extension base="hierarchyElement">
                 <xs:sequence>
-                    <xs:element name="tableName" type="xs:string" />
                     <xs:element name="form" type="formDescription" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
+    </xs:complexType>
+
+    <!-- Столбец в таблице -->
+    <xs:complexType name="tableColumn">
+        <xs:sequence>
+            <xs:element name="rowName" type="xs:string" />
+            <xs:element name="text" type="xs:string" minOccurs="0" />
+            <xs:element name="isSort" type="xs:boolean" default="true" minOccurs="0" />
+            <xs:element name="isFilter" type="xs:boolean" default="true" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- Набор столбцов -->
+    <xs:complexType name="tableColumns">
+        <xs:sequence>
+            <xs:sequence>
+                <xs:element name="column" type="tableColumn" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+        </xs:sequence>
     </xs:complexType>
 
     <!-- Таблица в иерархии -->
@@ -156,10 +177,9 @@
             <xs:extension base="hierarchyElement">
                 <xs:sequence>
                     <xs:element name="tableName" type="xs:string" />
-                    <xs:element name="isSort" type="xs:boolean" default="true" minOccurs="0" />
-                    <xs:element name="isFilter" type="xs:boolean" default="true" minOccurs="0" />
                     <xs:element name="linesOnPage" type="xs:integer" default="50" minOccurs="0" />
-                    <xs:element name="form" type="formDescription" />
+                    <xs:element name="columns" type="tableColumn" />
+                    <xs:element name="form" type="formDescription" minOccurs="0" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>

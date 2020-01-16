@@ -11,13 +11,19 @@ class Attribute(XMLObject):
         self.type_ = type_
         self.is_pk = is_pk
 
+    @property
+    def _tag_name(self):
+        return 'attribute'
+
     @classmethod
-    def from_xml(cls, tag):
+    def _from_xml(cls, tag):
         isPk = True if tag.isPk and tag.isPk.text == 'true' else False
-        return cls(name=tag.find('name').text, type_=tag.type.text, is_pk=isPk)
+        return cls._make_args(
+            name=tag.find('name').text, type_=tag.type.text, is_pk=isPk
+        )
 
     def to_xml(self):
-        tag = self.soup.new_tag('attribute')
+        tag = self.soup.new_tag(self._tag_name)
         tag.append(self.new_tag('name', self.name))
         if self.is_pk:
             tag.append(self.new_tag('isPk', str(self.is_pk).lower()))

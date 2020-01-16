@@ -12,17 +12,21 @@ class Entity(XMLObject):
         self.name = name
         self.attributes = attributes
 
+    @property
+    def _tag_name(self):
+        return 'entity'
+
     @classmethod
-    def from_xml(cls, tag):
+    def _from_xml(cls, tag):
         attributes = [Attribute.from_xml(t) for t in tag.find_all('attribute')]
-        return cls(
+        return cls._make_args(
             _id=int(tag['id']),
             name=tag.find('name').text,
             attributes=attributes
         )
 
     def to_xml(self):
-        tag = self.soup.new_tag('entity', id=self._id)
+        tag = self.soup.new_tag(self._tag_name, id=self._id)
         tag.append(self.new_tag('name', self.name))
         [tag.append(attr.to_xml()) for attr in self.attributes]
         return tag

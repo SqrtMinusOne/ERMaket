@@ -9,10 +9,24 @@ class XMLObject(ABC):
     """An abstract class for a xml-derived object"""
     soup: bs4.BeautifulSoup = None
 
+    @staticmethod
+    def _make_args(*args, **kwargs):
+        return (args, kwargs)
+
+    @property
+    @abstractmethod
+    def _tag_name(self):
+        pass
+
     @classmethod
     @abstractmethod
-    def from_xml(cls, tag: bs4.element.Tag):
+    def _from_xml(cls, tag):
         pass
+
+    @classmethod
+    def from_xml(cls, tag: bs4.element.Tag):
+        args, kwargs = cls._from_xml(tag)
+        return cls(*args, **kwargs)
 
     @abstractmethod
     def to_xml(self) -> bs4.element.Tag:

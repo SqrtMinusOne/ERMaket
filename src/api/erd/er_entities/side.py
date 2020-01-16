@@ -11,15 +11,19 @@ class Side(XMLObject):
         self.is_mandatory = isMandatory
         self.is_multiple = isMultiple
 
+    @property
+    def _tag_name(self):
+        return 'side'
+
     @classmethod
-    def from_xml(cls, tag):
-        return cls(
+    def _from_xml(cls, tag):
+        return cls._make_args(
             int(tag.idRef.text), tag.isMandatory.text == 'true',
             tag.isMultiple.text == 'true'
         )
 
     def to_xml(self):
-        tag = self.soup.new_tag('side')
+        tag = self.soup.new_tag(self._tag_name)
         tag.append(self.new_tag('idRef', self.id_ref))
         tag.append(self.new_tag('isMandatory', str(self.is_mandatory).lower()))
         tag.append(self.new_tag('isMultiple', str(self.is_multiple).lower()))
