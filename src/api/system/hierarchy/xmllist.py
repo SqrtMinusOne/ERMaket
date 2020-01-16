@@ -1,4 +1,5 @@
 from collections.abc import Iterable
+
 from magic_repr import make_repr
 
 from api.erd.er_entities import XMLObject
@@ -41,9 +42,14 @@ def make_from_xml(children_class):
     @classmethod
     def from_xml(cls, tag):
         if children_class is not None:
-            values = [children_class.from_xml(child) for child in tag.children]
+            values = [
+                children_class.from_xml(child)
+                for child in tag.find_all(True, recursive=False)
+            ]
         else:
-            values = [child.text for child in tag.children]
+            values = [
+                child.text for child in tag.find_all(True, recursive=False)
+            ]
         return cls._make_args(values=values, **tag.attrs)
 
     return from_xml
@@ -76,7 +82,8 @@ def xmllist(classname, tag_name, children, kws=[]):
                 lambda self: self.value.__iter_,
             "append":
                 lambda self, item: self.values.append(item),
-            "_tag_name": tag_name
+            "_tag_name":
+                tag_name
         }
     )
     class_.__repr__ = make_repr('values', *kws)

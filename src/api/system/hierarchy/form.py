@@ -1,7 +1,9 @@
-from .elements import _element_attrs, _element_children_classes, _element_kws
+from .elements import (_element_attrs, _element_children_classes, _element_kws,
+                       _element_types)
 from .xmlall import xmlall
 from .xmlenum import xmlenum
 from .xmltuple import xmltuple
+from utils import caster
 
 __all__ = [
     'LinkType', 'SimpleField', 'LinkedField', 'FormFields', 'FormDescription',
@@ -24,7 +26,8 @@ SimpleField = xmltuple(
 
 LinkedField = xmltuple(
     'LinkedField', 'linkedField',
-    ['tableField', 'text', 'isEditable', 'linkType'], [LinkType]
+    ['tableField', 'text', 'isEditable', 'linkType'], [LinkType],
+    {'isEditable': caster.bool_cast}
 )
 
 FormFields = xmlall(
@@ -39,5 +42,5 @@ FormDescription = xmltuple(
 
 Form = xmltuple(
     'Form', 'formEntry', [*_element_attrs, 'from'],
-    [*_element_children_classes, FormDescription], _element_kws
+    [*_element_children_classes, FormDescription], _element_kws, _element_types
 )

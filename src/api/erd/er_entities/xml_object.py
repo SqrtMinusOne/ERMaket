@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
 import bs4
+import prettierfier
 
 __all__ = ['XMLObject']
 
@@ -31,6 +32,9 @@ class XMLObject(ABC):
     @abstractmethod
     def to_xml(self) -> bs4.element.Tag:
         pass
+
+    def pretty_xml(self) -> str:
+        return prettierfier.prettify_xml(str(self.to_xml()), 4)
 
     @classmethod
     def new_tag(cls, name, string):

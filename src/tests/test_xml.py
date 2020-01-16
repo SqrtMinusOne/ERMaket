@@ -63,6 +63,10 @@ class TestXML(unittest.TestCase):
         tag2 = Tag2(1, 2, 3)
         self.assertEqual(tag2.to_xml(), Tag2.from_xml(tag2.to_xml()).to_xml())
 
+        TagA = xmltuple('TagA', 'tagA', ['a'], kws=['id'])
+        tagA = TagA(a=1, id=2)
+        self.assertEqual(tagA.to_xml(), TagA.from_xml(tagA.to_xml()).to_xml())
+
     def test_default(self):
         Tag = xmltuple('Tag', 'tag', ['a', 'b'])
         tag = Tag()

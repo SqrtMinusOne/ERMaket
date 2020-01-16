@@ -30,3 +30,4 @@ dependencies:
     - pytest-pudb
     - python-dotenv
     - flask-login
+    - prettierfier

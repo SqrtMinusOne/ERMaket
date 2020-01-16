@@ -2,6 +2,7 @@ from .access import AccessRights
 from .xmllist import xmllist
 from .xmltuple import xmltuple
 from .xmlenum import xmlenum
+from utils import defaultify_init
 
 __all__ = ['Button', 'Trigger', 'Buttons', 'Triggers', 'Children', 'Section',
            'Page', 'PrebuiltPageType', 'PrebuiltPage']
@@ -18,18 +19,21 @@ Triggers = xmllist('Triggers', 'triggerList', Trigger)
 _element_attrs = ['accessRights', 'buttonList', 'triggerList', 'name']
 _element_children_classes = [AccessRights, Buttons, Triggers]
 _element_kws = ['id']
+_element_types = {'id': int}
 
 # Hierachy section
 Children = xmllist('Children', 'children', 'childId')
-Section = xmltuple(
-    'Section', 'section', [*_element_attrs, 'children'],
-    _element_children_classes, _element_kws
+_Section = xmltuple(
+    '_Section', 'section', [*_element_attrs, 'children'],
+    [*_element_children_classes, Children], _element_kws, _element_types
 )
+
+Section = defaultify_init(_Section, 'Section', children=Children())
 
 # User page entry
 Page = xmltuple('Page', 'pageEntry', [
     *_element_attrs, 'componentName'
-], _element_children_classes)
+], _element_children_classes, _element_types)
 
 # Prebuilt pages
 PrebuiltPageType = xmlenum(
@@ -38,4 +42,4 @@ PrebuiltPageType = xmlenum(
 
 PrebuiltPage = xmltuple('PrebuiltPage', 'prebuiltPageEntry', [
     *_element_attrs, 'type'
-], [*_element_children_classes, PrebuiltPageType])
+], [*_element_children_classes, PrebuiltPageType], _element_types)

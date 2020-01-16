@@ -177,6 +177,7 @@
             <xs:extension base="hierarchyElement">
                 <xs:sequence>
                     <xs:element name="tableName" type="xs:string" />
+                    <xs:element name="schema" type="xs:string" />
                     <xs:element name="linesOnPage" type="xs:integer" default="50" minOccurs="0" />
                     <xs:element name="columns" type="tableColumn" />
                     <xs:element name="form" type="formDescription" minOccurs="0" />

@@ -2,16 +2,17 @@ from bs4 import BeautifulSoup
 
 from api import Config
 from api.erd.er_entities import XMLObject
+from utils import defaultify_init
 
 from .elements import Page, PrebuiltPage, Section
-from .table import Table
 from .form import Form
+from .table import Table
 from .xmlall import xmlall
 
 __all__ = ['Hierachy']
 
-_Hierarchy = xmlall(
-    '_Hierachy',
+__Hierarchy = xmlall(
+    '__Hierachy',
     'hierarchy',
     sections=Section,
     forms=Form,
@@ -20,13 +21,27 @@ _Hierarchy = xmlall(
     prebuiltPages=PrebuiltPage
 )
 
+_Hierarchy = defaultify_init(
+    __Hierarchy,
+    '_Hierachy',
+    sections=[],
+    forms=[],
+    tables=[],
+    pages=[],
+    prebuiltPages=[]
+)
+
 
 class Hierachy(_Hierarchy):
-    def __init__(self, xml):
+    def __init__(self, xml=None):
         self._config = Config()
-        if xml:
-            self.soup = BeautifulSoup(xml, features='xml')
-            super().__init__(self._from_xml(xml))
+        if xml is not None:
+            if isinstance(xml, BeautifulSoup):
+                self.soup = xml
+            else:
+                self.soup = BeautifulSoup(xml, features='xml')
+            args, kwargs = self._from_xml(self.soup)
+            super().__init__(*args, **kwargs)
         else:
             self.soup = BeautifulSoup(features='xml')
             super().__init__()
@@ -36,7 +51,19 @@ class Hierachy(_Hierarchy):
                 )
             )
         XMLObject.soup = self.soup
-        self.set_ids()
+        self._set_ids()
+
+    @classmethod
+    def from_xml(cls, xml):
+        return cls(xml)
+
+    def to_xml(self):
+        soup = BeautifulSoup(features='xml')
+        tag = super().to_xml()
+        for key, value in self._config.XML['HierarchyAttributes'].items():
+            tag[key] = value
+        soup.append(tag)
+        return soup
 
     @property
     def elements(self):
@@ -46,7 +73,7 @@ class Hierachy(_Hierarchy):
         )
 
     def _set_ids(self):
-        self._ids = set(int(elem.id_) for elem in self.elements)
+        self._ids = set(int(elem.id) for elem in self.elements)
         self._last_id = 0
         self.new_id()
 

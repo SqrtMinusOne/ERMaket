@@ -54,6 +54,15 @@ def __str__(self):
     return self.value
 
 
+def make_hash(enums):
+    hashes = {key: i for i, key in enumerate(enums.values())}
+
+    def __hash__(self):
+        return hashes[self.value]
+
+    return __hash__
+
+
 def xmlenum(classname, tag_name, **enums):
     class_ = type(
         classname, (XMLObject, ), {
@@ -63,6 +72,7 @@ def xmlenum(classname, tag_name, **enums):
             "__eq__": make_eq(classname),
             "__str__": __str__,
             "_tag_name": tag_name,
+            "__hash__": make_hash(enums),
             **enums
         }
     )

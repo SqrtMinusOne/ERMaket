@@ -1,5 +1,5 @@
 from api.system.hierarchy import (AccessRight, AccessRights, Hierachy,
-                                  RoleAccess, Section, Table)
+                                  RoleAccess, Section, Table, TableColumn)
 
 
 class HierachyConstructor:
@@ -16,6 +16,12 @@ class HierachyConstructor:
             id=h.next_id()
         )
         h.sections.append(parent)
+        for table in self._tables.values():
+            t = self._make_table(table)
+            t.id = h.next_id()
+            h.tables.append(t)
+            parent.children.append(t.id)
+        return h
 
     def _global_rights(self):
         rights = AccessRights()
@@ -30,5 +36,10 @@ class HierachyConstructor:
 
     def _make_table(self, table):
         t = Table(
-            accessRights=AccessRights(), name=table.name, tableName=table.name
+            accessRights=AccessRights(), name=table.name, schema=self._schema
         )
+        for column in table.columns:
+            t.columns.append(TableColumn(column.name))
+
+        # TODO linked columns
+        return t

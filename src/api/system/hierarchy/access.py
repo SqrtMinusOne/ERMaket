@@ -1,3 +1,5 @@
+from magic_repr import make_repr
+
 from api.erd.er_entities import XMLObject
 
 from .xmlenum import xmlenum
@@ -15,8 +17,12 @@ class RoleAccess(XMLObject):
         self.role_name = role_name
         self.access_types = set(AccessRight(t) for t in access_types)
 
+    @property
+    def _tag_name(self):
+        return 'roleAccess'
+
     def to_xml(self):
-        tag = self.soup.new_tag('roleAccess')
+        tag = self.soup.new_tag(self._tag_name)
         tag.append(self.new_tag('roleName', self.role_name))
         [tag.append(access_type.to_xml()) for access_type in self.access_types]
         return tag
@@ -25,9 +31,11 @@ class RoleAccess(XMLObject):
     def _from_xml(cls, tag):
         return cls._make_args(
             tag.roleName.text,
-            [AccessRight(t) for t in tag.find_all(AccessRight._tag_name)]
+            [AccessRight(t.text) for t in tag.find_all(AccessRight._tag_name)]
         )
 
+
+RoleAccess.__repr__ = make_repr('role_name', 'access_types')
 
 _AccessRights = xmllist(
     'AccessRights', 'accessRights', RoleAccess, ['inherit']
@@ -41,3 +49,5 @@ class AccessRights(_AccessRights):
             self.inherit = True
         elif not self.inherit:
             self.inherit = False
+        else:
+            self.inherit = self.inherit == 'True'
