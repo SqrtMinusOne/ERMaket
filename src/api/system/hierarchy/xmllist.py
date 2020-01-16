@@ -8,7 +8,10 @@ __all__ = ['xmllist']
 
 
 def make_init(kws):
-    def __init__(self, values=[], *args, **kwargs):
+    def __init__(self, values=None, *args, **kwargs):
+        self.values = []
+        if values is None:
+            return
         if not isinstance(values, Iterable):
             values = [values]
         [setattr(self, key, None) for key in kws]
@@ -30,7 +33,7 @@ def make_to_xml(tag_name, children_class, children_tag):
                 for value in self.values
             ]
         [
-            setattr(tag, key, value)
+            tag.__setitem__(key, value)
             for key, value in self.__dict__.items() if key != 'values'
         ]
         return tag
@@ -69,7 +72,6 @@ def xmllist(classname, tag_name, children, kws=[]):
                 make_to_xml(tag_name, children_class, children_tag),
             "_from_xml":
                 make_from_xml(children_class),
-            "values": [],
             "__len__":
                 lambda self: len(self.values),
             "__getitem__":

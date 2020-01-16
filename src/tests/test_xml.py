@@ -163,7 +163,11 @@ class TestXML(unittest.TestCase):
             tags3=Tag3
         )
 
-        all_ = All(tags1=[Tag1(1), Tag1(2), Tag2(3)],
+        all_ = All(tags1=[Tag1(1), Tag1(2), Tag1(3)],
                    tags2=[Tag2('a'), Tag2('b'), Tag2('c')],
                    tags3=[Tag3('x'), Tag3('y'), Tag3('z')])
         self.assertEqual(all_.to_xml(), All.from_xml(all_.to_xml()).to_xml())
+
+        all2 = All([Tag1(1), Tag2('a'), Tag3('x'),
+                    Tag1(2), Tag2('b'), Tag3('c')])
+        self.assertEqual(all2.to_xml(), All.from_xml(all2.to_xml()).to_xml())

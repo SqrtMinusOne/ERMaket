@@ -38,7 +38,7 @@ class RoleAccess(XMLObject):
 RoleAccess.__repr__ = make_repr('role_name', 'access_types')
 
 _AccessRights = xmllist(
-    'AccessRights', 'accessRights', RoleAccess, ['inherit']
+    'AccessRights', 'accessRights', RoleAccess, kws=['inherit']
 )
 
 

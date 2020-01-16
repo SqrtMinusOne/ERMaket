@@ -16,20 +16,22 @@ def make_init(classname, enums):
                 if v == value:
                     self.key = k
                     return
-            raise ValueError(f'Value "{value}" not found in xmlenum')
+            raise ValueError(
+                f'Value "{value}" not found in xmlenum {classname}'
+            )
 
     return __init__
 
 
 def make_from_xml(enums):
     @classmethod
-    def from_xml(cls, tag):
+    def _from_xml(cls, tag):
         for key, value in enums.items():
             if tag.text == value:
-                return cls._make_args(key)
-        raise ValueError(f'Key {key} not found in {cls}')
+                return cls._make_args(value)
+        raise ValueError(f'Key {key} not found in {cls.__name__}')
 
-    return from_xml
+    return _from_xml
 
 
 def make_to_xml(tag_name):

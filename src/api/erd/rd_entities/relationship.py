@@ -10,8 +10,8 @@ class ORMRelationship:
 
     def __repr__(self):
         ret = f'<ORMRelationship table.name={self.table.name}'
-        f', ref_table.name={self.ref_table.name}'
-        f', name={self.name}'
+        ret += f', ref_table.name={self.ref_table.name}'
+        ret += f', name={self.name}'
         if self.fk_col:
             ret += f', fk_col.name={self.fk_col.name}'
         if self.secondary_table:

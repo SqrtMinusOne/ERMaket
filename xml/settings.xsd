@@ -1,5 +1,12 @@
 <?xml version="1.0" ?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="ermaket_settings" xmlns="ermaket_settings" xmlns:ns="ermaket_settings" elementFormDefault="qualified">
+    <xs:simpleType name="bool">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="False" />
+            <xs:enumeration value="True" />
+        </xs:restriction>
+    </xs:simpleType>
+
     <!-- Кнопка -->
     <!-- Связь с id запускаемого скрипта -->
     <!-- Проверка допустимости location -->
@@ -41,7 +48,7 @@
         <xs:sequence>
             <xs:element name="roleAccess" type="roleAccess" minOccurs="0" maxOccurs="unbounded" />
         </xs:sequence>
-        <xs:attribute name="inherit" type="xs:boolean" />
+        <xs:attribute name="inherit" type="bool" />
     </xs:complexType>
 
     <!-- Триггер -->
@@ -90,12 +97,12 @@
         </xs:complexContent>
     </xs:complexType>
 
-    <!-- Простое поле таблицы -->
+    <!-- Простое поле формы -->
     <xs:complexType name="simpleField">
         <xs:sequence>
             <xs:element name="tableField" type="xs:string" />
             <xs:element name="text" type="xs:string" />
-            <xs:element name="isEditable" type="xs:boolean" default="false" />
+            <xs:element name="isEditable" type="bool" default="False" />
         </xs:sequence>
     </xs:complexType>
 
@@ -110,7 +117,7 @@
         </xs:restriction>
     </xs:simpleType>
 
-    <!-- Связанное поле -->
+    <!-- Связанное поле формы -->
     <xs:complexType name="linkedField">
         <xs:complexContent>
             <xs:extension base="simpleField">
@@ -123,10 +130,10 @@
 
     <!-- Поля формы -->
     <xs:complexType name="formFields">
-        <xs:sequence>
+        <xs:choice maxOccurs="unbounded">
             <xs:element name="simpleField" type="simpleField" minOccurs="0" maxOccurs="unbounded" />
             <xs:element name="linkedField" type="simpleField" minOccurs="0" maxOccurs="unbounded" />
-        </xs:sequence>
+        </xs:choice>
     </xs:complexType>
 
     <!-- Форма -->
@@ -156,17 +163,39 @@
         <xs:sequence>
             <xs:element name="rowName" type="xs:string" />
             <xs:element name="text" type="xs:string" minOccurs="0" />
-            <xs:element name="isSort" type="xs:boolean" default="true" minOccurs="0" />
-            <xs:element name="isFilter" type="xs:boolean" default="true" minOccurs="0" />
+            <xs:element name="isSort" type="bool" default="True" minOccurs="0" />
+            <xs:element name="isFilter" type="bool" default="True" minOccurs="0" />
+            <xs:element name="isEditable" type="bool" default="True" minOccurs="0" />
         </xs:sequence>
+    </xs:complexType>
+
+    <!-- Типы справочников -->
+    <xs:simpleType name="tableReferenceType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="simple" />
+            <xs:enumeration value="dropdown" />
+            <xs:enumeration value="linkedTable" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- Связанное поле таблицы -->
+    <xs:complexType name="linkedTableColumn">
+        <xs:complexContent>
+            <xs:extension base="tableColumn">
+                <xs:sequence>
+                    <xs:element name="linkType" type="tableReferenceType" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
     </xs:complexType>
 
     <!-- Набор столбцов -->
     <xs:complexType name="tableColumns">
         <xs:sequence>
-            <xs:sequence>
+            <xs:choice maxOccurs="unbounded">
                 <xs:element name="column" type="tableColumn" minOccurs="0" maxOccurs="unbounded" />
-            </xs:sequence>
+                <xs:element name="linkedColumn" type="ns:linkedTableColumn" minOccurs="0" maxOccurs="unbounded" />
+            </xs:choice>
         </xs:sequence>
     </xs:complexType>
 

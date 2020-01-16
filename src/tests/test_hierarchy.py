@@ -20,6 +20,7 @@ class TestHierarchy(unittest.TestCase):
 
         dummy_admin = DummyRole(name='admin')
         constructor = HierachyConstructor(alg.tables, 'er1', dummy_admin)
+
         hierarchy = constructor.construct()
 
         self.assertEqual(

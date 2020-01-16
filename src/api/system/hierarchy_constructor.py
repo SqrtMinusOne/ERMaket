@@ -1,5 +1,6 @@
 from api.system.hierarchy import (AccessRight, AccessRights, Hierachy,
-                                  RoleAccess, Section, Table, TableColumn)
+                                  RoleAccess, Section, Table, TableColumn,
+                                  LinkedTableColumn)
 
 
 class HierachyConstructor:
@@ -13,13 +14,13 @@ class HierachyConstructor:
         parent = Section(
             accessRights=self._global_rights(),
             name=self._schema,
-            id=h.next_id()
+            id=h._next_id()
         )
-        h.sections.append(parent)
+        h.append(parent)
         for table in self._tables.values():
             t = self._make_table(table)
-            t.id = h.next_id()
-            h.tables.append(t)
+            t.id = h._next_id()
+            h.append(t)
             parent.children.append(t.id)
         return h
 
@@ -41,5 +42,7 @@ class HierachyConstructor:
         for column in table.columns:
             t.columns.append(TableColumn(column.name))
 
-        # TODO linked columns
+        for relation in table.relationships:
+            t.columns.append(LinkedTableColumn(relation.name))
+
         return t

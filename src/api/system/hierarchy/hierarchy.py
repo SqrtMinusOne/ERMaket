@@ -11,7 +11,7 @@ from .xmlall import xmlall
 
 __all__ = ['Hierachy']
 
-__Hierarchy = xmlall(
+_Hierarchy = xmlall(
     '__Hierachy',
     'hierarchy',
     sections=Section,
@@ -19,16 +19,6 @@ __Hierarchy = xmlall(
     tables=Table,
     pages=Page,
     prebuiltPages=PrebuiltPage
-)
-
-_Hierarchy = defaultify_init(
-    __Hierarchy,
-    '_Hierachy',
-    sections=[],
-    forms=[],
-    tables=[],
-    pages=[],
-    prebuiltPages=[]
 )
 
 
@@ -40,7 +30,7 @@ class Hierachy(_Hierarchy):
                 self.soup = xml
             else:
                 self.soup = BeautifulSoup(xml, features='xml')
-            args, kwargs = self._from_xml(self.soup)
+            args, kwargs = self._from_xml(self.soup.hierarchy)
             super().__init__(*args, **kwargs)
         else:
             self.soup = BeautifulSoup(features='xml')
@@ -75,14 +65,14 @@ class Hierachy(_Hierarchy):
     def _set_ids(self):
         self._ids = set(int(elem.id) for elem in self.elements)
         self._last_id = 0
-        self.new_id()
+        self._new_id()
 
-    def new_id(self):
+    def _new_id(self):
         while self._last_id in self._ids:
             self._last_id += 1
         return self._last_id
 
-    def next_id(self):
-        ret = self.new_id()
+    def _next_id(self):
+        ret = self._new_id()
         self._ids.add(ret)
         return ret

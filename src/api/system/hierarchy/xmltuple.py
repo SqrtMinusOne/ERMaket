@@ -1,7 +1,6 @@
 from magic_repr import make_repr
 
 from api.erd.er_entities import XMLObject
-from utils import caster
 
 __all__ = ['xmltuple', 'make_to_xml']
 
