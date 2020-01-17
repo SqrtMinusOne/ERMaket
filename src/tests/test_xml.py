@@ -129,6 +129,8 @@ class TestXML(unittest.TestCase):
             List3.from_xml(list3.to_xml()).to_xml()
         )
 
+        self.assertGreater(len(list(list2)), len(list(list_)))
+
     def test_enum(self):
         Enum = xmlenum('Enum', 'enum', a='a', b='b', c='c')
         a1 = Enum(Enum.a)
@@ -171,3 +173,5 @@ class TestXML(unittest.TestCase):
         all2 = All([Tag1(1), Tag2('a'), Tag3('x'),
                     Tag1(2), Tag2('b'), Tag3('c')])
         self.assertEqual(all2.to_xml(), All.from_xml(all2.to_xml()).to_xml())
+
+        self.assertGreater(len(list(all_)), len(list(all2)))

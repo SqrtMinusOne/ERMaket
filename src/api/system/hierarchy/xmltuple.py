@@ -11,7 +11,10 @@ class TextTag:
         return tag.text
 
 
-def make_to_xml(tag_name, attributes, kws=[]):
+def make_to_xml(tag_name, attributes, kws=None):
+    if kws is None:
+        kws = []
+
     def to_xml(self):
         tag = self.soup.new_tag(tag_name)
         for key in attributes + kws:

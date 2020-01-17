@@ -71,7 +71,7 @@ def xmlall(classname, tag_name, **params):
             "__delitem__":
                 lambda self, key: self.values.__delitem__(key),
             "__iter__":
-                lambda self: self.value.__iter_,
+                lambda self: iter(self.values),
             "append":
                 lambda self, item: self.values.append(item),
         }

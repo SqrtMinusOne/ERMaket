@@ -58,7 +58,9 @@ def make_from_xml(children_class):
     return from_xml
 
 
-def xmllist(classname, tag_name, children, kws=[]):
+def xmllist(classname, tag_name, children, kws=None):
+    if kws is None:
+        kws = []
     children_class, children_tag = None, None
     if isinstance(children, type):
         children_class = children
@@ -81,7 +83,7 @@ def xmllist(classname, tag_name, children, kws=[]):
             "__delitem__":
                 lambda self, key: self.values.__delitem__(key),
             "__iter__":
-                lambda self: self.value.__iter_,
+                lambda self: iter(self.values),
             "append":
                 lambda self, item: self.values.append(item),
             "_tag_name":

@@ -2,7 +2,6 @@ from bs4 import BeautifulSoup
 
 from api import Config
 from api.erd.er_entities import XMLObject
-from utils import defaultify_init
 
 from .elements import Page, PrebuiltPage, Section
 from .form import Form

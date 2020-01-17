@@ -45,4 +45,6 @@ class HierachyConstructor:
         for relation in table.relationships:
             t.columns.append(LinkedTableColumn(relation.name))
 
+        t.form = t.make_form()
+
         return t
