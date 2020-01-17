@@ -59,16 +59,21 @@ class AccessRights(_AccessRights):
         elif not self.inherit:
             self.inherit = False
         else:
-            self.inherit = self.inherit == 'True'
+            self.inherit = self.inherit == 'True' or self.inherit is True
 
     def copy_rights(self, other):
         self.values = list(other.values)
 
     def get(self, role):
         for roleAccess in iter(self):
-            if roleAccess.name == role:
+            if roleAccess.role_name == role:
                 return list(roleAccess.access_types)
         return []
+
+    @classmethod
+    def from_xml(cls, tag):
+        ret = super().from_xml(tag)
+        return ret
 
     def to_xml(self):
         if not self.inherit:

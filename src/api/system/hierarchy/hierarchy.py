@@ -73,7 +73,19 @@ class Hierachy(_Hierarchy):
                 elem.resolve_rights()
 
     def merge(self, other):
+        map_ids = {}
+        for elem in other.values:
+            if elem.id in self._ids:
+                map_ids[elem.id] = self._new_id()
+                self._ids[map_ids[elem.id]] = None
+            else:
+                map_ids[elem.id] = elem.id
+        for elem in other.values:
+            elem.id = map_ids[elem.id]
+            if isinstance(elem, Section):
+                elem.map_ids(lambda id: map_ids[id])
         self.values.extend(other.values)
+        self.set_tree()
 
     @classmethod
     def from_xml(cls, xml):
@@ -92,6 +104,14 @@ class Hierachy(_Hierarchy):
         for elem in self._root:
             res.append(elem.to_object())
         return {'hierarchy': res}
+
+    def extract(self, role):
+        h = Hierachy()
+        for elem in self.values:
+            if len(elem.accessRights.get(role)) > 0:
+                h.append(elem)
+        h.set_tree()
+        return h
 
     @property
     def elements(self):
@@ -112,5 +132,6 @@ class Hierachy(_Hierarchy):
 
     def append(self, elem):
         super().append(elem)
-        elem.id = self._new_id()
+        if not hasattr(elem, 'id') or elem.id is None:
+            elem.id = self._new_id()
         self._ids[elem.id] = elem

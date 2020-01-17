@@ -23,8 +23,17 @@ class Section(_Section):
         self._children = None
 
     def resolve_children(self, func):
-        self._children = [func(id) for id in self.children]
+        self._children = []
+        for child_id in self.children:
+            child = func(child_id)
+            if child:
+                self._children.append(child)
         return self.children.values
+
+    def map_ids(self, mapper):
+        self.children = Children([
+            ChildId(mapper(child.value)) for child in self.children
+        ])
 
     def resolve_rights(self):
         for child in self._children:
