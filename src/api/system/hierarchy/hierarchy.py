@@ -3,8 +3,9 @@ from bs4 import BeautifulSoup
 from api import Config
 from api.erd.er_entities import XMLObject
 
-from .elements import Page, PrebuiltPage, Section
+from .elements import Page, PrebuiltPage
 from .form import Form
+from .section import Section
 from .table import Table
 from .xmlall import xmlall
 
@@ -41,6 +42,20 @@ class Hierachy(_Hierarchy):
             )
         XMLObject.soup = self.soup
         self._set_ids()
+        self.set_tree()
+
+    def set_tree(self):
+        resolved = set()
+        [
+            [
+                resolved.add(id)
+                for id in section.resolve_children(self.get_by_id)
+            ] for section in self.sections
+        ]
+        self._resolved = resolved
+
+    def merge(self, other):
+        self.values.extend(other.values)
 
     @classmethod
     def from_xml(cls, xml):
@@ -55,9 +70,11 @@ class Hierachy(_Hierarchy):
         return soup
 
     def to_object(self, *args, **kwargs):
-        return {
-            'hierarchy': super().to_object(*args, **kwargs)
-        }
+        res = []
+        for elem in self.values:
+            if elem._tag_name == 'Section' or elem.id not in self._resolved:
+                res.append(elem.to_object())
+        return {'hierarchy': res}
 
     @property
     def elements(self):
@@ -67,16 +84,21 @@ class Hierachy(_Hierarchy):
         )
 
     def _set_ids(self):
-        self._ids = set(int(elem.id) for elem in self.elements)
+        self._ids = {int(elem.id): elem for elem in self.elements}
         self._last_id = 0
         self._new_id()
+
+    def get_by_id(self, id):
+        if isinstance(id, XMLObject):
+            return self._ids[id.value]
+        return self.ids[id]
 
     def _new_id(self):
         while self._last_id in self._ids:
             self._last_id += 1
         return self._last_id
 
-    def _next_id(self):
-        ret = self._new_id()
-        self._ids.add(ret)
-        return ret
+    def append(self, elem):
+        super().append(elem)
+        elem.id = self._new_id()
+        self._ids[elem.id] = elem

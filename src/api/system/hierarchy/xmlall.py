@@ -61,6 +61,13 @@ def to_object(self, add_name=False):
     ]
 
 
+def make_prop(prop_class):
+    return property(
+        lambda self:
+        [item for item in self.values if isinstance(item, prop_class)]
+    )
+
+
 def xmlall(classname, tag_name, **params):
     class_ = type(
         classname, (XMLObject, ConvertableXML), {
@@ -84,16 +91,13 @@ def xmlall(classname, tag_name, **params):
                 lambda self: iter(self.values),
             "append":
                 lambda self, item: self.values.append(item),
-            "to_object": to_object,
+            "to_object":
+                to_object,
         }
     )
     [
         setattr(
-            class_, name,
-            property(
-                lambda self:
-                [item for item in self.values if isinstance(item, prop_class)]
-            )
+            class_, name, make_prop(prop_class)
         ) for name, prop_class in params.items()
     ]
     class_.__repr__ = make_repr('values')

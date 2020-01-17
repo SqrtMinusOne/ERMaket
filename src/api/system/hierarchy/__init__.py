@@ -7,3 +7,4 @@ from .xmlenum import *
 from .xmlall import *
 from .table import *
 from .xmltag import *
+from .section import *

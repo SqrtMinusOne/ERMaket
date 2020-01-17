@@ -13,15 +13,15 @@ class HierachyConstructor:
         h = Hierachy()
         parent = Section(
             accessRights=self._global_rights(),
-            name=self._schema,
-            id=h._next_id()
+            name=self._schema
         )
         h.append(parent)
         for table in self._tables.values():
             t = self._make_table(table)
-            t.id = h._next_id()
             h.append(t)
             parent.children.append(t.id)
+        h._set_ids()
+        h.set_tree()
         return h
 
     def _global_rights(self):
