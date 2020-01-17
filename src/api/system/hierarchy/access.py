@@ -60,3 +60,19 @@ class AccessRights(_AccessRights):
             self.inherit = False
         else:
             self.inherit = self.inherit == 'True'
+
+    def copy_rights(self, other):
+        self.values = list(other.values)
+
+    def get(self, role):
+        for roleAccess in iter(self):
+            if roleAccess.name == role:
+                return list(roleAccess.access_types)
+        return []
+
+    def to_xml(self):
+        if not self.inherit:
+            return super().to_xml()
+        tag = self.soup.new_tag(self._tag_name)
+        tag['inherit'] = True
+        return tag

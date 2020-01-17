@@ -10,13 +10,14 @@ __all__ = ['xmllist']
 def make_init(kws):
     def __init__(self, values=None, *args, **kwargs):
         self.values = []
+        [setattr(self, key, None) for key in kws]
+        [setattr(self, key, value) for key, value in zip(kws, args)]
+        [setattr(self, key, value) for key, value in kwargs.items()]
+
         if values is None:
             return
         if not isinstance(values, Iterable):
             values = [values]
-        [setattr(self, key, None) for key in kws]
-        [setattr(self, key, value) for key, value in zip(kws, args)]
-        [setattr(self, key, value) for key, value in kwargs.items()]
         self.values = values
 
     return __init__

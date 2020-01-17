@@ -23,8 +23,6 @@ class TestHierarchy(unittest.TestCase):
 
         hierarchy = constructor.construct()
 
-        obj = hierarchy.to_object()
-
         self.assertEqual(
             hierarchy.pretty_xml(),
             Hierachy.from_xml(hierarchy.pretty_xml()).pretty_xml()

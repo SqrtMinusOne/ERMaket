@@ -26,6 +26,13 @@ class Section(_Section):
         self._children = [func(id) for id in self.children]
         return self.children.values
 
+    def resolve_rights(self):
+        for child in self._children:
+            if child.accessRights.inherit:
+                child.accessRights.copy_rights(self.accessRights)
+            if isinstance(child, Section):
+                child.resolve_rights()
+
     def to_object(self, add_name=False):
         obj = super().to_object(add_name)
         if self._children:

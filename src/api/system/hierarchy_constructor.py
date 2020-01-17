@@ -20,12 +20,11 @@ class HierachyConstructor:
             t = self._make_table(table)
             h.append(t)
             parent.children.append(t.id)
-        h._set_ids()
         h.set_tree()
         return h
 
     def _global_rights(self):
-        rights = AccessRights()
+        rights = AccessRights(inherit=False)
         if self._admin_role:
             rights.append(
                 RoleAccess(

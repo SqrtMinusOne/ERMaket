@@ -41,18 +41,36 @@ class Hierachy(_Hierarchy):
                 )
             )
         XMLObject.soup = self.soup
-        self._set_ids()
         self.set_tree()
 
     def set_tree(self):
+        self._set_ids()
         resolved = set()
         [
             [
-                resolved.add(id)
+                resolved.add(id.value)
                 for id in section.resolve_children(self.get_by_id)
             ] for section in self.sections
         ]
         self._resolved = resolved
+        self._root = [
+            elem for elem in self.values if elem.id not in self._resolved
+        ]
+        self._resolve_rights()
+
+    def _set_ids(self):
+        self._ids = {int(elem.id): elem for elem in self.elements}
+        self._last_id = 0
+        self._new_id()
+
+    def _resolve_rights(self):
+        for elem in self._root:
+            if elem.accessRights.inherit:
+                raise ValueError(
+                    f'Element {elem} is root and cannot inherit accessRights'
+                )
+            if isinstance(elem, Section):
+                elem.resolve_rights()
 
     def merge(self, other):
         self.values.extend(other.values)
@@ -71,9 +89,8 @@ class Hierachy(_Hierarchy):
 
     def to_object(self, *args, **kwargs):
         res = []
-        for elem in self.values:
-            if elem._tag_name == 'Section' or elem.id not in self._resolved:
-                res.append(elem.to_object())
+        for elem in self._root:
+            res.append(elem.to_object())
         return {'hierarchy': res}
 
     @property
@@ -82,11 +99,6 @@ class Hierachy(_Hierarchy):
             *self.sections, *self.forms, *self.tables, *self.pages,
             *self.prebuiltPages
         )
-
-    def _set_ids(self):
-        self._ids = {int(elem.id): elem for elem in self.elements}
-        self._last_id = 0
-        self._new_id()
 
     def get_by_id(self, id):
         if isinstance(id, XMLObject):
