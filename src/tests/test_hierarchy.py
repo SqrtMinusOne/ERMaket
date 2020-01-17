@@ -1,60 +1,39 @@
-import unittest
 from collections import namedtuple
 
-from api.config import Config
-from api.erd import ERD, Algorithm
+import pytest
+
 from api.system import Hierachy, HierachyConstructor
 
 DummyRole = namedtuple('DummyRole', ['name'])
 
 
-class TestHierarchy(unittest.TestCase):
-    def setUp(self):
-        config = Config()
-        config.Models['models_dir'] = '_temp'
-        with open('../xml/example.xml', 'r') as f:
-            xml = f.read()
-        erd = ERD(xml)
-        alg = Algorithm(erd)
-        alg.run_algorithm()
+@pytest.mark.usefixtures("algorithm")
+def test_constructor(algorithm):
+    dummy_admin = DummyRole(name='admin')
+    constructor = HierachyConstructor(algorithm.tables, 'er1', dummy_admin)
 
-        self.alg = alg
-        self.erd = erd
+    hierarchy = constructor.construct()
 
-    def test_constructor(self):
-        dummy_admin = DummyRole(name='admin')
-        constructor = HierachyConstructor(self.alg.tables, 'er1', dummy_admin)
+    xml1 = hierarchy.pretty_xml()
+    xml2 = Hierachy.from_xml(hierarchy.pretty_xml()).pretty_xml()
+    assert xml1 == xml2
 
-        hierarchy = constructor.construct()
+    obj1 = hierarchy.to_object()
+    assert obj1 == Hierachy.from_xml(hierarchy.pretty_xml()).to_object()
 
-        self.assertEqual(
-            hierarchy.pretty_xml(),
-            Hierachy.from_xml(hierarchy.pretty_xml()).pretty_xml()
-        )
 
-        self.assertDictEqual(
-            hierarchy.to_object(),
-            Hierachy.from_xml(hierarchy.pretty_xml()).to_object()
-        )
+def test_extract(algorithm):
+    admin1 = DummyRole(name='admin1')
+    admin2 = DummyRole(name='admin2')
+    c1 = HierachyConstructor(algorithm.tables, 'er1', admin1)
+    c2 = HierachyConstructor(algorithm.tables, 'er2', admin2)
+    h1 = c1.construct()
 
-    def test_extract(self):
-        admin1 = DummyRole(name='admin1')
-        admin2 = DummyRole(name='admin2')
-        c1 = HierachyConstructor(self.alg.tables, 'er1', admin1)
-        c2 = HierachyConstructor(self.alg.tables, 'er2', admin2)
-        h1 = c1.construct()
+    h = Hierachy.from_xml(h1.to_xml())
+    h2 = c2.construct()
 
-        h = Hierachy.from_xml(h1.to_xml())
-        h2 = c2.construct()
+    h1.merge(h2)
+    assert h1.pretty_xml() == Hierachy.from_xml(h1.pretty_xml()).pretty_xml()
 
-        h1.merge(h2)
-        self.assertEqual(
-            h1.pretty_xml(),
-            Hierachy.from_xml(h1.pretty_xml()).pretty_xml()
-        )
-
-        h3 = h1.extract(admin1.name)
-        self.assertEqual(
-            h.pretty_xml(),
-            h3.pretty_xml()
-        )
+    h3 = h1.extract(admin1.name)
+    assert h.pretty_xml() == h3.pretty_xml()
