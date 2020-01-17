@@ -16,7 +16,8 @@
             "xmlns": "ermaket_hierarchy",
             "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
             "xsi:schemaLocation": "ermaket_hierarchy settings.xsd"
-        }
+        },
+        "hierarchyPath" : "../xml/hierarchy.xml"
     },
     "Generation": {
         "templates_folder": "api/generation/templates/",

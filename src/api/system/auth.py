@@ -25,3 +25,6 @@ class UserManager:
             user.set_password(password)
             db.add(user)
             db.commit()
+
+    def login_user(self, user):
+        pass

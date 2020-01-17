@@ -64,11 +64,12 @@ class AccessRights(_AccessRights):
     def copy_rights(self, other):
         self.values = list(other.values)
 
-    def get(self, role):
+    def get(self, role_names):
+        rights = []
         for roleAccess in iter(self):
-            if roleAccess.role_name == role:
-                return list(roleAccess.access_types)
-        return []
+            if roleAccess.role_name in role_names:
+                [rights.append(type_) for type_ in roleAccess.access_types]
+        return rights
 
     @classmethod
     def from_xml(cls, tag):

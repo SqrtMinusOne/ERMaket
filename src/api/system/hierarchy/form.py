@@ -22,7 +22,8 @@ LinkType = xmlenum(
 )
 
 SimpleField = xmltuple(
-    'SimpleField', 'simpleField', ['tableField', 'text', 'isEditable']
+    'SimpleField', 'simpleField', ['tableField', 'text', 'isEditable'],
+    types={'isEditable': caster.bool_cast}
 )
 
 LinkedField = xmltuple(
@@ -46,6 +47,6 @@ FormDescription = defaultify_init(
 )
 
 Form = xmltuple(
-    'Form', 'formEntry', [*_element_attrs, 'from'],
+    'Form', 'formEntry', [*_element_attrs, 'formDescription'],
     [*_element_children_classes, FormDescription], _element_kws, _element_types
 )

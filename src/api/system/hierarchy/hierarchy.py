@@ -105,13 +105,29 @@ class Hierachy(_Hierarchy):
             res.append(elem.to_object())
         return {'hierarchy': res}
 
-    def extract(self, role):
+    def extract(self, roles):
         h = Hierachy()
         for elem in self.values:
-            if len(elem.accessRights.get(role)) > 0:
+            if len(elem.accessRights.get(roles)) > 0:
                 h.append(elem)
         h.set_tree()
         return h
+
+    def drop_by_id(self, id):
+        self.values.remove(self._ids[id])
+        del self._ids[id]
+
+    def drop_schema(self, schema_name):
+        self.values = [
+            elem for elem in self.values if not any(
+                [
+                    isinstance(elem, Table) and elem.schema == schema_name,
+                    isinstance(elem, Form) and
+                    elem.formDescription.schema == schema_name
+                ]
+            )
+        ]
+        self.set_tree()
 
     @property
     def elements(self):
@@ -121,9 +137,12 @@ class Hierachy(_Hierarchy):
         )
 
     def get_by_id(self, id):
-        if isinstance(id, XMLObject):
-            return self._ids[id.value]
-        return self.ids[id]
+        try:
+            if isinstance(id, XMLObject):
+                return self._ids[id.value]
+            return self.ids[id]
+        except KeyError:
+            return None
 
     def _new_id(self):
         while self._last_id in self._ids:

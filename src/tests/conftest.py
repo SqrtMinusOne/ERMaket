@@ -1,5 +1,7 @@
+from pathlib import Path
 import numpy as np
 import pytest
+import shutil
 
 from api.config import Config
 from api.database import DBConn
@@ -26,8 +28,11 @@ def models():
 
 
 @pytest.fixture()
-def temp_models_dir(config):
+def temp_paths(config):
+    shutil.rmtree('_temp', ignore_errors=True)
+    Path('_temp/xml').mkdir(parents=True, exist_ok=True)
     config.Models['models_dir'] = '_temp'
+    config.XML['hierarchyPath'] = '_temp/xml/hierarchy.xml'
 
 
 @pytest.fixture()

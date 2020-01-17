@@ -35,5 +35,13 @@ def test_extract(algorithm):
     h1.merge(h2)
     assert h1.pretty_xml() == Hierachy.from_xml(h1.pretty_xml()).pretty_xml()
 
-    h3 = h1.extract(admin1.name)
+    h3 = h1.extract([admin1.name])
     assert h.pretty_xml() == h3.pretty_xml()
+
+    h1.drop_schema('er2')
+    er2_section = [section
+                   for section in h1.sections if section.name == 'er2'][0]
+    assert len(er2_section._children) == 0
+
+    h1.drop_by_id(er2_section.id)
+    assert h.pretty_xml() == h1.pretty_xml()

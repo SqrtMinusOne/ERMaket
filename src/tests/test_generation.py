@@ -4,11 +4,12 @@ from api.database import DBConn
 from api.erd import ERD, Algorithm
 from api.generation import Generator
 from api.models import Faker, Seeder
+from api.system import HierachyManager, HierachyConstructor
 
 from .dummies import binary_erd
 
 
-@pytest.mark.usefixtures("config", "sample_xml", "models")
+@pytest.mark.usefixtures("config", "sample_xml", "models", "temp_paths")
 def test_integration(config, sample_xml, models):
     config.Models['models_dir'] = '_temp'
     erd = ERD(sample_xml)
@@ -18,10 +19,15 @@ def test_integration(config, sample_xml, models):
     tables = alg.tables
 
     gen = Generator(tables, 'er1')
-    gen.generate_folder('_temp')
-    gen.generate_system_models('_temp')
+    gen.generate_folder()
+    gen.generate_system_models()
 
     assert len(list(models)) - len(models['system']) == len(tables)
+
+    manager = HierachyManager()
+    manager.hierarchy.merge(
+        HierachyConstructor(tables, 'er1').construct()
+    )
 
     seeder = Seeder(models)
     seeder.drop_models()
