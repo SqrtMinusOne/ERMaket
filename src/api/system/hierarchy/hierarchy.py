@@ -54,6 +54,11 @@ class Hierachy(_Hierarchy):
         soup.append(tag)
         return soup
 
+    def to_object(self, *args, **kwargs):
+        return {
+            'hierarchy': super().to_object(*args, **kwargs)
+        }
+
     @property
     def elements(self):
         return (

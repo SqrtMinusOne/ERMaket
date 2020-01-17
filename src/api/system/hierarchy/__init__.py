@@ -6,3 +6,4 @@ from .access import *
 from .xmlenum import *
 from .xmlall import *
 from .table import *
+from .xmltag import *

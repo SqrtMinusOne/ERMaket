@@ -1,6 +1,6 @@
 from magic_repr import make_repr
 
-from api.erd.er_entities import XMLObject
+from api.erd.er_entities import XMLObject, ConvertableXML
 
 __all__ = ['xmlenum']
 
@@ -56,6 +56,14 @@ def __str__(self):
     return self.value
 
 
+def to_object(self, add_name=False):
+    if add_name:
+        res = {}
+        res[self._tag_name] = self.__str__()
+    else:
+        return self.__str__()
+
+
 def make_hash(enums):
     hashes = {key: i for i, key in enumerate(enums.values())}
 
@@ -67,7 +75,7 @@ def make_hash(enums):
 
 def xmlenum(classname, tag_name, **enums):
     class_ = type(
-        classname, (XMLObject, ), {
+        classname, (XMLObject, ConvertableXML), {
             "__init__": make_init(classname, enums),
             "to_xml": make_to_xml(tag_name),
             "_from_xml": make_from_xml(enums),
@@ -75,6 +83,7 @@ def xmlenum(classname, tag_name, **enums):
             "__str__": __str__,
             "_tag_name": tag_name,
             "__hash__": make_hash(enums),
+            "to_object": to_object,
             **enums
         }
     )

@@ -2,7 +2,7 @@ from collections.abc import Iterable
 
 from magic_repr import make_repr
 
-from api.erd.er_entities import XMLObject
+from api.erd.er_entities import ConvertableXML, XMLObject
 
 __all__ = ['xmllist']
 
@@ -58,6 +58,23 @@ def make_from_xml(children_class):
     return from_xml
 
 
+def to_object(self, add_name=False):
+    return [
+        value.to_object(add_name=False)
+        if isinstance(value, ConvertableXML) else value
+        for value in self.values
+    ]
+
+
+def make_append(children_class):
+    def append(self, value):
+        if children_class and not isinstance(value, children_class):
+            self.values.append(children_class(value))
+        else:
+            self.values.append(value)
+    return append
+
+
 def xmllist(classname, tag_name, children, kws=None):
     if kws is None:
         kws = []
@@ -67,7 +84,7 @@ def xmllist(classname, tag_name, children, kws=None):
     else:
         children_tag = children
     class_ = type(
-        classname, (XMLObject, ), {
+        classname, (XMLObject, ConvertableXML), {
             "__init__":
                 make_init(kws),
             "to_xml":
@@ -84,8 +101,8 @@ def xmllist(classname, tag_name, children, kws=None):
                 lambda self, key: self.values.__delitem__(key),
             "__iter__":
                 lambda self: iter(self.values),
-            "append":
-                lambda self, item: self.values.append(item),
+            "append": make_append(children_class),
+            "to_object": to_object,
             "_tag_name":
                 tag_name
         }

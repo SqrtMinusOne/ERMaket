@@ -1,6 +1,6 @@
 from magic_repr import make_repr
 
-from api.erd.er_entities import XMLObject
+from api.erd.er_entities import XMLObject, ConvertableXML
 
 from .xmlenum import xmlenum
 from .xmllist import xmllist
@@ -12,7 +12,7 @@ AccessRight = xmlenum(
 )
 
 
-class RoleAccess(XMLObject):
+class RoleAccess(XMLObject, ConvertableXML):
     def __init__(self, role_name, access_types):
         self.role_name = role_name
         self.access_types = set(AccessRight(t) for t in access_types)
@@ -33,6 +33,15 @@ class RoleAccess(XMLObject):
             tag.roleName.text,
             [AccessRight(t.text) for t in tag.find_all(AccessRight._tag_name)]
         )
+
+    def to_object(self, add_name=False):
+        res = {
+            "role": self.role_name,
+            "access": [t.to_object() for t in self.access_types]
+        }
+        if add_name:
+            res['_tag_name'] = self._tag_name
+        return res
 
 
 RoleAccess.__repr__ = make_repr('role_name', 'access_types')

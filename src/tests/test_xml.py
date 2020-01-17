@@ -5,8 +5,7 @@ from bs4 import BeautifulSoup
 from api.config import Config
 from api.erd import ERD
 from api.erd.er_entities import Entity, Relation, XMLObject
-from api.system.hierarchy import xmlall, xmlenum, xmllist, xmltuple
-
+from api.system.hierarchy import xmlall, xmlenum, xmllist, xmltuple, xmltag
 from utils import defaultify_init
 
 
@@ -48,6 +47,11 @@ class TestXML(unittest.TestCase):
         erd = ERD(self.xml)
         new_xml = erd.to_xml()
         self.assertEqual(self.soup.prettify(), new_xml.prettify())
+
+    def test_tag(self):
+        Tag = xmltag('Tag', 'tag', int)
+        tag = Tag(23)
+        self.assertEqual(tag.to_xml(), Tag.from_xml(tag.to_xml()).to_xml())
 
     def test_tuple(self):
         Tag = xmltuple('Tag', 'tag', ['a', 'b'])
@@ -106,13 +110,25 @@ class TestXML(unittest.TestCase):
         tagL = TagL.from_xml(tag.to_xml())
         self.assertEqual(tag.to_xml(), tagL.to_xml())
 
+        self.assertDictEqual(tag.to_object(), tagL.to_object())
+
     def test_list(self):
-        Tag = xmltuple('Tag', 'tag', ['foo', 'bar'])
+        Tag = xmltuple(
+            'Tag', 'tag', ['foo', 'bar'], types={
+                'foo': int,
+                'bar': int
+            }
+        )
         List = xmllist('List', 'list', Tag)
         list_ = List([Tag(1, 2), Tag(3, 4), Tag(5, 6)])
         self.assertEqual(
             list_.to_xml(),
             List.from_xml(list_.to_xml()).to_xml()
+        )
+
+        self.assertListEqual(
+            list_.to_object(),
+            List.from_xml(list_.to_xml()).to_object()
         )
 
         List2 = xmllist('List2', 'list2', 'tag')
@@ -141,6 +157,7 @@ class TestXML(unittest.TestCase):
         self.assertEqual(str(a1), str(a2))
         self.assertEqual(repr(a1), repr(a2))
         self.assertEqual(a1, Enum.a)
+        self.assertEqual(a1.to_object(), a2.to_object())
         self.assertNotEqual(a1, b)
         self.assertNotEqual(a1, Enum.b)
 
@@ -153,25 +170,31 @@ class TestXML(unittest.TestCase):
         self.assertEqual(a1, a4)
 
     def test_all(self):
-        Tag1 = xmltuple('Tag1', 'tag1', ['a'])
+        Tag1 = xmltuple('Tag1', 'tag1', ['a'], types={'a': int})
         Tag2 = xmltuple('Tag2', 'tag2', ['b'])
         Tag3 = xmltuple('Tag3', 'tag3', ['c'])
 
-        All = xmlall(
-            'All',
-            'all',
-            tags1=Tag1,
-            tags2=Tag2,
-            tags3=Tag3
-        )
+        All = xmlall('All', 'all', tags1=Tag1, tags2=Tag2, tags3=Tag3)
 
-        all_ = All(tags1=[Tag1(1), Tag1(2), Tag1(3)],
-                   tags2=[Tag2('a'), Tag2('b'), Tag2('c')],
-                   tags3=[Tag3('x'), Tag3('y'), Tag3('z')])
+        all_ = All(
+            tags1=[Tag1(1), Tag1(2), Tag1(3)],
+            tags2=[Tag2('a'), Tag2('b'), Tag2('c')],
+            tags3=[Tag3('x'), Tag3('y'), Tag3('z')]
+        )
         self.assertEqual(all_.to_xml(), All.from_xml(all_.to_xml()).to_xml())
 
-        all2 = All([Tag1(1), Tag2('a'), Tag3('x'),
-                    Tag1(2), Tag2('b'), Tag3('c')])
+        all2 = All(
+            [Tag1(1),
+             Tag2('a'),
+             Tag3('x'),
+             Tag1(2),
+             Tag2('b'),
+             Tag3('c')]
+        )
         self.assertEqual(all2.to_xml(), All.from_xml(all2.to_xml()).to_xml())
+        self.assertListEqual(
+            all2.to_object(),
+            All.from_xml(all2.to_xml()).to_object()
+        )
 
         self.assertGreater(len(list(all_)), len(list(all2)))

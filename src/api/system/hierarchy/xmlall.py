@@ -1,6 +1,6 @@
 from magic_repr import make_repr
 
-from api.erd.er_entities import XMLObject
+from api.erd.er_entities import ConvertableXML, XMLObject
 
 __all__ = ['xmlall']
 
@@ -43,17 +43,27 @@ def make_from_xml(params):
 
     @classmethod
     def _from_xml(cls, tag):
-        return cls._make_args([
-            classes[child.name].from_xml(child)
-            for child in tag.find_all(True, recursive=False)
-        ])
+        return cls._make_args(
+            [
+                classes[child.name].from_xml(child)
+                for child in tag.find_all(True, recursive=False)
+            ]
+        )
 
     return _from_xml
 
 
+def to_object(self, add_name=False):
+    return [
+        value.to_object(add_name=True)
+        if isinstance(value, ConvertableXML) else value
+        for value in self.values
+    ]
+
+
 def xmlall(classname, tag_name, **params):
     class_ = type(
-        classname, (XMLObject, ), {
+        classname, (XMLObject, ConvertableXML), {
             "__init__":
                 make_init(params),
             "to_xml":
@@ -74,6 +84,7 @@ def xmlall(classname, tag_name, **params):
                 lambda self: iter(self.values),
             "append":
                 lambda self, item: self.values.append(item),
+            "to_object": to_object,
         }
     )
     [

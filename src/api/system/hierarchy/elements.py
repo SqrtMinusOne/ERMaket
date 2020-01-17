@@ -2,6 +2,8 @@ from .access import AccessRights
 from .xmllist import xmllist
 from .xmltuple import xmltuple
 from .xmlenum import xmlenum
+from .xmltag import xmltag
+
 from utils import defaultify_init
 
 __all__ = ['Button', 'Trigger', 'Buttons', 'Triggers', 'Children', 'Section',
@@ -22,7 +24,8 @@ _element_kws = ['id']
 _element_types = {'id': int}
 
 # Hierachy section
-Children = xmllist('Children', 'children', 'childId')
+ChildId = xmltag('ChildId', 'childId', int)
+Children = xmllist('Children', 'children', ChildId)
 _Section = xmltuple(
     '_Section', 'section', [*_element_attrs, 'children'],
     [*_element_children_classes, Children], _element_kws, _element_types

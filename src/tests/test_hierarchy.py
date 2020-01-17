@@ -20,9 +20,15 @@ class TestHierarchy(unittest.TestCase):
 
         dummy_admin = DummyRole(name='admin')
         constructor = HierachyConstructor(alg.tables, 'er1', dummy_admin)
+
         hierarchy = constructor.construct()
 
         self.assertEqual(
             hierarchy.pretty_xml(),
             Hierachy.from_xml(hierarchy.pretty_xml()).pretty_xml()
+        )
+
+        self.assertDictEqual(
+            hierarchy.to_object(),
+            Hierachy.from_xml(hierarchy.pretty_xml()).to_object()
         )

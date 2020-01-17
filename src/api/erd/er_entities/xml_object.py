@@ -3,7 +3,13 @@ from abc import ABC, abstractmethod
 import bs4
 import prettierfier
 
-__all__ = ['XMLObject']
+__all__ = ['XMLObject', 'ConvertableXML']
+
+
+class ConvertableXML(ABC):
+    @abstractmethod
+    def to_object(self, add_name=False):
+        pass
 
 
 class XMLObject(ABC):
