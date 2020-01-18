@@ -1,5 +1,6 @@
 import os
 import shutil
+from collections import namedtuple
 from pathlib import Path
 
 import numpy as np
@@ -11,7 +12,7 @@ from api.database import DBConn
 from api.erd import ERD, Algorithm
 from api.generation import Generator
 from api.models import Faker, Models, Seeder
-from api.system import HierachyConstructor, HierachyManager
+from api.system import HierachyConstructor, UserManager, HierachyManager
 from app import create_app
 
 SAMPLE_ERD = '../xml/example.xml'
@@ -82,17 +83,35 @@ def test_db():
     gen.generate_folder()
     gen.generate_system_models()
 
-    manager = HierachyManager()
-    manager.hierarchy.merge(HierachyConstructor(alg.tables, 'er1').construct())
-
+    manager = UserManager()
     models = Models()
 
     seeder = Seeder(models)
     seeder.drop_models()
     seeder.create_models()
 
+    hierarchy_manager = HierachyManager()
+
+    with DBConn.get_session() as db:
+        user = manager.add_user('admin', 'password')
+        db.add(user)
+        admin_role = models['system']['Role'](
+            name='admin', can_reset_password=True, has_sql_access=True
+        )
+        db.add(admin_role)
+        user.roles = [admin_role]
+        db.commit()
+
+        hierarchy_manager.h.merge(
+            HierachyConstructor(alg.tables, 'er1',
+                                admin_role=admin_role).construct()
+        )
+
     faker = Faker(models)
     faker.fake_all(5)
+
+    TestData = namedtuple('TestData', ['user', 'login', 'password'])
+    return TestData(user, 'admin', 'password')
 
 
 @pytest.fixture(scope='module')
@@ -114,7 +133,15 @@ def client(test_db, clear_test_logs):
 @pytest.fixture(scope='session')
 def clear_test_logs():
     config = Config()
-    os.remove(config.TestingLogging['handlers']['file_handler']['filename'])
-    os.remove(
-        config.TestingLogging['handlers']['error_file_handler']['filename']
-    )
+    try:
+        os.remove(
+            config.TestingLogging['handlers']['file_handler']['filename']
+        )
+    except OSError:
+        pass
+    try:
+        os.remove(
+            config.TestingLogging['handlers']['error_file_handler']['filename']
+        )
+    except OSError:
+        pass

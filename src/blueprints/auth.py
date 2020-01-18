@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, session
 from flask_login import current_user, login_required, login_user, logout_user
 
 from api.database import DBConn
@@ -15,7 +15,7 @@ def login():
         user = manager.check_user(data['login'], data['password'], db)
         if user:
             login_user(user)
-            manager.login_user(user)
+            manager.login_user(user, session)
             return jsonify({"ok": True})
     return jsonify({"ok": False})
 
@@ -23,12 +23,14 @@ def login():
 @auth.route('/current')
 @login_required
 def current():
-    obj = current_user.__marshmallow__().dump(current_user)
-    obj['user_hierarchy'] = current_user.user_hierarchy
+    with DBConn.get_session() as sess:
+        sess.add(current_user)
+        obj = current_user.__marshmallow__().dump(current_user)
+        obj['user_hierarchy'] = session.get('hierarchy')
     return jsonify(obj)
 
 
-@auth.route("/logout")
+@auth.route("/logout", methods=['POST'])
 @login_required
 def logout():
     logout_user()

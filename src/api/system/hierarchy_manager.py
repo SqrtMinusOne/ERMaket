@@ -11,10 +11,15 @@ _hierarchy = None
 
 
 class HierachyManager:
-    def __init__(self, reload=False):
+    def __init__(self, reload=False, save=True):
         self._config = Config()
         self.read(reload)
-        atexit.register(lambda manager: manager.save(), self)
+        if save:
+            atexit.register(lambda manager: manager.save(), self)
+
+    @property
+    def h(self):
+        return self.hierarchy
 
     def read(self, reload):
         global _hierarchy

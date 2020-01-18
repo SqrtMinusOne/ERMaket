@@ -39,7 +39,8 @@
         "system_prefix": "system_"
     },
     "Flask": {
-        "SECRET_KEY": "afa664c8cfac924818df7ee8cf8e1d94"
+        "SECRET_KEY": "afa664c8cfac924818df7ee8cf8e1d94",
+        "SESSION_TYPE": "filesystem"
     },
     "TestingFlask": {
         "TESTING": true,

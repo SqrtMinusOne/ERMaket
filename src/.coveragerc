@@ -1,0 +1,9 @@
+[run]
+source = .
+omit = 
+    *.tmpl.py
+    tests/*
+    cli/*
+    experiment/*
+    wsgi.py
+    manage.py

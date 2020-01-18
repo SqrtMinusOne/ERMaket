@@ -32,3 +32,4 @@ dependencies:
     - flask-login
     - prettierfier
     - deepmerge
+    - flask-session

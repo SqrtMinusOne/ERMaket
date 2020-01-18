@@ -27,7 +27,7 @@ before_script:
     - psql -c 'GRANT ALL PRIVILEGES ON DATABASE "ermaket" to ermaket;' -U postgres
 
 script:
-    - cd src && export PYTHONPATH=$PYTHONPATH:$(pwd) && python -m pytest --cov=api
+    - cd src && export PYTHONPATH=$PYTHONPATH:$(pwd) && python -m pytest --cov-config=.coveragerc --cov=.
 
 after_success:
     bash <(curl -s https://codecov.io/bash)
