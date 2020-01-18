@@ -28,7 +28,8 @@ SimpleField = xmltuple(
 
 LinkedField = xmltuple(
     'LinkedField', 'linkedField',
-    ['tableField', 'text', 'isEditable', 'linkType'], [LinkType],
+    ['tableField', 'text', 'isEditable', 'linkType', 'linkSchema',
+     'linkTableName'], [LinkType],
     types={'isEditable': caster.bool_cast}
 )
 

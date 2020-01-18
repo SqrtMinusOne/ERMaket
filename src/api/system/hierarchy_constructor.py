@@ -1,6 +1,6 @@
 from api.system.hierarchy import (AccessRight, AccessRights, Hierachy,
-                                  RoleAccess, Section, Table, TableColumn,
-                                  LinkedTableColumn)
+                                  LinkedTableColumn, RoleAccess, Section,
+                                  Table, TableColumn)
 
 
 class HierachyConstructor:
@@ -11,10 +11,7 @@ class HierachyConstructor:
 
     def construct(self):
         h = Hierachy()
-        parent = Section(
-            accessRights=self._global_rights(),
-            name=self._schema
-        )
+        parent = Section(accessRights=self._global_rights(), name=self._schema)
         h.append(parent)
         for table in self._tables.values():
             t = self._make_table(table)
@@ -39,11 +36,16 @@ class HierachyConstructor:
             accessRights=AccessRights(), name=table.name, schema=self._schema
         )
         for column in table.columns:
-            t.columns.append(TableColumn(column.name))
+            t.columns.append(TableColumn(column.name, isPk=column.pk))
 
         for relation in table.relationships:
-            t.columns.append(LinkedTableColumn(relation.name))
+            t.columns.append(
+                LinkedTableColumn(
+                    relation.name,
+                    linkTableName=relation.ref_table.name,
+                    linkSchema=self._schema
+                )
+            )
 
         t.formDescription = t.make_form()
-
         return t

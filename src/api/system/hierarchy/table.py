@@ -14,8 +14,9 @@ __all__ = [
 
 _TableColumn = xmltuple(
     '_TableColumn',
-    'column', ['rowName', 'text', 'isSort', 'isFilter', 'isEditable'],
+    'column', ['rowName', 'text', 'isSort', 'isFilter', 'isEditable', 'isPk'],
     types={
+        'isPk': caster.bool_cast,
         'isSort': caster.bool_cast,
         'isFilter': caster.bool_cast,
         'isEditable': caster.bool_cast
@@ -26,6 +27,7 @@ TableColumn = defaultify_init(
     _TableColumn,
     'TableColumn',
     text=lambda s: s.rowName,
+    isPk=False,
     isSort=True,
     isFilter=True,
     isEditable=True
@@ -47,9 +49,11 @@ _link_type_mappings[TableLinkType.LINKED] = LinkType.LINKEDFORM
 _LinkedTableColumn = xmltuple(
     '_LinkedTableColumn',
     'linkedColumn',
-    ['rowName', 'text', 'isSort', 'isFilter', 'isEditable', 'linkType'],
+    ['rowName', 'text', 'isSort', 'isFilter', 'isEditable', 'isPk',
+     'linkTableName', 'linkSchema', 'linkType'],
     [TableLinkType],
     types={
+        'isPk': caster.bool_cast,
         'isSort': caster.bool_cast,
         'isFilter': caster.bool_cast,
         'isEditable': caster.bool_cast
@@ -60,6 +64,7 @@ LinkedTableColumn = defaultify_init(
     _LinkedTableColumn,
     'LinkedTableColumn',
     text=lambda s: s.rowName,
+    isPk=False,
     isSort=True,
     isFilter=True,
     isEditable=True,
@@ -107,7 +112,9 @@ class Table(_Table):
                         tableField=column.rowName,
                         text=column.text,
                         isEditable=True,
-                        linkType=_link_type_mappings[column.linkType.value]
+                        linkType=_link_type_mappings[column.linkType.value],
+                        linkSchema=column.linkSchema,
+                        linkTableName=column.linkTableName
                     )
                 )
         return form
