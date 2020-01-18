@@ -57,6 +57,7 @@ class Hierachy(_Hierarchy):
             elem for elem in self.values if elem.id not in self._resolved
         ]
         self._resolve_rights()
+        self._set_tables()
 
     def _set_ids(self):
         self._ids = {int(elem.id): elem for elem in self.elements}
@@ -71,6 +72,20 @@ class Hierachy(_Hierarchy):
                 )
             if isinstance(elem, Section):
                 elem.resolve_rights()
+
+    def _set_tables(self):
+        self._tables = {}
+        for table in self.tables:
+            try:
+                self._tables[table.schema][table.tableName] = table
+            except KeyError:
+                self._tables[table.schema] = {table.tableName: table}
+
+    def get_table_entry(self, schema, name):
+        try:
+            return self._tables[schema][name]
+        except KeyError:
+            return None
 
     def merge(self, other):
         map_ids = {}
@@ -112,6 +127,16 @@ class Hierachy(_Hierarchy):
                 h.append(elem)
         h.set_tree()
         return h
+
+    def extract_rights(self, roles):
+        rights = {}
+        for elem in self.values:
+            for right in elem.accessRights.get(roles):
+                try:
+                    rights[right.value].append(elem.id)
+                except KeyError:
+                    rights[right.value] = [elem.id]
+        return rights
 
     def drop_by_id(self, id):
         self.values.remove(self._ids[id])

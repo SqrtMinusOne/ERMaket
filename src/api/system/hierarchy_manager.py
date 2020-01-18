@@ -38,9 +38,12 @@ class HierachyManager:
     def save(self):
         with open(self._config.XML['hierarchyPath'], 'w') as f:
             f.write(self.hierarchy.pretty_xml())
-        logging.info(
-            f'Saved hierarchy. Elements number: {len(self.hierarchy)}'
-        )
+        try:
+            logging.info(
+                f'Saved hierarchy. Elements number: {len(self.hierarchy)}'
+            )
+        except ValueError:
+            pass
 
     def drop(self):
         global _hierarchy

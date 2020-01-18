@@ -160,6 +160,9 @@ class TestXML(unittest.TestCase):
         self.assertEqual(a1.to_object(), a2.to_object())
         self.assertNotEqual(a1, b)
         self.assertNotEqual(a1, Enum.b)
+        self.assertEqual(Enum.a, 'a')
+        self.assertEqual('b', Enum.b)
+        self.assertNotEqual(Enum.a, 'b')
 
         self.assertEqual(a1.to_xml(), a2.to_xml())
 

@@ -32,6 +32,10 @@ class User(Base, UserMixin):
         self.password_hash = generate_password_hash(password)
 
     @property
+    def role_names(self):
+        return [role.name for role in self.roles]
+
+    @property
     def is_active(self):
         return True  # All users are active
 

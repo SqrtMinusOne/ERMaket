@@ -25,9 +25,12 @@ def login():
 def current():
     with DBConn.get_session() as sess:
         sess.add(current_user)
-        obj = current_user.__marshmallow__().dump(current_user)
-        obj['user_hierarchy'] = session.get('hierarchy')
-    return jsonify(obj)
+        user = current_user.__marshmallow__().dump(current_user)
+        return jsonify({
+            "user": user,
+            "hierarchy": session.get('hierarchy'),
+            "rights": session.get('rights')
+        })
 
 
 @auth.route("/logout", methods=['POST'])

@@ -3,6 +3,7 @@ from collections import namedtuple
 import pytest
 
 from api.system import Hierachy, HierachyConstructor
+from api.system.hierarchy import AccessRight
 
 DummyRole = namedtuple('DummyRole', ['name'])
 
@@ -29,6 +30,15 @@ def test_extract(algorithm):
     c2 = HierachyConstructor(algorithm.tables, 'er2', admin2)
     h1 = c1.construct()
 
+    elem = h1.values[0]
+    assert elem.accessRights.has(['admin1'], AccessRight.VIEW)
+    assert elem.accessRights.has(['admin1'], AccessRight.CHANGE)
+    assert elem.accessRights.has(['admin1'], AccessRight.DELETE)
+
+    assert not elem.accessRights.has(['admin2'], AccessRight.VIEW)
+    assert not elem.accessRights.has(['admin2'], AccessRight.CHANGE)
+    assert not elem.accessRights.has(['admin2'], AccessRight.DELETE)
+
     h = Hierachy.from_xml(h1.to_xml())
     h2 = c2.construct()
 
@@ -37,6 +47,10 @@ def test_extract(algorithm):
 
     h3 = h1.extract([admin1.name])
     assert h.pretty_xml() == h3.pretty_xml()
+
+    r1 = h1.extract_rights([admin1.name])
+    r2 = h3.extract_rights([admin1.name])
+    assert r1 == r2
 
     h1.drop_schema('er2')
     er2_section = [section

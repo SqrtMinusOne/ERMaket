@@ -3,6 +3,8 @@ import importlib
 import logging
 
 from marshmallow_sqlalchemy import ModelConversionError, ModelSchema
+# from sqlalchemy.inspection import inspect
+# from marshmallow_sqlalchemy.fields import Nested
 
 from api import Config
 from api.database import DBConn
@@ -19,7 +21,8 @@ class Models:
 
     related config.json parameters: Models
     """
-    def __init__(self):
+
+    def __init__(self, system_only=False):
         if DBConn.engine is None:
             DBConn()
         self.config = Config()
@@ -27,6 +30,7 @@ class Models:
         self.Base = None
         self._paths = {}
         self._import_base()
+        self._system_only = system_only
         self._import()
 
     def _import_base(self):
@@ -35,21 +39,30 @@ class Models:
         self.Base = getattr(module, 'Base')
 
     def _import(self):
-        loaded = self._import_files(glob.glob(
-            "{0}/{1}*.py".format(
-                self.config.Models['models_dir'],
-                self.config.Models['model_prefix']
+        loaded = 0
+        if not self._system_only:
+            loaded += self._import_files(
+                glob.glob(
+                    "{0}/{1}*.py".format(
+                        self.config.Models['models_dir'],
+                        self.config.Models['model_prefix']
+                    )
+                )
             )
-        ))
-        loaded += self._import_files(glob.glob(
-            "{0}/{1}*.py".format(
-                self.config.Models['models_dir'],
-                self.config.Models['system_prefix']
+        loaded += self._import_files(
+            glob.glob(
+                "{0}/{1}*.py".format(
+                    self.config.Models['models_dir'],
+                    self.config.Models['system_prefix']
+                )
             )
-        ))
+        )
         self._setup_marshmallows()
-        logging.info(f'Schemas loaded: {len(self.schemas)}')
-        logging.info(f'Models loaded: {loaded}')
+        if not self._system_only:
+            logging.info(f'Schemas loaded: {len(self.schemas)}')
+            logging.info(f'Models loaded: {loaded}')
+        else:
+            logging.info(f'Loaded system models: {loaded}')
 
     def _import_files(self, files):
         loaded = 0
@@ -74,6 +87,10 @@ class Models:
         for model in self.__iter__():
             self._setup_marshmallow(model)
 
+    def _marsh_name(self, class_):
+        schema_class_name = f"{class_.__name__}Schema"
+        return schema_class_name
+
     def _setup_marshmallow(self, class_):
         if class_.__name__.endswith("Schema"):
             raise ModelConversionError(
@@ -85,7 +102,13 @@ class Models:
             model = class_
             sqla_session = DBConn.scoped_session
 
-        schema_class_name = "%sSchema" % class_.__name__
+        # for rel in inspect(class_).relationships:
+        #     to_nest = rel.mapper.class_
+        #     only = [col.name for col in to_nest.__table__.columns]
+        #     nested = Nested(self._marsh_name(to_nest), many=True, only=only)
+        #     setattr(Meta, rel.class_attribute.key, nested)
+
+        schema_class_name = self._marsh_name(class_)
         schema_class = type(schema_class_name, (ModelSchema, ), {"Meta": Meta})
         setattr(class_, "__marshmallow__", schema_class)
 

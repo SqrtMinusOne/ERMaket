@@ -25,7 +25,10 @@ def test_models():
     assert len(models.schemas) == len(models2.schemas)
 
 
-@pytest.mark.usefixtures("models")
+@pytest.mark.usefixtures("models", "test_db")
 def test_marshmallow(models):
-    for model in iter(models):
-        assert hasattr(model, '__marshmallow__')
+    with DBConn.get_session() as db:
+        for model in iter(models):
+            item = db.query(model).first()
+            obj = model.__marshmallow__(session=db).dump(item)
+            assert obj is not None

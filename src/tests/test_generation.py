@@ -24,6 +24,7 @@ def test_integration(config, sample_xml, models):
     assert len(list(models)) - len(models['system']) == len(tables)
 
     manager = HierachyManager()
+    manager.drop()
     manager.hierarchy.merge(
         HierachyConstructor(tables, 'er1').construct()
     )

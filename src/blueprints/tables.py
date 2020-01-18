@@ -1,11 +1,15 @@
 import simplejson as json
 from flask import Blueprint, abort, jsonify, request
+from flask_login import login_required, current_user
 
 from api.database import DBConn
 from api.models import Models, NamesConverter
 from api.queries import QueryBuilder
+from api.system import UserManager
+from api.system.hierarchy import AccessRight
 
 models = Models()
+user_mgr = UserManager()
 
 __all__ = ['tables']
 tables = Blueprint('tables', 'tables', url_prefix='/tables')
@@ -18,7 +22,7 @@ def get_filter_params(args, pagination=True):
     )
 
     if pagination:
-        kwargs['page'] = request.args.get('page', default=1, type=int)
+        kwargs['page'] = request.args.get('page', default=0, type=int)
         kwargs['per_page'] = request.args.get('per_page', default=10, type=int)
         kwargs['order_by'] = json.loads(
             request.args.get('order_by', default='[]', type=str)
@@ -26,27 +30,34 @@ def get_filter_params(args, pagination=True):
     return kwargs
 
 
-@tables.route('/table/<schema>/<table>')
-def get_table(schema, table):
-    try:
-        model = models[schema][NamesConverter.class_name(schema, table)]
-    except KeyError:
+def get_model(db, schema, table, access_type):
+    entry = user_mgr.hierarchy.get_table_entry(schema, table)
+    if entry is None:
         abort(404)
-    kwargs = get_filter_params(request.args)
-    with DBConn.get_session() as session:
-        builder = QueryBuilder(session)
+    db.add(current_user)
+    if not entry.accessRights.has(current_user.role_names, access_type):
+        abort(403)
+    model = models[schema][NamesConverter.class_name(schema, table)]
+    return model
+
+
+@tables.route('/table/<schema>/<table>')
+@login_required
+def get_table(schema, table):
+    with DBConn.get_session() as db:
+        model = get_model(db, schema, table, AccessRight.VIEW)
+        kwargs = get_filter_params(request.args)
+        builder = QueryBuilder(db)
         result = builder.fetch_data(model, **kwargs)
     return jsonify(result)
 
 
 @tables.route('/entry/<schema>/<table>')
+@login_required
 def get_entry(schema, table):
-    try:
-        model = models[schema][NamesConverter.class_name(schema, table)]
-    except KeyError:
-        abort(404)
-    kwargs = get_filter_params(request.args, pagination=False)
-    with DBConn.get_session() as session:
-        builder = QueryBuilder(session)
+    with DBConn.get_session() as db:
+        model = get_model(db, schema, table, AccessRight.VIEW)
+        kwargs = get_filter_params(request.args, pagination=False)
+        builder = QueryBuilder(db)
         result = builder.fetch_one(model, **kwargs)
     return jsonify(result)

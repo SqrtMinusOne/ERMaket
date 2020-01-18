@@ -63,7 +63,7 @@ def randomize(autouse=True):
 
 
 @pytest.fixture(scope='module')
-def test_db():
+def empty_db():
     config = Config(reload=True)
 
     with open(SAMPLE_ERD, 'r') as f:
@@ -83,23 +83,29 @@ def test_db():
     gen.generate_folder()
     gen.generate_system_models()
 
-    manager = UserManager()
     models = Models()
 
     seeder = Seeder(models)
     seeder.drop_models()
     seeder.create_models()
+    return alg, models
 
+
+@pytest.fixture(scope='module')
+def test_db(empty_db):
+    alg, models = empty_db
+    manager = UserManager()
     hierarchy_manager = HierachyManager()
+    hierarchy_manager.drop()
 
     with DBConn.get_session() as db:
-        user = manager.add_user('admin', 'password')
-        db.add(user)
+        admin_user = manager.add_user('admin', 'password', db)
+        normal_user = manager.add_user('user', 'password', db)
         admin_role = models['system']['Role'](
             name='admin', can_reset_password=True, has_sql_access=True
         )
         db.add(admin_role)
-        user.roles = [admin_role]
+        admin_user.roles = [admin_role]
         db.commit()
 
         hierarchy_manager.h.merge(
@@ -110,13 +116,33 @@ def test_db():
     faker = Faker(models)
     faker.fake_all(5)
 
-    TestData = namedtuple('TestData', ['user', 'login', 'password'])
-    return TestData(user, 'admin', 'password')
+    model = next(iter(models))
+    model_name = model.__name__
+    field_name = next(iter(model.__table__.columns)).name
+
+    User = namedtuple('User', ['user', 'login', 'password'])
+    admin = User(admin_user, 'admin', 'password')
+    normal = User(normal_user, 'user', 'password')
+
+    TestData = namedtuple(
+        'TestData', [
+            'admin_user', 'normal_user', 'model', 'model_name', 'field_name',
+            'schema'
+        ]
+    )
+    return TestData(
+        admin_user=admin,
+        normal_user=normal,
+        model=model,
+        model_name=model_name,
+        field_name=field_name,
+        schema='er1'
+    )
 
 
 @pytest.fixture(scope='module')
 def client(test_db, clear_test_logs):
-    config = Config(reload=True)
+    config = Config()
     config.configs['Logging'] = always_merger.merge(
         config.Logging, config.TestingLogging
     )

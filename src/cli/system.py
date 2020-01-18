@@ -15,6 +15,7 @@ def system():
 @click.option(
     "--password", prompt=True, hide_input=True, confirmation_prompt=True
 )
+@click.option("--role", multiple=True)
 def useradd(login, password):
     UserManager().add_user(login, password)
 

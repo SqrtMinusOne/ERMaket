@@ -1,6 +1,6 @@
 from magic_repr import make_repr
 
-from api.erd.er_entities import XMLObject, ConvertableXML
+from api.erd.er_entities import ConvertableXML, XMLObject
 
 from .xmlenum import xmlenum
 from .xmllist import xmllist
@@ -70,6 +70,9 @@ class AccessRights(_AccessRights):
             if roleAccess.role_name in role_names:
                 [rights.append(type_) for type_ in roleAccess.access_types]
         return rights
+
+    def has(self, role_names, access_type):
+        return any(type_ == access_type for type_ in self.get(role_names))
 
     @classmethod
     def from_xml(cls, tag):

@@ -1,50 +1,35 @@
-import unittest
+import pytest
 
-from api.config import Config
 from api.database import DBConn
-from api.models import Faker, Models, Seeder
 from api.queries import QueryBuilder
 
 
-class TestQueries(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        Config(reload=True)
-        DBConn()
-        models = Models()
-        cls.MODEL = next(iter(models))
-        cls.MODEL_NAME = cls.MODEL.__name__
-        cls.FIELD_NAME = next(iter(cls.MODEL.__table__.columns)).name
+def _get_sample(db, test_db):
+    q = db.query(test_db.model).first()
+    obj = q.__marshmallow__().dump(q)
 
-        faker = Faker(models, verbose=True)
-        seeder = Seeder(models)
-        seeder.drop_models()
-        seeder.create_models()
-        faker.fake_all(10)
+    criterion = {
+        "field_name": f"{test_db.model_name}.{test_db.field_name}",
+        "operator": "==",
+        "field_value": obj[test_db.field_name]
+    }
+    return obj, criterion
 
-    def _get_sample(self, db):
-        q = db.query(self.MODEL).first()
-        obj = q.__marshmallow__().dump(q)
 
-        criterion = {
-            "field_name": f"{self.MODEL_NAME}.{self.FIELD_NAME}",
-            "operator": "==",
-            "field_value": obj[self.FIELD_NAME]
-        }
-        return obj, criterion
+@pytest.mark.usefixtures('test_db')
+def test_fetch_many(test_db):
+    with DBConn.get_session() as db:
+        obj, criterion = _get_sample(db, test_db)
 
-    def test_fetch_many(self):
-        with DBConn.get_session() as db:
-            obj, criterion = self._get_sample(db)
+        builder = QueryBuilder(db)
+        result = builder.fetch_data(test_db.model, filter_by=[criterion])
+        assert len(result) > 0
 
-            builder = QueryBuilder(db)
-            result = builder.fetch_data(self.MODEL, filter_by=[criterion])
-            self.assertGreater(len(result), 0)
 
-    def test_fetch_one(self):
-        with DBConn.get_session() as db:
-            obj, criterion = self._get_sample(db)
-
-            builder = QueryBuilder(db)
-            found_obj = builder.fetch_one(self.MODEL, filter_by=[criterion])
-            self.assertDictEqual(obj, found_obj)
+@pytest.mark.usefixtures('test_db')
+def test_fetch_one(test_db):
+    with DBConn.get_session() as db:
+        obj, criterion = _get_sample(db, test_db)
+        builder = QueryBuilder(db)
+        found_obj = builder.fetch_one(test_db.model, filter_by=[criterion])
+        assert obj == found_obj
