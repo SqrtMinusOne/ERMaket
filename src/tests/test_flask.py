@@ -34,6 +34,16 @@ def test_login(test_db, client):
     assert not client.post('/auth/logout').json['ok']
 
 
+def print_roles(test_db):
+    from api.database import DBConn
+    normal, admin = test_db.normal_user.user, test_db.admin_user.user
+    with DBConn.get_session() as db:
+        db.add(normal)
+        db.add(admin)
+        print(f'Normal roles: {normal.role_names}')
+        print(f'Admin roles: {admin.role_names}')
+
+
 @pytest.mark.usefixtures("client", "test_db")
 def test_get(client, test_db):
     schema = test_db.schema

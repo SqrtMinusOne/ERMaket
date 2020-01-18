@@ -18,6 +18,11 @@ __all__ = ['create_app']
 def create_app():
     app = Flask(__name__)
     config = Config()
+    Path(
+        os.path.dirname(
+            config.Logging['handlers']['file_handler']['filename']
+        )
+    ).mkdir(parents=True, exist_ok=True)
     logging.config.dictConfig(config.Logging)
 
     login_manager = LoginManager()
@@ -63,11 +68,7 @@ def create_app():
     if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == "true":
         logging.info('Starting app')
 
-        Path(
-            os.path.dirname(
-                config.Logging['handlers']['file_handler']['filename']
-            )
-        ).mkdir(parents=True, exist_ok=True)
+
         app.config.update(config.Flask)
         app.config['SESSION_FILE_DIR'] = mkdtemp()
 
