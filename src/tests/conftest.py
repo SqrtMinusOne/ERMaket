@@ -12,7 +12,7 @@ from api.database import DBConn
 from api.erd import ERD, Algorithm
 from api.generation import Generator
 from api.models import Faker, Models, Seeder
-from api.system import HierachyConstructor, UserManager, HierachyManager
+from api.system import HierachyConstructor, HierachyManager, UserManager
 from app import create_app
 
 SAMPLE_ERD = '../xml/example.xml'

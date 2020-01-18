@@ -1,3 +1,4 @@
+from pathlib import Path
 from tempfile import mkdtemp
 import logging.config
 import os
@@ -40,6 +41,11 @@ def create_app():
 
     try:
         config = Config()
+        Path(
+            os.path.dirname(
+                config.Logging['handlers']['file_handler']['filename']
+            )
+        ).mkdir(parents=True, exist_ok=True)
         logging.config.dictConfig(config.Logging)
         app.config.update(config.Flask)
         app.config['SESSION_FILE_DIR'] = mkdtemp()
