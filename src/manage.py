@@ -3,7 +3,7 @@ import logging
 import click
 
 from api.config import Config
-from cli import db, system
+from cli import db, system, hierarchy
 
 
 @click.group()
@@ -22,6 +22,7 @@ def cli(log):
 
 
 cli.add_command(db)
+cli.add_command(hierarchy)
 cli.add_command(system)
 if __name__ == "__main__":
     cli()

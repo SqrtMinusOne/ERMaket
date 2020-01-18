@@ -1,3 +1,4 @@
+import logging
 import os
 
 from api.config import Config
@@ -23,9 +24,21 @@ class HierachyManager:
                 _hierarchy = Hierachy()
         self.hierarchy = _hierarchy
 
+        logging.info(
+            f'Loaded hierarchy. Elements number: {len(self.hierarchy)}'
+        )
+
     def save(self):
         with open(self._config.XML['hierarchyPath'], 'w') as f:
             f.write(self.hierarchy.pretty_xml())
+        logging.info(
+            f'Saved hierarchy. Elements number: {len(self.hierarchy)}'
+        )
+
+    def drop(self):
+        global _hierarchy
+        _hierarchy = Hierachy()
+        self.hierarchy = _hierarchy
 
     def __del__(self):
         self.save()
