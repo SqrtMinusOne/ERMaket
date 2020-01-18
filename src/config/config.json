@@ -41,6 +41,11 @@
     "Flask": {
         "SECRET_KEY": "afa664c8cfac924818df7ee8cf8e1d94"
     },
+    "TestingFlask": {
+        "TESTING": true,
+        "BCRYPT_LOG_ROUNDS": 4,
+        "WTF_CSRF_ENABLED": false
+    },
     "Logging": {
         "version": 1,
         "disable_existing_loggers": true,
@@ -74,7 +79,7 @@
             "file_handler": {
                 "level": "INFO",
                 "class": "logging.handlers.RotatingFileHandler",
-                "formatter": "verbose",
+                "formatter": "single-line",
                 "filename": "../logs/app.log",
                 "maxBytes": 1048576,
                 "backupCount": 5,
@@ -84,7 +89,7 @@
             "error_file_handler": {
                 "level": "ERROR",
                 "class": "logging.handlers.RotatingFileHandler",
-                "formatter": "verbose",
+                "formatter": "multiline",
                 "filename": "../logs/error.log",
                 "maxBytes": 1048576,
                 "backupCount": 2,
@@ -101,6 +106,16 @@
         "root": {
             "handlers": ["console", "file_handler", "error_file_handler"],
             "level": "DEBUG"
+        }
+    },
+    "TestingLogging": {
+        "handlers": {
+            "file_handler": {
+                "filename": "../logs/test_app.log"
+            },
+            "error_file_handler": {
+                "filename": "../logs/test_error.log"
+            }
         }
     }
 }

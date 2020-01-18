@@ -1,3 +1,4 @@
+import atexit
 import logging
 import os
 
@@ -13,6 +14,7 @@ class HierachyManager:
     def __init__(self, reload=False):
         self._config = Config()
         self.read(reload)
+        atexit.register(lambda manager: manager.save(), self)
 
     def read(self, reload):
         global _hierarchy
@@ -20,13 +22,13 @@ class HierachyManager:
             if os.path.exists(self._config.XML['hierarchyPath']):
                 with open(self._config.XML['hierarchyPath']) as f:
                     _hierarchy = Hierachy.from_xml(f.read())
+                logging.info(
+                    f'Read hierarchy. Elements number: {len(_hierarchy)}'
+                )
             else:
                 _hierarchy = Hierachy()
+                logging.info(f'Created new hierarchy')
         self.hierarchy = _hierarchy
-
-        logging.info(
-            f'Loaded hierarchy. Elements number: {len(self.hierarchy)}'
-        )
 
     def save(self):
         with open(self._config.XML['hierarchyPath'], 'w') as f:
@@ -39,6 +41,3 @@ class HierachyManager:
         global _hierarchy
         _hierarchy = Hierachy()
         self.hierarchy = _hierarchy
-
-    def __del__(self):
-        self.save()

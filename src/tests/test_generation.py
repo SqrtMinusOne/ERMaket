@@ -11,7 +11,6 @@ from .dummies import binary_erd
 
 @pytest.mark.usefixtures("config", "sample_xml", "models", "temp_paths")
 def test_integration(config, sample_xml, models):
-    config.Models['models_dir'] = '_temp'
     erd = ERD(sample_xml)
     alg = Algorithm(erd)
     alg.run_algorithm()

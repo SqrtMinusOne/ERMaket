@@ -1,6 +1,7 @@
 from api.database import DBConn
-# from api.models import Models
 from models import User
+
+from .hierarchy_manager import HierachyManager
 
 __all__ = ['UserManager']
 
@@ -8,6 +9,7 @@ __all__ = ['UserManager']
 class UserManager:
     def __init__(self):
         # self.models = Models()
+        self._hierarchy_mgr = HierachyManager()
         DBConn()
 
     def check_user(self, login, password, db=None):
@@ -27,4 +29,6 @@ class UserManager:
             db.commit()
 
     def login_user(self, user):
-        pass
+        user.user_hierarchy = self._hierarchy_mgr.hierarchy.extract(
+            user.roles
+        ).to_object()

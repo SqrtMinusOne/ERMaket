@@ -31,3 +31,4 @@ dependencies:
     - python-dotenv
     - flask-login
     - prettierfier
+    - deepmerge
