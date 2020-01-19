@@ -34,6 +34,7 @@
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
+                <isPk>True</isPk>
             </column>
             <linkedColumn>
                 <rowName>is_assigned_to</rowName>
@@ -41,6 +42,9 @@
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <linkTableName>task</linkTableName>
+                <linkSchema>er1</linkSchema>
                 <linkType>simple</linkType>
             </linkedColumn>
             <linkedColumn>
@@ -49,6 +53,9 @@
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <linkTableName>comment</linkTableName>
+                <linkSchema>er1</linkSchema>
                 <linkType>simple</linkType>
             </linkedColumn>
         </columns>
@@ -66,12 +73,16 @@
                     <text>is_assigned_to</text>
                     <isEditable>True</isEditable>
                     <linkType>simple</linkType>
+                    <linkSchema>er1</linkSchema>
+                    <linkTableName>task</linkTableName>
                 </linkedField>
                 <linkedField>
                     <tableField>is_authored_by</tableField>
                     <text>is_authored_by</text>
                     <isEditable>True</isEditable>
                     <linkType>simple</linkType>
+                    <linkSchema>er1</linkSchema>
+                    <linkTableName>comment</linkTableName>
                 </linkedField>
             </fields>
         </formDescription>
@@ -89,6 +100,7 @@
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
+                <isPk>True</isPk>
             </column>
             <column>
                 <rowName>name</rowName>
@@ -96,6 +108,7 @@
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
+                <isPk>False</isPk>
             </column>
             <column>
                 <rowName>due_date</rowName>
@@ -103,6 +116,7 @@
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
+                <isPk>False</isPk>
             </column>
             <column>
                 <rowName>description</rowName>
@@ -110,6 +124,7 @@
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
+                <isPk>False</isPk>
             </column>
             <linkedColumn>
                 <rowName>is_assigned_to</rowName>
@@ -117,6 +132,9 @@
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <linkTableName>user</linkTableName>
+                <linkSchema>er1</linkSchema>
                 <linkType>simple</linkType>
             </linkedColumn>
             <linkedColumn>
@@ -125,6 +143,9 @@
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <linkTableName>list</linkTableName>
+                <linkSchema>er1</linkSchema>
                 <linkType>simple</linkType>
             </linkedColumn>
             <linkedColumn>
@@ -133,6 +154,9 @@
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <linkTableName>subtask</linkTableName>
+                <linkSchema>er1</linkSchema>
                 <linkType>simple</linkType>
             </linkedColumn>
             <linkedColumn>
@@ -141,6 +165,9 @@
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <linkTableName>comment</linkTableName>
+                <linkSchema>er1</linkSchema>
                 <linkType>simple</linkType>
             </linkedColumn>
             <linkedColumn>
@@ -149,6 +176,9 @@
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <linkTableName>attachment</linkTableName>
+                <linkSchema>er1</linkSchema>
                 <linkType>simple</linkType>
             </linkedColumn>
         </columns>
@@ -181,30 +211,40 @@
                     <text>is_assigned_to</text>
                     <isEditable>True</isEditable>
                     <linkType>simple</linkType>
+                    <linkSchema>er1</linkSchema>
+                    <linkTableName>user</linkTableName>
                 </linkedField>
                 <linkedField>
                     <tableField>belongs_to</tableField>
                     <text>belongs_to</text>
                     <isEditable>True</isEditable>
                     <linkType>simple</linkType>
+                    <linkSchema>er1</linkSchema>
+                    <linkTableName>list</linkTableName>
                 </linkedField>
                 <linkedField>
                     <tableField>contains</tableField>
                     <text>contains</text>
                     <isEditable>True</isEditable>
                     <linkType>simple</linkType>
+                    <linkSchema>er1</linkSchema>
+                    <linkTableName>subtask</linkTableName>
                 </linkedField>
                 <linkedField>
                     <tableField>is_written_to</tableField>
                     <text>is_written_to</text>
                     <isEditable>True</isEditable>
                     <linkType>simple</linkType>
+                    <linkSchema>er1</linkSchema>
+                    <linkTableName>comment</linkTableName>
                 </linkedField>
                 <linkedField>
                     <tableField>is_attached</tableField>
                     <text>is_attached</text>
                     <isEditable>True</isEditable>
                     <linkType>simple</linkType>
+                    <linkSchema>er1</linkSchema>
+                    <linkTableName>attachment</linkTableName>
                 </linkedField>
             </fields>
         </formDescription>
@@ -222,6 +262,7 @@
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
+                <isPk>True</isPk>
             </column>
             <linkedColumn>
                 <rowName>contains</rowName>
@@ -229,6 +270,9 @@
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <linkTableName>task</linkTableName>
+                <linkSchema>er1</linkSchema>
                 <linkType>simple</linkType>
             </linkedColumn>
             <linkedColumn>
@@ -237,6 +281,9 @@
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <linkTableName>item</linkTableName>
+                <linkSchema>er1</linkSchema>
                 <linkType>simple</linkType>
             </linkedColumn>
         </columns>
@@ -254,12 +301,16 @@
                     <text>contains</text>
                     <isEditable>True</isEditable>
                     <linkType>simple</linkType>
+                    <linkSchema>er1</linkSchema>
+                    <linkTableName>task</linkTableName>
                 </linkedField>
                 <linkedField>
                     <tableField>contains</tableField>
                     <text>contains</text>
                     <isEditable>True</isEditable>
                     <linkType>simple</linkType>
+                    <linkSchema>er1</linkSchema>
+                    <linkTableName>item</linkTableName>
                 </linkedField>
             </fields>
         </formDescription>
@@ -277,6 +328,7 @@
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
+                <isPk>True</isPk>
             </column>
             <column>
                 <rowName>text</rowName>
@@ -284,6 +336,7 @@
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
+                <isPk>False</isPk>
             </column>
             <linkedColumn>
                 <rowName>is_authored_by</rowName>
@@ -291,6 +344,9 @@
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <linkTableName>user</linkTableName>
+                <linkSchema>er1</linkSchema>
                 <linkType>simple</linkType>
             </linkedColumn>
             <linkedColumn>
@@ -299,6 +355,9 @@
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <linkTableName>task</linkTableName>
+                <linkSchema>er1</linkSchema>
                 <linkType>simple</linkType>
             </linkedColumn>
         </columns>
@@ -321,12 +380,16 @@
                     <text>is_authored_by</text>
                     <isEditable>True</isEditable>
                     <linkType>simple</linkType>
+                    <linkSchema>er1</linkSchema>
+                    <linkTableName>user</linkTableName>
                 </linkedField>
                 <linkedField>
                     <tableField>is_written_to</tableField>
                     <text>is_written_to</text>
                     <isEditable>True</isEditable>
                     <linkType>simple</linkType>
+                    <linkSchema>er1</linkSchema>
+                    <linkTableName>task</linkTableName>
                 </linkedField>
             </fields>
         </formDescription>
@@ -344,6 +407,7 @@
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
+                <isPk>True</isPk>
             </column>
             <column>
                 <rowName>name</rowName>
@@ -351,6 +415,7 @@
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
+                <isPk>False</isPk>
             </column>
             <linkedColumn>
                 <rowName>belongs_to</rowName>
@@ -358,6 +423,9 @@
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <linkTableName>task</linkTableName>
+                <linkSchema>er1</linkSchema>
                 <linkType>simple</linkType>
             </linkedColumn>
         </columns>
@@ -380,6 +448,8 @@
                     <text>belongs_to</text>
                     <isEditable>True</isEditable>
                     <linkType>simple</linkType>
+                    <linkSchema>er1</linkSchema>
+                    <linkTableName>task</linkTableName>
                 </linkedField>
             </fields>
         </formDescription>
@@ -397,6 +467,7 @@
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
+                <isPk>True</isPk>
             </column>
             <column>
                 <rowName>contents</rowName>
@@ -404,6 +475,7 @@
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
+                <isPk>False</isPk>
             </column>
             <linkedColumn>
                 <rowName>is_attached</rowName>
@@ -411,6 +483,9 @@
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <linkTableName>task</linkTableName>
+                <linkSchema>er1</linkSchema>
                 <linkType>simple</linkType>
             </linkedColumn>
         </columns>
@@ -433,6 +508,8 @@
                     <text>is_attached</text>
                     <isEditable>True</isEditable>
                     <linkType>simple</linkType>
+                    <linkSchema>er1</linkSchema>
+                    <linkTableName>task</linkTableName>
                 </linkedField>
             </fields>
         </formDescription>
@@ -450,6 +527,7 @@
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
+                <isPk>True</isPk>
             </column>
             <column>
                 <rowName>name</rowName>
@@ -457,6 +535,7 @@
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
+                <isPk>False</isPk>
             </column>
             <column>
                 <rowName>status</rowName>
@@ -464,6 +543,7 @@
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
+                <isPk>False</isPk>
             </column>
             <linkedColumn>
                 <rowName>contains</rowName>
@@ -471,6 +551,9 @@
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <linkTableName>subtask</linkTableName>
+                <linkSchema>er1</linkSchema>
                 <linkType>simple</linkType>
             </linkedColumn>
         </columns>
@@ -498,6 +581,8 @@
                     <text>contains</text>
                     <isEditable>True</isEditable>
                     <linkType>simple</linkType>
+                    <linkSchema>er1</linkSchema>
+                    <linkTableName>subtask</linkTableName>
                 </linkedField>
             </fields>
         </formDescription>

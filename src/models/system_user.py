@@ -21,10 +21,6 @@ class User(Base, UserMixin):
         'Role', secondary='system.user_has_roles', backref='users'
     )
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.user_hierarchy = None
-
     def change_password(self, old, new) -> bool:
         if self.check_password(old):
             self.set_password(new)
@@ -36,6 +32,10 @@ class User(Base, UserMixin):
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
+
+    @property
+    def role_names(self):
+        return [role.name for role in self.roles]
 
     @property
     def is_active(self):

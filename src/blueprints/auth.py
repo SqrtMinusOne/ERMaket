@@ -27,6 +27,7 @@ def current():
         sess.add(current_user)
         user = current_user.__marshmallow__().dump(current_user)
         return jsonify({
+            "ok": True,
             "user": user,
             "hierarchy": session.get('hierarchy'),
             "rights": session.get('rights')

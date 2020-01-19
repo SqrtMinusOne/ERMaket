@@ -1,6 +1,6 @@
 import click
 
-from api.system import SystemManager, UserManager
+from api.system import UserManager
 
 __all__ = ['system']
 
@@ -16,10 +16,5 @@ def system():
     "--password", prompt=True, hide_input=True, confirmation_prompt=True
 )
 @click.option("--role", multiple=True)
-def useradd(login, password):
-    UserManager().add_user(login, password)
-
-
-@system.command(help='Create system tables (drop via db drop)')
-def create():
-    SystemManager().create_system_tables()
+def useradd(login, password, role):
+    UserManager().add_user(login, password, role_names=role)
