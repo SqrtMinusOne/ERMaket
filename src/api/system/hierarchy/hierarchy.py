@@ -116,9 +116,12 @@ class Hierachy(_Hierarchy):
 
     def to_object(self, *args, **kwargs):
         res = []
-        for elem in self._root:
+        for elem in self.values:
             res.append(elem.to_object())
-        return {'hierarchy': res}
+        return {
+            'hierarchy': res,
+            'root': [elem.id for elem in self._root]
+        }
 
     def extract(self, roles):
         h = Hierachy()

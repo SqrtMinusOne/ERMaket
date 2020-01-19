@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request, session
-from flask_login import current_user, login_required, login_user, logout_user
 from flask_cors import CORS
+from flask_login import current_user, login_required, login_user, logout_user
 
 from api.database import DBConn
 from api.system import UserManager
@@ -22,7 +22,12 @@ def login():
             manager.login_user(user, session)
             login_user(user)
             return jsonify({"ok": True})
-    return jsonify({"ok": False}), 401
+    return jsonify(
+        {
+            "ok": False,
+            "message": "Incorrect username or password"
+        }
+    ), 401
 
 
 @auth.route('/current')
@@ -31,12 +36,14 @@ def current():
     with DBConn.get_session() as sess:
         sess.add(current_user)
         user = current_user.__marshmallow__().dump(current_user)
-        return jsonify({
-            "ok": True,
-            "user": user,
-            "hierarchy": session.get('hierarchy'),
-            "rights": session.get('rights')
-        })
+        return jsonify(
+            {
+                "ok": True,
+                "user": user,
+                "hierarchy": session.get('hierarchy'),
+                "rights": session.get('rights')
+            }
+        )
 
 
 @auth.route("/logout", methods=['POST'])

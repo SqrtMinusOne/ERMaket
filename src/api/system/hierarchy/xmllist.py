@@ -61,7 +61,7 @@ def make_from_xml(children_class):
 
 def to_object(self, add_name=False):
     return [
-        value.to_object(add_name=False)
+        value.to_object(add_name=True)
         if isinstance(value, ConvertableXML) else value
         for value in self.values
     ]

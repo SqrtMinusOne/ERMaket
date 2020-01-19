@@ -31,9 +31,9 @@ class Section(_Section):
         return self.children.values
 
     def map_ids(self, mapper):
-        self.children = Children([
-            ChildId(mapper(child.value)) for child in self.children
-        ])
+        self.children = Children(
+            [ChildId(mapper(child.value)) for child in self.children]
+        )
 
     def resolve_rights(self):
         for child in self._children:
@@ -42,8 +42,15 @@ class Section(_Section):
             if isinstance(child, Section):
                 child.resolve_rights()
 
-    def to_object(self, add_name=False):
+    def to_object(self, add_name=True, add_children=False):
         obj = super().to_object(add_name)
-        if self._children:
-            obj['children'] = [child.to_object() for child in self._children]
+        if add_children:
+            if self._children:
+                obj['children'] = [
+                    child.to_object() for child in self._children
+                ]
+        else:
+            obj['children'] = [
+                childId.value for childId in self.children
+            ]
         return obj
