@@ -1,6 +1,7 @@
 import simplejson as json
 from flask import Blueprint, abort, jsonify, request
 from flask_login import login_required, current_user
+from flask_cors import CORS
 
 from api.database import DBConn
 from api.models import Models, NamesConverter
@@ -13,6 +14,7 @@ user_mgr = UserManager()
 
 __all__ = ['tables']
 tables = Blueprint('tables', 'tables', url_prefix='/tables')
+CORS(tables)
 
 
 def get_filter_params(args, pagination=True):

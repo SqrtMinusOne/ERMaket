@@ -4,19 +4,21 @@ from pathlib import Path
 from tempfile import mkdtemp
 
 from flask import Flask, abort, jsonify
-from flask_debugtoolbar import DebugToolbarExtension
+from flask_cors import CORS
 from flask_login import LoginManager
 from flask_session import Session
 
 from api import Config
-from api.models import Models
 from api.database import DBConn
+from api.models import Models
 
 __all__ = ['create_app']
 
 
 def create_app():
     app = Flask(__name__)
+    # TODO Remove for production!
+    CORS(app, resources={r'/*': {'origins': '*'}}, supports_credentials=True)
     config = Config()
     Path(
         os.path.dirname(
@@ -68,12 +70,9 @@ def create_app():
     if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == "true":
         logging.info('Starting app')
 
-
         app.config.update(config.Flask)
         app.config['SESSION_FILE_DIR'] = mkdtemp()
 
-        if os.environ.get('FLASK_ENV') == 'development':
-            DebugToolbarExtension(app)
         login_manager.init_app(app)
         sess.init_app(app)
 

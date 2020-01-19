@@ -33,3 +33,4 @@ dependencies:
     - prettierfier
     - deepmerge
     - flask-session
+    - flask_cors
