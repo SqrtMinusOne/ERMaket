@@ -1,12 +1,19 @@
 class ORMRelationship:
     def __init__(
-        self, table, ref_table, name, fk_col=None, secondary_table=None
+        self,
+        table,
+        ref_table,
+        name,
+        fk_col=None,
+        secondary_table=None,
+        is_multiple=True
     ):
         self.table = table
         self.ref_table = ref_table
         self.name = name
         self.fk_col = fk_col
         self.secondary_table = secondary_table
+        self.is_multiple = is_multiple
 
     def __repr__(self):
         ret = f'<ORMRelationship table.name={self.table.name}'

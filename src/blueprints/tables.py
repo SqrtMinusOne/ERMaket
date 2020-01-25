@@ -14,7 +14,7 @@ user_mgr = UserManager()
 
 __all__ = ['tables']
 tables = Blueprint('tables', 'tables', url_prefix='/tables')
-CORS(tables)
+# CORS(tables, su)
 
 
 def get_filter_params(args, pagination=True):
@@ -50,7 +50,11 @@ def get_table(schema, table):
         model = get_model(db, schema, table, AccessRight.VIEW)
         kwargs = get_filter_params(request.args)
         builder = QueryBuilder(db)
-        result = builder.fetch_data(model, **kwargs)
+        data = builder.fetch_data(model, **kwargs)
+        result = {
+            "data": data,
+            "total": builder.count_data(model)
+        }
     return jsonify(result)
 
 

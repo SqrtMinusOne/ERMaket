@@ -1,4 +1,5 @@
 from sqlalchemy_json_querybuilder.querybuilder.search import Search
+from sqlalchemy import func, select
 
 
 class QueryBuilder:
@@ -16,6 +17,10 @@ class QueryBuilder:
         result = self._session.execute(q.statement)
         serialized = [dict(row) for row in result]
         return serialized
+
+    def count_data(self, model):
+        s = select([func.count()]).select_from(model.__table__)
+        return self._session.execute(s).scalar()
 
     def fetch_one(self, model, **kwargs):
         q = self._build_query(model, offset=0, limit=1, **kwargs)

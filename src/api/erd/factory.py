@@ -62,12 +62,16 @@ class Factory:
                 table=table,
                 ref_table=fk.table,
                 name=fk.relation_name,
-                fk_col=fk_col
+                fk_col=fk_col,
+                is_multiple=False
             )
         )
         fk.table.add_rel(
             ORMRelationship(
-                table=fk.table, ref_table=table, name=fk.relation_name
+                table=fk.table,
+                ref_table=table,
+                name=fk.relation_name,
+                is_multiple=fk.column.unique
             )
         )
 
@@ -79,21 +83,26 @@ class Factory:
             name = relation.name
         name = NamesConverter.table_name(name)
         table = Table(name=name, columns=[])
+        multiplicity = [side.is_multiple for side in relation.sides]
         [
             table.add_fk(
                 Factory.make_fk(
-                    linked, relation_name=relation.name, add_rel=False,
+                    linked,
+                    relation_name=relation.name,
+                    add_rel=False,
                     unique=False
                 )
             ) for linked in tables
         ]
+        # TODO joint unique index
         [
             table1.add_rel(
                 ORMRelationship(
                     table=table1,
                     ref_table=table2,
                     name=relation.name,
-                    secondary_table=table
+                    secondary_table=table,
+                    is_multiple=multiplicity[tables.index(table2)]
                 )
             ) for table1, table2 in permutations(tables, 2)
         ]

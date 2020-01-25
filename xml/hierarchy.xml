@@ -35,6 +35,7 @@
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>True</isPk>
+                <isRequired>True</isRequired>
             </column>
             <linkedColumn>
                 <rowName>is_assigned_to</rowName>
@@ -43,9 +44,11 @@
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
+                <isRequired>False</isRequired>
                 <linkTableName>task</linkTableName>
                 <linkSchema>er1</linkSchema>
-                <linkType>simple</linkType>
+                <linkType>linked</linkType>
+                <isMultiple>True</isMultiple>
             </linkedColumn>
             <linkedColumn>
                 <rowName>is_authored_by</rowName>
@@ -54,9 +57,11 @@
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
+                <isRequired>False</isRequired>
                 <linkTableName>comment</linkTableName>
                 <linkSchema>er1</linkSchema>
-                <linkType>simple</linkType>
+                <linkType>linked</linkType>
+                <isMultiple>True</isMultiple>
             </linkedColumn>
         </columns>
         <formDescription>
@@ -72,7 +77,7 @@
                     <tableField>is_assigned_to</tableField>
                     <text>is_assigned_to</text>
                     <isEditable>True</isEditable>
-                    <linkType>simple</linkType>
+                    <linkType>linkedForm</linkType>
                     <linkSchema>er1</linkSchema>
                     <linkTableName>task</linkTableName>
                 </linkedField>
@@ -80,12 +85,13 @@
                     <tableField>is_authored_by</tableField>
                     <text>is_authored_by</text>
                     <isEditable>True</isEditable>
-                    <linkType>simple</linkType>
+                    <linkType>linkedForm</linkType>
                     <linkSchema>er1</linkSchema>
                     <linkTableName>comment</linkTableName>
                 </linkedField>
             </fields>
         </formDescription>
+        <pagination>True</pagination>
     </tableEntry>
     <tableEntry id="2">
         <accessRights inherit="True"/>
@@ -101,6 +107,7 @@
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>True</isPk>
+                <isRequired>True</isRequired>
             </column>
             <column>
                 <rowName>name</rowName>
@@ -109,6 +116,7 @@
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
+                <isRequired>True</isRequired>
             </column>
             <column>
                 <rowName>due_date</rowName>
@@ -117,6 +125,7 @@
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
+                <isRequired>True</isRequired>
             </column>
             <column>
                 <rowName>description</rowName>
@@ -125,6 +134,7 @@
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
+                <isRequired>True</isRequired>
             </column>
             <linkedColumn>
                 <rowName>is_assigned_to</rowName>
@@ -133,9 +143,11 @@
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
+                <isRequired>False</isRequired>
                 <linkTableName>user</linkTableName>
                 <linkSchema>er1</linkSchema>
-                <linkType>simple</linkType>
+                <linkType>linked</linkType>
+                <isMultiple>True</isMultiple>
             </linkedColumn>
             <linkedColumn>
                 <rowName>belongs_to</rowName>
@@ -144,9 +156,12 @@
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
+                <isRequired>True</isRequired>
                 <linkTableName>list</linkTableName>
                 <linkSchema>er1</linkSchema>
                 <linkType>simple</linkType>
+                <fkName>list_id</fkName>
+                <isMultiple>False</isMultiple>
             </linkedColumn>
             <linkedColumn>
                 <rowName>contains</rowName>
@@ -155,9 +170,11 @@
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
+                <isRequired>False</isRequired>
                 <linkTableName>subtask</linkTableName>
                 <linkSchema>er1</linkSchema>
-                <linkType>simple</linkType>
+                <linkType>linked</linkType>
+                <isMultiple>True</isMultiple>
             </linkedColumn>
             <linkedColumn>
                 <rowName>is_written_to</rowName>
@@ -166,9 +183,11 @@
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
+                <isRequired>False</isRequired>
                 <linkTableName>comment</linkTableName>
                 <linkSchema>er1</linkSchema>
-                <linkType>simple</linkType>
+                <linkType>linked</linkType>
+                <isMultiple>True</isMultiple>
             </linkedColumn>
             <linkedColumn>
                 <rowName>is_attached</rowName>
@@ -177,9 +196,11 @@
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
+                <isRequired>False</isRequired>
                 <linkTableName>attachment</linkTableName>
                 <linkSchema>er1</linkSchema>
-                <linkType>simple</linkType>
+                <linkType>linked</linkType>
+                <isMultiple>True</isMultiple>
             </linkedColumn>
         </columns>
         <formDescription>
@@ -210,7 +231,7 @@
                     <tableField>is_assigned_to</tableField>
                     <text>is_assigned_to</text>
                     <isEditable>True</isEditable>
-                    <linkType>simple</linkType>
+                    <linkType>linkedForm</linkType>
                     <linkSchema>er1</linkSchema>
                     <linkTableName>user</linkTableName>
                 </linkedField>
@@ -226,7 +247,7 @@
                     <tableField>contains</tableField>
                     <text>contains</text>
                     <isEditable>True</isEditable>
-                    <linkType>simple</linkType>
+                    <linkType>linkedForm</linkType>
                     <linkSchema>er1</linkSchema>
                     <linkTableName>subtask</linkTableName>
                 </linkedField>
@@ -234,7 +255,7 @@
                     <tableField>is_written_to</tableField>
                     <text>is_written_to</text>
                     <isEditable>True</isEditable>
-                    <linkType>simple</linkType>
+                    <linkType>linkedForm</linkType>
                     <linkSchema>er1</linkSchema>
                     <linkTableName>comment</linkTableName>
                 </linkedField>
@@ -242,12 +263,13 @@
                     <tableField>is_attached</tableField>
                     <text>is_attached</text>
                     <isEditable>True</isEditable>
-                    <linkType>simple</linkType>
+                    <linkType>linkedForm</linkType>
                     <linkSchema>er1</linkSchema>
                     <linkTableName>attachment</linkTableName>
                 </linkedField>
             </fields>
         </formDescription>
+        <pagination>True</pagination>
     </tableEntry>
     <tableEntry id="3">
         <accessRights inherit="True"/>
@@ -263,6 +285,7 @@
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>True</isPk>
+                <isRequired>True</isRequired>
             </column>
             <linkedColumn>
                 <rowName>contains</rowName>
@@ -271,9 +294,12 @@
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
+                <isRequired>True</isRequired>
                 <linkTableName>task</linkTableName>
                 <linkSchema>er1</linkSchema>
                 <linkType>simple</linkType>
+                <fkName>task_id</fkName>
+                <isMultiple>False</isMultiple>
             </linkedColumn>
             <linkedColumn>
                 <rowName>contains</rowName>
@@ -282,9 +308,11 @@
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
+                <isRequired>False</isRequired>
                 <linkTableName>item</linkTableName>
                 <linkSchema>er1</linkSchema>
-                <linkType>simple</linkType>
+                <linkType>linked</linkType>
+                <isMultiple>True</isMultiple>
             </linkedColumn>
         </columns>
         <formDescription>
@@ -308,12 +336,13 @@
                     <tableField>contains</tableField>
                     <text>contains</text>
                     <isEditable>True</isEditable>
-                    <linkType>simple</linkType>
+                    <linkType>linkedForm</linkType>
                     <linkSchema>er1</linkSchema>
                     <linkTableName>item</linkTableName>
                 </linkedField>
             </fields>
         </formDescription>
+        <pagination>True</pagination>
     </tableEntry>
     <tableEntry id="4">
         <accessRights inherit="True"/>
@@ -329,6 +358,7 @@
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>True</isPk>
+                <isRequired>True</isRequired>
             </column>
             <column>
                 <rowName>text</rowName>
@@ -337,6 +367,7 @@
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
+                <isRequired>True</isRequired>
             </column>
             <linkedColumn>
                 <rowName>is_authored_by</rowName>
@@ -345,9 +376,12 @@
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
+                <isRequired>True</isRequired>
                 <linkTableName>user</linkTableName>
                 <linkSchema>er1</linkSchema>
                 <linkType>simple</linkType>
+                <fkName>user_name</fkName>
+                <isMultiple>False</isMultiple>
             </linkedColumn>
             <linkedColumn>
                 <rowName>is_written_to</rowName>
@@ -356,9 +390,12 @@
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
+                <isRequired>True</isRequired>
                 <linkTableName>task</linkTableName>
                 <linkSchema>er1</linkSchema>
                 <linkType>simple</linkType>
+                <fkName>task_id</fkName>
+                <isMultiple>False</isMultiple>
             </linkedColumn>
         </columns>
         <formDescription>
@@ -393,6 +430,7 @@
                 </linkedField>
             </fields>
         </formDescription>
+        <pagination>True</pagination>
     </tableEntry>
     <tableEntry id="5">
         <accessRights inherit="True"/>
@@ -408,6 +446,7 @@
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>True</isPk>
+                <isRequired>True</isRequired>
             </column>
             <column>
                 <rowName>name</rowName>
@@ -416,6 +455,7 @@
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
+                <isRequired>True</isRequired>
             </column>
             <linkedColumn>
                 <rowName>belongs_to</rowName>
@@ -424,9 +464,11 @@
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
+                <isRequired>False</isRequired>
                 <linkTableName>task</linkTableName>
                 <linkSchema>er1</linkSchema>
-                <linkType>simple</linkType>
+                <linkType>linked</linkType>
+                <isMultiple>True</isMultiple>
             </linkedColumn>
         </columns>
         <formDescription>
@@ -447,12 +489,13 @@
                     <tableField>belongs_to</tableField>
                     <text>belongs_to</text>
                     <isEditable>True</isEditable>
-                    <linkType>simple</linkType>
+                    <linkType>linkedForm</linkType>
                     <linkSchema>er1</linkSchema>
                     <linkTableName>task</linkTableName>
                 </linkedField>
             </fields>
         </formDescription>
+        <pagination>True</pagination>
     </tableEntry>
     <tableEntry id="6">
         <accessRights inherit="True"/>
@@ -468,6 +511,7 @@
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>True</isPk>
+                <isRequired>True</isRequired>
             </column>
             <column>
                 <rowName>contents</rowName>
@@ -476,6 +520,7 @@
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
+                <isRequired>True</isRequired>
             </column>
             <linkedColumn>
                 <rowName>is_attached</rowName>
@@ -484,9 +529,12 @@
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
+                <isRequired>True</isRequired>
                 <linkTableName>task</linkTableName>
                 <linkSchema>er1</linkSchema>
                 <linkType>simple</linkType>
+                <fkName>task_id</fkName>
+                <isMultiple>False</isMultiple>
             </linkedColumn>
         </columns>
         <formDescription>
@@ -513,6 +561,7 @@
                 </linkedField>
             </fields>
         </formDescription>
+        <pagination>True</pagination>
     </tableEntry>
     <tableEntry id="7">
         <accessRights inherit="True"/>
@@ -528,6 +577,7 @@
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>True</isPk>
+                <isRequired>True</isRequired>
             </column>
             <column>
                 <rowName>name</rowName>
@@ -536,6 +586,7 @@
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
+                <isRequired>True</isRequired>
             </column>
             <column>
                 <rowName>status</rowName>
@@ -544,6 +595,7 @@
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
+                <isRequired>True</isRequired>
             </column>
             <linkedColumn>
                 <rowName>contains</rowName>
@@ -552,9 +604,12 @@
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
+                <isRequired>True</isRequired>
                 <linkTableName>subtask</linkTableName>
                 <linkSchema>er1</linkSchema>
                 <linkType>simple</linkType>
+                <fkName>subtask_name</fkName>
+                <isMultiple>False</isMultiple>
             </linkedColumn>
         </columns>
         <formDescription>
@@ -586,6 +641,7 @@
                 </linkedField>
             </fields>
         </formDescription>
+        <pagination>True</pagination>
     </tableEntry>
     <tableEntry id="8">
         <accessRights inherit="True"/>
@@ -599,5 +655,6 @@
             <tableName>user_is_assigned_to_task</tableName>
             <fields/>
         </formDescription>
+        <pagination>True</pagination>
     </tableEntry>
 </hierarchy>

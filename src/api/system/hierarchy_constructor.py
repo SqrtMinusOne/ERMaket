@@ -36,16 +36,34 @@ class HierachyConstructor:
             accessRights=AccessRights(), name=table.name, schema=self._schema
         )
         for column in table.columns:
-            t.columns.append(TableColumn(column.name, isPk=column.pk))
-
-        for relation in table.relationships:
             t.columns.append(
-                LinkedTableColumn(
-                    relation.name,
-                    linkTableName=relation.ref_table.name,
-                    linkSchema=self._schema
+                TableColumn(
+                    column.name, isPk=column.pk, isRequired=column.not_null
                 )
             )
+
+        for relation in table.relationships:
+            if (relation.fk_col):
+                t.columns.append(
+                    LinkedTableColumn(
+                        relation.name,
+                        linkTableName=relation.ref_table.name,
+                        linkSchema=self._schema,
+                        fkName=relation.fk_col.name,
+                        isMultiple=False,
+                        isRequired=relation.fk_col.not_null
+                    )
+                )
+            else:
+                t.columns.append(
+                    LinkedTableColumn(
+                        relation.name,
+                        linkTableName=relation.ref_table.name,
+                        linkSchema=self._schema,
+                        isMultiple=relation.is_multiple,
+                        isRequired=False  # TODO
+                    )
+                )
 
         t.formDescription = t.make_form()
         return t

@@ -12,15 +12,23 @@ __all__ = [
     'LinkedTableColumn'
 ]
 
+_table_column_attrs = [
+    'rowName', 'text', 'isSort', 'isFilter', 'isEditable', 'isPk', 'isRequired'
+]
+
+_table_column_types = {
+    'isPk': caster.bool_cast,
+    'isSort': caster.bool_cast,
+    'isFilter': caster.bool_cast,
+    'isEditable': caster.bool_cast,
+    'isRequired': caster.bool_cast,
+}
+
 _TableColumn = xmltuple(
     '_TableColumn',
-    'column', ['rowName', 'text', 'isSort', 'isFilter', 'isEditable', 'isPk'],
-    types={
-        'isPk': caster.bool_cast,
-        'isSort': caster.bool_cast,
-        'isFilter': caster.bool_cast,
-        'isEditable': caster.bool_cast
-    }
+    'column',
+    _table_column_attrs,
+    types=_table_column_types,
 )
 
 TableColumn = defaultify_init(
@@ -48,15 +56,17 @@ _link_type_mappings[TableLinkType.LINKED] = LinkType.LINKEDFORM
 
 _LinkedTableColumn = xmltuple(
     '_LinkedTableColumn',
-    'linkedColumn',
-    ['rowName', 'text', 'isSort', 'isFilter', 'isEditable', 'isPk',
-     'linkTableName', 'linkSchema', 'linkType'],
-    [TableLinkType],
+    'linkedColumn', [
+        *_table_column_attrs,
+        'linkTableName',
+        'linkSchema',
+        'linkType',
+        'fkName',
+        'isMultiple',
+    ], [TableLinkType],
     types={
-        'isPk': caster.bool_cast,
-        'isSort': caster.bool_cast,
-        'isFilter': caster.bool_cast,
-        'isEditable': caster.bool_cast
+        **_table_column_types,
+        'isMultiple': caster.bool_cast,
     }
 )
 
@@ -69,6 +79,7 @@ LinkedTableColumn = defaultify_init(
     isFilter=True,
     isEditable=True,
     linkType=lambda s: TableLinkType(TableLinkType.SIMPLE)
+    if s.fkName else TableLinkType(TableLinkType.LINKED)
 )
 
 TableColumns = xmlall(
@@ -78,10 +89,11 @@ TableColumns = xmlall(
 __Table = xmltuple(
     '__Table', 'tableEntry', [
         *_element_attrs, 'tableName', 'schema', 'linesOnPage', 'columns',
-        'formDescription'
+        'formDescription', 'pagination'
     ], [*_element_children_classes, TableColumns, FormDescription],
     _element_kws, {
-        **_element_types, 'linesOnPage': int
+        **_element_types, 'linesOnPage': int,
+        'pagination': caster.bool_cast
     }
 )
 
@@ -91,6 +103,7 @@ _Table = defaultify_init(
     linesOnPage=50,
     columns=lambda self: TableColumns(),
     tableName=lambda self: self.name,
+    pagination=True
 )
 
 
