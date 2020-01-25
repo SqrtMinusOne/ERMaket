@@ -1,5 +1,5 @@
 python manage.py --log db generate --xml ../xml/example.xml --schema er1
-python manage.py --log db drop
+python manage.py --log db drop -y
 python manage.py --log db create
 python manage.py --log db fake --all --num 10 --fake
 python manage.py --log system useradd --login admin --password password --role admin

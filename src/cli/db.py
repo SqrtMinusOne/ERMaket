@@ -22,16 +22,19 @@ def check():
 
 @db.command(help='Drop data from database')
 @click.option("--schema", help="Schema to drop")
-def drop(schema):
-    if click.confirm("Drop cannot be undone. Continue?"):
-        DBConn()
-        if schema:
-            seeder = Seeder(None)
-            seeder.drop_models(schema)
-        else:
-            models = Models()
-            seeder = Seeder(models)
-            seeder.drop_models(schema)
+@click.option("-y", help="skip warning", default=False, is_flag=True)
+def drop(schema, y):
+    if not y:
+        if not click.confirm("Drop cannot be undone. Continue?"):
+            return
+    DBConn()
+    if schema:
+        seeder = Seeder(None)
+        seeder.drop_models(schema)
+    else:
+        models = Models()
+        seeder = Seeder(models)
+        seeder.drop_models(schema)
 
 
 @db.command(help='Create table in the database')

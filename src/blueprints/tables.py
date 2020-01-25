@@ -24,8 +24,8 @@ def get_filter_params(args, pagination=True):
     )
 
     if pagination:
-        kwargs['page'] = request.args.get('page', default=0, type=int)
-        kwargs['per_page'] = request.args.get('per_page', default=10, type=int)
+        kwargs['offset'] = request.args.get('offset', default=0, type=int)
+        kwargs['limit'] = request.args.get('limit', default=10, type=int)
         kwargs['order_by'] = json.loads(
             request.args.get('order_by', default='[]', type=str)
         )
