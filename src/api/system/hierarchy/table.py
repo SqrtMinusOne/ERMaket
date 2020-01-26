@@ -13,7 +13,8 @@ __all__ = [
 ]
 
 _table_column_attrs = [
-    'rowName', 'text', 'isSort', 'isFilter', 'isEditable', 'isPk', 'isRequired'
+    'rowName', 'text', 'isSort', 'isFilter', 'isEditable', 'isPk',
+    'isRequired', 'type'
 ]
 
 _table_column_types = {

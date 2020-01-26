@@ -1,14 +1,7 @@
 <?xml version="1.0" ?>
 <hierarchy xmlns="ermaket_hierarchy" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ermaket_hierarchy settings.xsd">
     <section id="0">
-        <accessRights inherit="False">
-            <roleAccess>
-                <roleName>admin</roleName>
-                <access>view</access>
-                <access>change</access>
-                <access>delete</access>
-            </roleAccess>
-        </accessRights>
+        <accessRights inherit="False"/>
         <name>er1</name>
         <children>
             <childId>1</childId>
@@ -36,6 +29,7 @@
                 <isEditable>True</isEditable>
                 <isPk>True</isPk>
                 <isRequired>True</isRequired>
+                <type>varchar(256)</type>
             </column>
             <linkedColumn>
                 <rowName>is_assigned_to</rowName>
@@ -108,6 +102,7 @@
                 <isEditable>True</isEditable>
                 <isPk>True</isPk>
                 <isRequired>True</isRequired>
+                <type>int8</type>
             </column>
             <column>
                 <rowName>name</rowName>
@@ -117,6 +112,7 @@
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>True</isRequired>
+                <type>varchar(256)</type>
             </column>
             <column>
                 <rowName>due_date</rowName>
@@ -126,6 +122,7 @@
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>True</isRequired>
+                <type>timestamp</type>
             </column>
             <column>
                 <rowName>description</rowName>
@@ -135,6 +132,7 @@
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>True</isRequired>
+                <type>text</type>
             </column>
             <linkedColumn>
                 <rowName>is_assigned_to</rowName>
@@ -286,6 +284,7 @@
                 <isEditable>True</isEditable>
                 <isPk>True</isPk>
                 <isRequired>True</isRequired>
+                <type>varchar(256)</type>
             </column>
             <linkedColumn>
                 <rowName>contains</rowName>
@@ -359,6 +358,7 @@
                 <isEditable>True</isEditable>
                 <isPk>True</isPk>
                 <isRequired>True</isRequired>
+                <type>int8</type>
             </column>
             <column>
                 <rowName>text</rowName>
@@ -368,6 +368,7 @@
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>True</isRequired>
+                <type>text</type>
             </column>
             <linkedColumn>
                 <rowName>is_authored_by</rowName>
@@ -447,6 +448,7 @@
                 <isEditable>True</isEditable>
                 <isPk>True</isPk>
                 <isRequired>True</isRequired>
+                <type>int8</type>
             </column>
             <column>
                 <rowName>name</rowName>
@@ -456,6 +458,7 @@
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>True</isRequired>
+                <type>varchar(256)</type>
             </column>
             <linkedColumn>
                 <rowName>belongs_to</rowName>
@@ -512,6 +515,7 @@
                 <isEditable>True</isEditable>
                 <isPk>True</isPk>
                 <isRequired>True</isRequired>
+                <type>int8</type>
             </column>
             <column>
                 <rowName>contents</rowName>
@@ -521,6 +525,7 @@
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>True</isRequired>
+                <type>text</type>
             </column>
             <linkedColumn>
                 <rowName>is_attached</rowName>
@@ -578,6 +583,7 @@
                 <isEditable>True</isEditable>
                 <isPk>True</isPk>
                 <isRequired>True</isRequired>
+                <type>int8</type>
             </column>
             <column>
                 <rowName>name</rowName>
@@ -587,6 +593,7 @@
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>True</isRequired>
+                <type>varchar(256)</type>
             </column>
             <column>
                 <rowName>status</rowName>
@@ -596,6 +603,7 @@
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>True</isRequired>
+                <type>enum('Complete', 'Not complete')</type>
             </column>
             <linkedColumn>
                 <rowName>contains</rowName>

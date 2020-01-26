@@ -38,7 +38,8 @@ class HierachyConstructor:
         for column in table.columns:
             t.columns.append(
                 TableColumn(
-                    column.name, isPk=column.pk, isRequired=column.not_null
+                    column.name, isPk=column.pk, isRequired=column.not_null,
+                    type=column.type_
                 )
             )
 
@@ -48,6 +49,7 @@ class HierachyConstructor:
                     LinkedTableColumn(
                         relation.name,
                         linkTableName=relation.ref_table.name,
+                        type_='link',
                         linkSchema=self._schema,
                         fkName=relation.fk_col.name,
                         isMultiple=False,

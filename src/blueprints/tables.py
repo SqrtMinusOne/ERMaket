@@ -1,7 +1,6 @@
 import simplejson as json
 from flask import Blueprint, abort, jsonify, request
 from flask_login import login_required, current_user
-from flask_cors import CORS
 
 from api.database import DBConn
 from api.models import Models, NamesConverter
@@ -14,14 +13,30 @@ user_mgr = UserManager()
 
 __all__ = ['tables']
 tables = Blueprint('tables', 'tables', url_prefix='/tables')
-# CORS(tables, su)
 
 
-def get_filter_params(args, pagination=True):
+def bind_criterion(criterion, name):
+    criterion['field_name'] = name + '.' + criterion['field_name']
+
+
+def get_filter_params(args, model_name, pagination=True):
     kwargs = {}
     kwargs['filter_by'] = json.loads(
         request.args.get('filter_by', default='[]', type=str)
     )
+    if isinstance(kwargs['filter_by'], dict):
+        [
+            [
+                bind_criterion(criterion, model_name)
+                for criterion in group
+            ]
+            for group in kwargs['filter_by'].values()
+        ]
+    elif isinstance(kwargs['filter_by'], list):
+        [
+            bind_criterion(criterion, model_name)
+            for criterion in kwargs['filter_by']
+        ]
 
     if pagination:
         kwargs['offset'] = request.args.get('offset', default=0, type=int)
@@ -29,6 +44,12 @@ def get_filter_params(args, pagination=True):
         kwargs['order_by'] = json.loads(
             request.args.get('order_by', default='[]', type=str)
         )
+        for i in range(len(kwargs['order_by'])):
+            order = kwargs['order_by'][i]
+            if order.startswith('-'):
+                kwargs['order_by'][i] = f"-{model_name}.{order[1:]}"
+            else:
+                kwargs['order_by'][i] = f"{model_name}.{order}"
     return kwargs
 
 
@@ -39,16 +60,17 @@ def get_model(db, schema, table, access_type):
     db.add(current_user)
     if not entry.accessRights.has(current_user.role_names, access_type):
         abort(403)
-    model = models[schema][NamesConverter.class_name(schema, table)]
-    return model
+    name = NamesConverter.class_name(schema, table)
+    model = models[schema][name]
+    return model, name
 
 
 @tables.route('/table/<schema>/<table>')
 @login_required
 def get_table(schema, table):
     with DBConn.get_session() as db:
-        model = get_model(db, schema, table, AccessRight.VIEW)
-        kwargs = get_filter_params(request.args)
+        model, name = get_model(db, schema, table, AccessRight.VIEW)
+        kwargs = get_filter_params(request.args, name)
         builder = QueryBuilder(db)
         data = builder.fetch_data(model, **kwargs)
         result = {
@@ -62,8 +84,8 @@ def get_table(schema, table):
 @login_required
 def get_entry(schema, table):
     with DBConn.get_session() as db:
-        model = get_model(db, schema, table, AccessRight.VIEW)
-        kwargs = get_filter_params(request.args, pagination=False)
+        model, name = get_model(db, schema, table, AccessRight.VIEW)
+        kwargs = get_filter_params(request.args, name, pagination=False)
         builder = QueryBuilder(db)
         result = builder.fetch_one(model, **kwargs)
     return jsonify(result)
