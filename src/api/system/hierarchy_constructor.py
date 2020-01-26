@@ -37,10 +37,7 @@ class HierachyConstructor:
         )
         for column in table.columns:
             t.columns.append(
-                TableColumn(
-                    column.name, isPk=column.pk, isRequired=column.not_null,
-                    type=column.type_
-                )
+                self._make_column(column)
             )
 
         for relation in table.relationships:
@@ -69,3 +66,18 @@ class HierachyConstructor:
 
         t.formDescription = t.make_form()
         return t
+
+    def _make_column(self, column):
+        params = dict(
+            rowName=column.name,
+            isPk=column.pk,
+            isRequired=column.not_null,
+            type=column.type_
+        )
+        if (column.type_ == 'timestamp'):
+            params['dateFormat'] = 'DD-MM-YYYY HH:mm:ss'
+        elif (column.type_ == 'time'):
+            params['dateFormat'] = 'HH:mm:ss'
+        elif (column.type_ == 'date'):
+            params['dateFormat'] = 'DD-MM-YYYY'
+        return TableColumn(**params)

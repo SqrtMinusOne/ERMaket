@@ -14,7 +14,7 @@ __all__ = [
 
 _table_column_attrs = [
     'rowName', 'text', 'isSort', 'isFilter', 'isEditable', 'isPk',
-    'isRequired', 'type'
+    'isRequired', 'type', 'dateFormat'
 ]
 
 _table_column_types = {

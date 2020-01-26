@@ -1,7 +1,14 @@
 <?xml version="1.0" ?>
 <hierarchy xmlns="ermaket_hierarchy" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ermaket_hierarchy settings.xsd">
     <section id="0">
-        <accessRights inherit="False"/>
+        <accessRights inherit="False">
+            <roleAccess>
+                <roleName>admin</roleName>
+                <access>view</access>
+                <access>change</access>
+                <access>delete</access>
+            </roleAccess>
+        </accessRights>
         <name>er1</name>
         <children>
             <childId>1</childId>
@@ -123,6 +130,7 @@
                 <isPk>False</isPk>
                 <isRequired>True</isRequired>
                 <type>timestamp</type>
+                <dateFormat>DD-MM-YYYY HH:mm:ss</dateFormat>
             </column>
             <column>
                 <rowName>description</rowName>

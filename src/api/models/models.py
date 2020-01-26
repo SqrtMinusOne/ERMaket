@@ -101,6 +101,7 @@ class Models:
         class Meta(object):
             model = class_
             sqla_session = DBConn.scoped_session
+            include_fk = True
 
         # for rel in inspect(class_).relationships:
         #     to_nest = rel.mapper.class_
