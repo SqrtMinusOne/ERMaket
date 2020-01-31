@@ -10,7 +10,14 @@ class QueryBuilder:
         search_obj = Search(
             self._session, model.__module_name__, (model, ), **kwargs
         )
-        return search_obj.query().offset(offset).limit(limit)
+        result = search_obj.query()
+        if offset >= 0:
+            result = result.offset(offset)
+        if limit >= 0:
+            result = result.limit(limit)
+        # if offset < 0 and limit < 0:
+        #     result = result.all()
+        return result
 
     def fetch_data(self, model, offset=0, limit=10, **kwargs):
         q = self._build_query(model, offset=offset, limit=limit, **kwargs)
