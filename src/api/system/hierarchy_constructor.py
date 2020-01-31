@@ -49,6 +49,7 @@ class HierachyConstructor:
                         type_='link',
                         linkSchema=self._schema,
                         fkName=relation.fk_col.name,
+                        type=relation.fk_col.type_,
                         isMultiple=False,
                         isRequired=relation.fk_col.not_null
                     )

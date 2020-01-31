@@ -59,7 +59,7 @@ def create_app():
     def not_found(err):
         return jsonify({'ok': False, 'message': '404 Not Found'}), 404
 
-    @app.errorhandler(500)
+    @app.errorhandler(Exception)
     def internal_error(exception):
         app.logger.error(exception)
         if os.environ.get('FLASK_ENV') == 'development':

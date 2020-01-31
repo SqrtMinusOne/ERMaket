@@ -163,6 +163,7 @@
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>True</isRequired>
+                <type>int8</type>
                 <linkTableName>list</linkTableName>
                 <linkSchema>er1</linkSchema>
                 <linkType>simple</linkType>
@@ -302,6 +303,7 @@
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>True</isRequired>
+                <type>int8</type>
                 <linkTableName>task</linkTableName>
                 <linkSchema>er1</linkSchema>
                 <linkType>simple</linkType>
@@ -386,6 +388,7 @@
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>True</isRequired>
+                <type>varchar(256)</type>
                 <linkTableName>user</linkTableName>
                 <linkSchema>er1</linkSchema>
                 <linkType>simple</linkType>
@@ -400,6 +403,7 @@
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>True</isRequired>
+                <type>int8</type>
                 <linkTableName>task</linkTableName>
                 <linkSchema>er1</linkSchema>
                 <linkType>simple</linkType>
@@ -543,6 +547,7 @@
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>True</isRequired>
+                <type>int8</type>
                 <linkTableName>task</linkTableName>
                 <linkSchema>er1</linkSchema>
                 <linkType>simple</linkType>
@@ -621,6 +626,7 @@
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>True</isRequired>
+                <type>varchar(256)</type>
                 <linkTableName>subtask</linkTableName>
                 <linkSchema>er1</linkSchema>
                 <linkType>simple</linkType>
