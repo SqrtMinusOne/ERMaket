@@ -39,8 +39,8 @@
                 <type>varchar(256)</type>
             </column>
             <linkedColumn>
-                <rowName>is_assigned_to</rowName>
-                <text>is_assigned_to</text>
+                <rowName>is_assigned_to_task</rowName>
+                <text>is_assigned_to_task</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -48,12 +48,12 @@
                 <isRequired>False</isRequired>
                 <linkTableName>task</linkTableName>
                 <linkSchema>er1</linkSchema>
-                <linkType>linked</linkType>
+                <linkType>dropdown</linkType>
                 <isMultiple>True</isMultiple>
             </linkedColumn>
             <linkedColumn>
-                <rowName>is_authored_by</rowName>
-                <text>is_authored_by</text>
+                <rowName>comment_is_authored_by</rowName>
+                <text>comment_is_authored_by</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -61,7 +61,7 @@
                 <isRequired>False</isRequired>
                 <linkTableName>comment</linkTableName>
                 <linkSchema>er1</linkSchema>
-                <linkType>linked</linkType>
+                <linkType>dropdown</linkType>
                 <isMultiple>True</isMultiple>
             </linkedColumn>
         </columns>
@@ -75,18 +75,18 @@
                     <isEditable>True</isEditable>
                 </simpleField>
                 <linkedField>
-                    <tableField>is_assigned_to</tableField>
-                    <text>is_assigned_to</text>
+                    <tableField>is_assigned_to_task</tableField>
+                    <text>is_assigned_to_task</text>
                     <isEditable>True</isEditable>
-                    <linkType>linkedForm</linkType>
+                    <linkType>dropdown</linkType>
                     <linkSchema>er1</linkSchema>
                     <linkTableName>task</linkTableName>
                 </linkedField>
                 <linkedField>
-                    <tableField>is_authored_by</tableField>
-                    <text>is_authored_by</text>
+                    <tableField>comment_is_authored_by</tableField>
+                    <text>comment_is_authored_by</text>
                     <isEditable>True</isEditable>
-                    <linkType>linkedForm</linkType>
+                    <linkType>dropdown</linkType>
                     <linkSchema>er1</linkSchema>
                     <linkTableName>comment</linkTableName>
                 </linkedField>
@@ -143,8 +143,8 @@
                 <type>text</type>
             </column>
             <linkedColumn>
-                <rowName>is_assigned_to</rowName>
-                <text>is_assigned_to</text>
+                <rowName>is_assigned_to_user</rowName>
+                <text>is_assigned_to_user</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -152,12 +152,12 @@
                 <isRequired>False</isRequired>
                 <linkTableName>user</linkTableName>
                 <linkSchema>er1</linkSchema>
-                <linkType>linked</linkType>
+                <linkType>dropdown</linkType>
                 <isMultiple>True</isMultiple>
             </linkedColumn>
             <linkedColumn>
-                <rowName>belongs_to</rowName>
-                <text>belongs_to</text>
+                <rowName>belongs_to_list</rowName>
+                <text>belongs_to_list</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -166,13 +166,13 @@
                 <type>int8</type>
                 <linkTableName>list</linkTableName>
                 <linkSchema>er1</linkSchema>
-                <linkType>simple</linkType>
+                <linkType>dropdown</linkType>
                 <fkName>list_id</fkName>
                 <isMultiple>False</isMultiple>
             </linkedColumn>
             <linkedColumn>
-                <rowName>contains</rowName>
-                <text>contains</text>
+                <rowName>subtask_contains</rowName>
+                <text>subtask_contains</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -180,12 +180,12 @@
                 <isRequired>False</isRequired>
                 <linkTableName>subtask</linkTableName>
                 <linkSchema>er1</linkSchema>
-                <linkType>linked</linkType>
+                <linkType>dropdown</linkType>
                 <isMultiple>True</isMultiple>
             </linkedColumn>
             <linkedColumn>
-                <rowName>is_written_to</rowName>
-                <text>is_written_to</text>
+                <rowName>comment_is_written_to</rowName>
+                <text>comment_is_written_to</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -193,12 +193,12 @@
                 <isRequired>False</isRequired>
                 <linkTableName>comment</linkTableName>
                 <linkSchema>er1</linkSchema>
-                <linkType>linked</linkType>
+                <linkType>dropdown</linkType>
                 <isMultiple>True</isMultiple>
             </linkedColumn>
             <linkedColumn>
-                <rowName>is_attached</rowName>
-                <text>is_attached</text>
+                <rowName>attachment_is_attached</rowName>
+                <text>attachment_is_attached</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -206,7 +206,7 @@
                 <isRequired>False</isRequired>
                 <linkTableName>attachment</linkTableName>
                 <linkSchema>er1</linkSchema>
-                <linkType>linked</linkType>
+                <linkType>dropdown</linkType>
                 <isMultiple>True</isMultiple>
             </linkedColumn>
         </columns>
@@ -235,42 +235,42 @@
                     <isEditable>True</isEditable>
                 </simpleField>
                 <linkedField>
-                    <tableField>is_assigned_to</tableField>
-                    <text>is_assigned_to</text>
+                    <tableField>is_assigned_to_user</tableField>
+                    <text>is_assigned_to_user</text>
                     <isEditable>True</isEditable>
-                    <linkType>linkedForm</linkType>
+                    <linkType>dropdown</linkType>
                     <linkSchema>er1</linkSchema>
                     <linkTableName>user</linkTableName>
                 </linkedField>
                 <linkedField>
-                    <tableField>belongs_to</tableField>
-                    <text>belongs_to</text>
+                    <tableField>belongs_to_list</tableField>
+                    <text>belongs_to_list</text>
                     <isEditable>True</isEditable>
-                    <linkType>simple</linkType>
+                    <linkType>dropdown</linkType>
                     <linkSchema>er1</linkSchema>
                     <linkTableName>list</linkTableName>
                 </linkedField>
                 <linkedField>
-                    <tableField>contains</tableField>
-                    <text>contains</text>
+                    <tableField>subtask_contains</tableField>
+                    <text>subtask_contains</text>
                     <isEditable>True</isEditable>
-                    <linkType>linkedForm</linkType>
+                    <linkType>dropdown</linkType>
                     <linkSchema>er1</linkSchema>
                     <linkTableName>subtask</linkTableName>
                 </linkedField>
                 <linkedField>
-                    <tableField>is_written_to</tableField>
-                    <text>is_written_to</text>
+                    <tableField>comment_is_written_to</tableField>
+                    <text>comment_is_written_to</text>
                     <isEditable>True</isEditable>
-                    <linkType>linkedForm</linkType>
+                    <linkType>dropdown</linkType>
                     <linkSchema>er1</linkSchema>
                     <linkTableName>comment</linkTableName>
                 </linkedField>
                 <linkedField>
-                    <tableField>is_attached</tableField>
-                    <text>is_attached</text>
+                    <tableField>attachment_is_attached</tableField>
+                    <text>attachment_is_attached</text>
                     <isEditable>True</isEditable>
-                    <linkType>linkedForm</linkType>
+                    <linkType>dropdown</linkType>
                     <linkSchema>er1</linkSchema>
                     <linkTableName>attachment</linkTableName>
                 </linkedField>
@@ -296,8 +296,8 @@
                 <type>varchar(256)</type>
             </column>
             <linkedColumn>
-                <rowName>contains</rowName>
-                <text>contains</text>
+                <rowName>contains_task</rowName>
+                <text>contains_task</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -306,13 +306,13 @@
                 <type>int8</type>
                 <linkTableName>task</linkTableName>
                 <linkSchema>er1</linkSchema>
-                <linkType>simple</linkType>
+                <linkType>dropdown</linkType>
                 <fkName>task_id</fkName>
                 <isMultiple>False</isMultiple>
             </linkedColumn>
             <linkedColumn>
-                <rowName>contains</rowName>
-                <text>contains</text>
+                <rowName>item_contains</rowName>
+                <text>item_contains</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -320,7 +320,7 @@
                 <isRequired>False</isRequired>
                 <linkTableName>item</linkTableName>
                 <linkSchema>er1</linkSchema>
-                <linkType>linked</linkType>
+                <linkType>dropdown</linkType>
                 <isMultiple>True</isMultiple>
             </linkedColumn>
         </columns>
@@ -334,18 +334,18 @@
                     <isEditable>True</isEditable>
                 </simpleField>
                 <linkedField>
-                    <tableField>contains</tableField>
-                    <text>contains</text>
+                    <tableField>contains_task</tableField>
+                    <text>contains_task</text>
                     <isEditable>True</isEditable>
-                    <linkType>simple</linkType>
+                    <linkType>dropdown</linkType>
                     <linkSchema>er1</linkSchema>
                     <linkTableName>task</linkTableName>
                 </linkedField>
                 <linkedField>
-                    <tableField>contains</tableField>
-                    <text>contains</text>
+                    <tableField>item_contains</tableField>
+                    <text>item_contains</text>
                     <isEditable>True</isEditable>
-                    <linkType>linkedForm</linkType>
+                    <linkType>dropdown</linkType>
                     <linkSchema>er1</linkSchema>
                     <linkTableName>item</linkTableName>
                 </linkedField>
@@ -381,8 +381,8 @@
                 <type>text</type>
             </column>
             <linkedColumn>
-                <rowName>is_authored_by</rowName>
-                <text>is_authored_by</text>
+                <rowName>is_authored_by_user</rowName>
+                <text>is_authored_by_user</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -391,13 +391,13 @@
                 <type>varchar(256)</type>
                 <linkTableName>user</linkTableName>
                 <linkSchema>er1</linkSchema>
-                <linkType>simple</linkType>
+                <linkType>dropdown</linkType>
                 <fkName>user_name</fkName>
                 <isMultiple>False</isMultiple>
             </linkedColumn>
             <linkedColumn>
-                <rowName>is_written_to</rowName>
-                <text>is_written_to</text>
+                <rowName>is_written_to_task</rowName>
+                <text>is_written_to_task</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -406,7 +406,7 @@
                 <type>int8</type>
                 <linkTableName>task</linkTableName>
                 <linkSchema>er1</linkSchema>
-                <linkType>simple</linkType>
+                <linkType>dropdown</linkType>
                 <fkName>task_id</fkName>
                 <isMultiple>False</isMultiple>
             </linkedColumn>
@@ -426,18 +426,18 @@
                     <isEditable>True</isEditable>
                 </simpleField>
                 <linkedField>
-                    <tableField>is_authored_by</tableField>
-                    <text>is_authored_by</text>
+                    <tableField>is_authored_by_user</tableField>
+                    <text>is_authored_by_user</text>
                     <isEditable>True</isEditable>
-                    <linkType>simple</linkType>
+                    <linkType>dropdown</linkType>
                     <linkSchema>er1</linkSchema>
                     <linkTableName>user</linkTableName>
                 </linkedField>
                 <linkedField>
-                    <tableField>is_written_to</tableField>
-                    <text>is_written_to</text>
+                    <tableField>is_written_to_task</tableField>
+                    <text>is_written_to_task</text>
                     <isEditable>True</isEditable>
-                    <linkType>simple</linkType>
+                    <linkType>dropdown</linkType>
                     <linkSchema>er1</linkSchema>
                     <linkTableName>task</linkTableName>
                 </linkedField>
@@ -473,8 +473,8 @@
                 <type>varchar(256)</type>
             </column>
             <linkedColumn>
-                <rowName>belongs_to</rowName>
-                <text>belongs_to</text>
+                <rowName>task_belongs_to</rowName>
+                <text>task_belongs_to</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -482,7 +482,7 @@
                 <isRequired>False</isRequired>
                 <linkTableName>task</linkTableName>
                 <linkSchema>er1</linkSchema>
-                <linkType>linked</linkType>
+                <linkType>dropdown</linkType>
                 <isMultiple>True</isMultiple>
             </linkedColumn>
         </columns>
@@ -501,10 +501,10 @@
                     <isEditable>True</isEditable>
                 </simpleField>
                 <linkedField>
-                    <tableField>belongs_to</tableField>
-                    <text>belongs_to</text>
+                    <tableField>task_belongs_to</tableField>
+                    <text>task_belongs_to</text>
                     <isEditable>True</isEditable>
-                    <linkType>linkedForm</linkType>
+                    <linkType>dropdown</linkType>
                     <linkSchema>er1</linkSchema>
                     <linkTableName>task</linkTableName>
                 </linkedField>
@@ -540,8 +540,8 @@
                 <type>text</type>
             </column>
             <linkedColumn>
-                <rowName>is_attached</rowName>
-                <text>is_attached</text>
+                <rowName>is_attached_task</rowName>
+                <text>is_attached_task</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -550,7 +550,7 @@
                 <type>int8</type>
                 <linkTableName>task</linkTableName>
                 <linkSchema>er1</linkSchema>
-                <linkType>simple</linkType>
+                <linkType>dropdown</linkType>
                 <fkName>task_id</fkName>
                 <isMultiple>False</isMultiple>
             </linkedColumn>
@@ -570,10 +570,10 @@
                     <isEditable>True</isEditable>
                 </simpleField>
                 <linkedField>
-                    <tableField>is_attached</tableField>
-                    <text>is_attached</text>
+                    <tableField>is_attached_task</tableField>
+                    <text>is_attached_task</text>
                     <isEditable>True</isEditable>
-                    <linkType>simple</linkType>
+                    <linkType>dropdown</linkType>
                     <linkSchema>er1</linkSchema>
                     <linkTableName>task</linkTableName>
                 </linkedField>
@@ -619,8 +619,8 @@
                 <type>enum('Complete', 'Not complete')</type>
             </column>
             <linkedColumn>
-                <rowName>contains</rowName>
-                <text>contains</text>
+                <rowName>contains_subtask</rowName>
+                <text>contains_subtask</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -629,7 +629,7 @@
                 <type>varchar(256)</type>
                 <linkTableName>subtask</linkTableName>
                 <linkSchema>er1</linkSchema>
-                <linkType>simple</linkType>
+                <linkType>dropdown</linkType>
                 <fkName>subtask_name</fkName>
                 <isMultiple>False</isMultiple>
             </linkedColumn>
@@ -654,10 +654,10 @@
                     <isEditable>True</isEditable>
                 </simpleField>
                 <linkedField>
-                    <tableField>contains</tableField>
-                    <text>contains</text>
+                    <tableField>contains_subtask</tableField>
+                    <text>contains_subtask</text>
                     <isEditable>True</isEditable>
-                    <linkType>simple</linkType>
+                    <linkType>dropdown</linkType>
                     <linkSchema>er1</linkSchema>
                     <linkTableName>subtask</linkTableName>
                 </linkedField>
