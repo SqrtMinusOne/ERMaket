@@ -1,3 +1,5 @@
+import stringcase
+
 from api.models import NamesConverter as Names
 from api.system.hierarchy import (AccessRight, AccessRights, Hierachy,
                                   LinkedTableColumn, RoleAccess, Section,
@@ -12,7 +14,10 @@ class HierachyConstructor:
 
     def construct(self):
         h = Hierachy()
-        parent = Section(accessRights=self._global_rights(), name=self._schema)
+        parent = Section(
+            accessRights=self._global_rights(),
+            name=stringcase.sentencecase(self._schema)
+        )
         h.append(parent)
         for table in self._tables.values():
             t = self._make_table(table)
@@ -34,7 +39,10 @@ class HierachyConstructor:
 
     def _make_table(self, table):
         t = Table(
-            accessRights=AccessRights(), name=table.name, schema=self._schema
+            accessRights=AccessRights(),
+            name=stringcase.sentencecase(table.name),
+            tableName=table.name,
+            schema=self._schema
         )
         for column in table.columns:
             t.columns.append(self._make_column(column))
@@ -72,15 +80,15 @@ class HierachyConstructor:
     def _linked_name(self, relation):
         if relation.secondary_table is not None:
             return Names.referrer_rel_name(
-                 relation.ref_table.name, relation.name
+                relation.ref_table.name, relation.name
             )
         elif relation.fk_col is not None:
             return Names.referrer_rel_name(
-                 relation.ref_table.name, relation.name
+                relation.ref_table.name, relation.name
             )
         else:
             return Names.referral_rel_name(
-                 relation.ref_table.name, relation.name
+                relation.ref_table.name, relation.name
             )
 
     def _make_column(self, column):

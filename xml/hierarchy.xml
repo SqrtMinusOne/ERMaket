@@ -9,7 +9,7 @@
                 <access>delete</access>
             </roleAccess>
         </accessRights>
-        <name>er1</name>
+        <name>Er1</name>
         <children>
             <childId>1</childId>
             <childId>2</childId>
@@ -23,14 +23,14 @@
     </section>
     <tableEntry id="1">
         <accessRights inherit="True"/>
-        <name>user</name>
+        <name>User</name>
         <tableName>user</tableName>
         <schema>er1</schema>
         <linesOnPage>50</linesOnPage>
         <columns>
             <column>
                 <rowName>name</rowName>
-                <text>name</text>
+                <text>Name</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -40,7 +40,7 @@
             </column>
             <linkedColumn>
                 <rowName>is_assigned_to_task</rowName>
-                <text>is_assigned_to_task</text>
+                <text>Is assigned to task</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -53,7 +53,7 @@
             </linkedColumn>
             <linkedColumn>
                 <rowName>comment_is_authored_by</rowName>
-                <text>comment_is_authored_by</text>
+                <text>Comment is authored by</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -71,12 +71,12 @@
             <fields>
                 <simpleField>
                     <tableField>name</tableField>
-                    <text>name</text>
+                    <text>Name</text>
                     <isEditable>True</isEditable>
                 </simpleField>
                 <linkedField>
                     <tableField>is_assigned_to_task</tableField>
-                    <text>is_assigned_to_task</text>
+                    <text>Is assigned to task</text>
                     <isEditable>True</isEditable>
                     <linkType>dropdown</linkType>
                     <linkSchema>er1</linkSchema>
@@ -84,7 +84,7 @@
                 </linkedField>
                 <linkedField>
                     <tableField>comment_is_authored_by</tableField>
-                    <text>comment_is_authored_by</text>
+                    <text>Comment is authored by</text>
                     <isEditable>True</isEditable>
                     <linkType>dropdown</linkType>
                     <linkSchema>er1</linkSchema>
@@ -96,14 +96,14 @@
     </tableEntry>
     <tableEntry id="2">
         <accessRights inherit="True"/>
-        <name>task</name>
+        <name>Task</name>
         <tableName>task</tableName>
         <schema>er1</schema>
         <linesOnPage>50</linesOnPage>
         <columns>
             <column>
                 <rowName>id</rowName>
-                <text>id</text>
+                <text>Id</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -113,7 +113,7 @@
             </column>
             <column>
                 <rowName>name</rowName>
-                <text>name</text>
+                <text>Name</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -123,7 +123,7 @@
             </column>
             <column>
                 <rowName>due_date</rowName>
-                <text>due_date</text>
+                <text>Due date</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -134,7 +134,7 @@
             </column>
             <column>
                 <rowName>description</rowName>
-                <text>description</text>
+                <text>Description</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -144,7 +144,7 @@
             </column>
             <linkedColumn>
                 <rowName>is_assigned_to_user</rowName>
-                <text>is_assigned_to_user</text>
+                <text>Is assigned to user</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -157,7 +157,7 @@
             </linkedColumn>
             <linkedColumn>
                 <rowName>belongs_to_list</rowName>
-                <text>belongs_to_list</text>
+                <text>Belongs to list</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -172,7 +172,7 @@
             </linkedColumn>
             <linkedColumn>
                 <rowName>subtask_contains</rowName>
-                <text>subtask_contains</text>
+                <text>Subtask contains</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -185,7 +185,7 @@
             </linkedColumn>
             <linkedColumn>
                 <rowName>comment_is_written_to</rowName>
-                <text>comment_is_written_to</text>
+                <text>Comment is written to</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -198,7 +198,7 @@
             </linkedColumn>
             <linkedColumn>
                 <rowName>attachment_is_attached</rowName>
-                <text>attachment_is_attached</text>
+                <text>Attachment is attached</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -216,27 +216,27 @@
             <fields>
                 <simpleField>
                     <tableField>id</tableField>
-                    <text>id</text>
+                    <text>Id</text>
                     <isEditable>True</isEditable>
                 </simpleField>
                 <simpleField>
                     <tableField>name</tableField>
-                    <text>name</text>
+                    <text>Name</text>
                     <isEditable>True</isEditable>
                 </simpleField>
                 <simpleField>
                     <tableField>due_date</tableField>
-                    <text>due_date</text>
+                    <text>Due date</text>
                     <isEditable>True</isEditable>
                 </simpleField>
                 <simpleField>
                     <tableField>description</tableField>
-                    <text>description</text>
+                    <text>Description</text>
                     <isEditable>True</isEditable>
                 </simpleField>
                 <linkedField>
                     <tableField>is_assigned_to_user</tableField>
-                    <text>is_assigned_to_user</text>
+                    <text>Is assigned to user</text>
                     <isEditable>True</isEditable>
                     <linkType>dropdown</linkType>
                     <linkSchema>er1</linkSchema>
@@ -244,7 +244,7 @@
                 </linkedField>
                 <linkedField>
                     <tableField>belongs_to_list</tableField>
-                    <text>belongs_to_list</text>
+                    <text>Belongs to list</text>
                     <isEditable>True</isEditable>
                     <linkType>dropdown</linkType>
                     <linkSchema>er1</linkSchema>
@@ -252,7 +252,7 @@
                 </linkedField>
                 <linkedField>
                     <tableField>subtask_contains</tableField>
-                    <text>subtask_contains</text>
+                    <text>Subtask contains</text>
                     <isEditable>True</isEditable>
                     <linkType>dropdown</linkType>
                     <linkSchema>er1</linkSchema>
@@ -260,7 +260,7 @@
                 </linkedField>
                 <linkedField>
                     <tableField>comment_is_written_to</tableField>
-                    <text>comment_is_written_to</text>
+                    <text>Comment is written to</text>
                     <isEditable>True</isEditable>
                     <linkType>dropdown</linkType>
                     <linkSchema>er1</linkSchema>
@@ -268,7 +268,7 @@
                 </linkedField>
                 <linkedField>
                     <tableField>attachment_is_attached</tableField>
-                    <text>attachment_is_attached</text>
+                    <text>Attachment is attached</text>
                     <isEditable>True</isEditable>
                     <linkType>dropdown</linkType>
                     <linkSchema>er1</linkSchema>
@@ -280,14 +280,14 @@
     </tableEntry>
     <tableEntry id="3">
         <accessRights inherit="True"/>
-        <name>subtask</name>
+        <name>Subtask</name>
         <tableName>subtask</tableName>
         <schema>er1</schema>
         <linesOnPage>50</linesOnPage>
         <columns>
             <column>
                 <rowName>name</rowName>
-                <text>name</text>
+                <text>Name</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -297,7 +297,7 @@
             </column>
             <linkedColumn>
                 <rowName>contains_task</rowName>
-                <text>contains_task</text>
+                <text>Contains task</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -312,7 +312,7 @@
             </linkedColumn>
             <linkedColumn>
                 <rowName>item_contains</rowName>
-                <text>item_contains</text>
+                <text>Item contains</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -330,12 +330,12 @@
             <fields>
                 <simpleField>
                     <tableField>name</tableField>
-                    <text>name</text>
+                    <text>Name</text>
                     <isEditable>True</isEditable>
                 </simpleField>
                 <linkedField>
                     <tableField>contains_task</tableField>
-                    <text>contains_task</text>
+                    <text>Contains task</text>
                     <isEditable>True</isEditable>
                     <linkType>dropdown</linkType>
                     <linkSchema>er1</linkSchema>
@@ -343,7 +343,7 @@
                 </linkedField>
                 <linkedField>
                     <tableField>item_contains</tableField>
-                    <text>item_contains</text>
+                    <text>Item contains</text>
                     <isEditable>True</isEditable>
                     <linkType>dropdown</linkType>
                     <linkSchema>er1</linkSchema>
@@ -355,14 +355,14 @@
     </tableEntry>
     <tableEntry id="4">
         <accessRights inherit="True"/>
-        <name>comment</name>
+        <name>Comment</name>
         <tableName>comment</tableName>
         <schema>er1</schema>
         <linesOnPage>50</linesOnPage>
         <columns>
             <column>
                 <rowName>id</rowName>
-                <text>id</text>
+                <text>Id</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -372,7 +372,7 @@
             </column>
             <column>
                 <rowName>text</rowName>
-                <text>text</text>
+                <text>Text</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -382,7 +382,7 @@
             </column>
             <linkedColumn>
                 <rowName>is_authored_by_user</rowName>
-                <text>is_authored_by_user</text>
+                <text>Is authored by user</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -397,7 +397,7 @@
             </linkedColumn>
             <linkedColumn>
                 <rowName>is_written_to_task</rowName>
-                <text>is_written_to_task</text>
+                <text>Is written to task</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -417,17 +417,17 @@
             <fields>
                 <simpleField>
                     <tableField>id</tableField>
-                    <text>id</text>
+                    <text>Id</text>
                     <isEditable>True</isEditable>
                 </simpleField>
                 <simpleField>
                     <tableField>text</tableField>
-                    <text>text</text>
+                    <text>Text</text>
                     <isEditable>True</isEditable>
                 </simpleField>
                 <linkedField>
                     <tableField>is_authored_by_user</tableField>
-                    <text>is_authored_by_user</text>
+                    <text>Is authored by user</text>
                     <isEditable>True</isEditable>
                     <linkType>dropdown</linkType>
                     <linkSchema>er1</linkSchema>
@@ -435,7 +435,7 @@
                 </linkedField>
                 <linkedField>
                     <tableField>is_written_to_task</tableField>
-                    <text>is_written_to_task</text>
+                    <text>Is written to task</text>
                     <isEditable>True</isEditable>
                     <linkType>dropdown</linkType>
                     <linkSchema>er1</linkSchema>
@@ -447,14 +447,14 @@
     </tableEntry>
     <tableEntry id="5">
         <accessRights inherit="True"/>
-        <name>list</name>
+        <name>List</name>
         <tableName>list</tableName>
         <schema>er1</schema>
         <linesOnPage>50</linesOnPage>
         <columns>
             <column>
                 <rowName>id</rowName>
-                <text>id</text>
+                <text>Id</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -464,7 +464,7 @@
             </column>
             <column>
                 <rowName>name</rowName>
-                <text>name</text>
+                <text>Name</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -474,7 +474,7 @@
             </column>
             <linkedColumn>
                 <rowName>task_belongs_to</rowName>
-                <text>task_belongs_to</text>
+                <text>Task belongs to</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -492,17 +492,17 @@
             <fields>
                 <simpleField>
                     <tableField>id</tableField>
-                    <text>id</text>
+                    <text>Id</text>
                     <isEditable>True</isEditable>
                 </simpleField>
                 <simpleField>
                     <tableField>name</tableField>
-                    <text>name</text>
+                    <text>Name</text>
                     <isEditable>True</isEditable>
                 </simpleField>
                 <linkedField>
                     <tableField>task_belongs_to</tableField>
-                    <text>task_belongs_to</text>
+                    <text>Task belongs to</text>
                     <isEditable>True</isEditable>
                     <linkType>dropdown</linkType>
                     <linkSchema>er1</linkSchema>
@@ -514,14 +514,14 @@
     </tableEntry>
     <tableEntry id="6">
         <accessRights inherit="True"/>
-        <name>attachment</name>
+        <name>Attachment</name>
         <tableName>attachment</tableName>
         <schema>er1</schema>
         <linesOnPage>50</linesOnPage>
         <columns>
             <column>
                 <rowName>id</rowName>
-                <text>id</text>
+                <text>Id</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -531,7 +531,7 @@
             </column>
             <column>
                 <rowName>contents</rowName>
-                <text>contents</text>
+                <text>Contents</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -541,7 +541,7 @@
             </column>
             <linkedColumn>
                 <rowName>is_attached_task</rowName>
-                <text>is_attached_task</text>
+                <text>Is attached task</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -561,17 +561,17 @@
             <fields>
                 <simpleField>
                     <tableField>id</tableField>
-                    <text>id</text>
+                    <text>Id</text>
                     <isEditable>True</isEditable>
                 </simpleField>
                 <simpleField>
                     <tableField>contents</tableField>
-                    <text>contents</text>
+                    <text>Contents</text>
                     <isEditable>True</isEditable>
                 </simpleField>
                 <linkedField>
                     <tableField>is_attached_task</tableField>
-                    <text>is_attached_task</text>
+                    <text>Is attached task</text>
                     <isEditable>True</isEditable>
                     <linkType>dropdown</linkType>
                     <linkSchema>er1</linkSchema>
@@ -583,14 +583,14 @@
     </tableEntry>
     <tableEntry id="7">
         <accessRights inherit="True"/>
-        <name>item</name>
+        <name>Item</name>
         <tableName>item</tableName>
         <schema>er1</schema>
         <linesOnPage>50</linesOnPage>
         <columns>
             <column>
                 <rowName>id</rowName>
-                <text>id</text>
+                <text>Id</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -600,7 +600,7 @@
             </column>
             <column>
                 <rowName>name</rowName>
-                <text>name</text>
+                <text>Name</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -610,7 +610,7 @@
             </column>
             <column>
                 <rowName>status</rowName>
-                <text>status</text>
+                <text>Status</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -620,7 +620,7 @@
             </column>
             <linkedColumn>
                 <rowName>contains_subtask</rowName>
-                <text>contains_subtask</text>
+                <text>Contains subtask</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -640,22 +640,22 @@
             <fields>
                 <simpleField>
                     <tableField>id</tableField>
-                    <text>id</text>
+                    <text>Id</text>
                     <isEditable>True</isEditable>
                 </simpleField>
                 <simpleField>
                     <tableField>name</tableField>
-                    <text>name</text>
+                    <text>Name</text>
                     <isEditable>True</isEditable>
                 </simpleField>
                 <simpleField>
                     <tableField>status</tableField>
-                    <text>status</text>
+                    <text>Status</text>
                     <isEditable>True</isEditable>
                 </simpleField>
                 <linkedField>
                     <tableField>contains_subtask</tableField>
-                    <text>contains_subtask</text>
+                    <text>Contains subtask</text>
                     <isEditable>True</isEditable>
                     <linkType>dropdown</linkType>
                     <linkSchema>er1</linkSchema>
@@ -667,7 +667,7 @@
     </tableEntry>
     <tableEntry id="8">
         <accessRights inherit="True"/>
-        <name>user_is_assigned_to_task</name>
+        <name>User is assigned to task</name>
         <tableName>user_is_assigned_to_task</tableName>
         <schema>er1</schema>
         <linesOnPage>50</linesOnPage>

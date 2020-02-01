@@ -1,3 +1,4 @@
+import stringcase
 from utils import caster, defaultify_init
 
 from .elements import (_element_attrs, _element_children_classes, _element_kws,
@@ -35,7 +36,7 @@ _TableColumn = xmltuple(
 TableColumn = defaultify_init(
     _TableColumn,
     'TableColumn',
-    text=lambda s: s.rowName,
+    text=lambda s: stringcase.sentencecase(s.rowName),
     isPk=False,
     isSort=True,
     isFilter=True,
@@ -74,7 +75,7 @@ _LinkedTableColumn = xmltuple(
 LinkedTableColumn = defaultify_init(
     _LinkedTableColumn,
     'LinkedTableColumn',
-    text=lambda s: s.rowName,
+    text=lambda s: stringcase.sentencecase(s.rowName),
     isPk=False,
     isSort=True,
     isFilter=True,
