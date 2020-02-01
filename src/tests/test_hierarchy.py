@@ -54,7 +54,7 @@ def test_extract(algorithm):
 
     h1.drop_schema('er2')
     er2_section = [section
-                   for section in h1.sections if section.name == 'er2'][0]
+                   for section in h1.sections if section.name == 'Er2'][0]
     assert len(er2_section._children) == 0
 
     h1.drop_by_id(er2_section.id)
