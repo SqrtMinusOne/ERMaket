@@ -15,7 +15,7 @@ __all__ = [
 
 _table_column_attrs = [
     'rowName', 'text', 'isSort', 'isFilter', 'isEditable', 'isPk',
-    'isRequired', 'type', 'dateFormat', 'isVisible', 'isUnique'
+    'isRequired', 'type', 'dateFormat', 'isVisible', 'isUnique', 'isAuto'
 ]
 
 _table_column_types = {
@@ -26,6 +26,7 @@ _table_column_types = {
     'isRequired': caster.bool_cast,
     'isVisible': caster.bool_cast,
     'isUnique': caster.bool_cast,
+    'isAuto': caster.bool_cast
 }
 
 _TableColumn = xmltuple(
@@ -40,10 +41,13 @@ TableColumn = defaultify_init(
     'TableColumn',
     text=lambda s: stringcase.sentencecase(s.rowName),
     isPk=False,
+    isRequired=False,
     isSort=True,
     isFilter=True,
     isEditable=True,
-    isVisible=True
+    isUnique=False,
+    isVisible=True,
+    isAuto=False
 )
 
 TableLinkType = xmlenum(
@@ -51,6 +55,7 @@ TableLinkType = xmlenum(
     'linkType',
     SIMPLE='simple',
     DROPDOWN='dropdown',
+    COMBINED='combined',
     LINKED='linked'
 )
 
@@ -58,6 +63,7 @@ _link_type_mappings = {}
 _link_type_mappings[TableLinkType.SIMPLE] = LinkType.SIMPLE
 _link_type_mappings[TableLinkType.DROPDOWN] = LinkType.DROPDOWN
 _link_type_mappings[TableLinkType.LINKED] = LinkType.LINKEDFORM
+_link_type_mappings[TableLinkType.COMBINED] = LinkType.LINKEDFORM
 
 _LinkedTableColumn = xmltuple(
     '_LinkedTableColumn',
@@ -83,6 +89,11 @@ LinkedTableColumn = defaultify_init(
     isSort=True,
     isFilter=True,
     isEditable=True,
+    isAuto=False,
+    isVisible=True,
+    isRequired=False,
+    type='link',
+    isUnique=False,
     linkType=lambda s: TableLinkType(TableLinkType.SIMPLE)
     if s.fkName else TableLinkType(TableLinkType.LINKED)
 )

@@ -153,6 +153,9 @@ def client(test_db, clear_test_logs):
     config.configs['Logging'] = always_merger.merge(
         config.Logging, config.TestingLogging
     )
+    config.configs['Logging']['root']['handlers'] = [
+        "file_handler", "error_file_handler"
+    ]
     flask_app = create_app()
     flask_app.config.update(config.TestingFlask)
     client = flask_app.test_client()

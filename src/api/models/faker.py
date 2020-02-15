@@ -1,4 +1,5 @@
 import logging
+
 import sqlalchemy as sa
 import tqdm
 from mixer.backend.sqlalchemy import Mixer
@@ -54,8 +55,10 @@ class Faker:
         :param default_num: number of entries, if table_name is not in entries
         """
         if 'system' in self._models.schemas and not self._silence_system_warn:
-            logging.warning('If the model has references to system tables, '
-                            'it may be required to fake schema `system` first')
+            logging.warning(
+                'If the model has references to system tables, '
+                'it may be required to fake schema `system` first'
+            )
         generated = {name: 0 for name in self._models[schema].keys()}
         not_resolved = {name: 0 for name in self._models[schema].keys()}
 

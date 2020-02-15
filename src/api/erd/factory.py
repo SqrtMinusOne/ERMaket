@@ -62,7 +62,7 @@ class Factory:
         fk_col = Factory.make_fk(
             table1,
             relation_name=relation.name,
-            unique=b.is_multiple,
+            unique=not b.is_multiple,
             not_null=not a.is_mandatory,
             onupdate='cascade',
             ondelete='cascade'

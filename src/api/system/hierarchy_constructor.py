@@ -50,28 +50,11 @@ class HierachyConstructor:
         for relation in table.relationships:
             if relation.fk_col:
                 t.columns.append(
-                    LinkedTableColumn(
-                        self._linked_name(relation),
-                        linkTableName=relation.ref_table.name,
-                        type_='link',
-                        linkSchema=self._schema,
-                        fkName=relation.fk_col.name,
-                        type=relation.fk_col.type_,
-                        isMultiple=False,
-                        linkType=TableLinkType(TableLinkType.DROPDOWN),
-                        isRequired=relation.fk_col.not_null,
-                    )
+                    self._make_linked_fk_column(relation)
                 )
             else:
                 t.columns.append(
-                    LinkedTableColumn(
-                        self._linked_name(relation),
-                        linkTableName=relation.ref_table.name,
-                        linkSchema=self._schema,
-                        isMultiple=relation.is_multiple,
-                        linkType=TableLinkType(TableLinkType.DROPDOWN),
-                        isRequired=False  # TODO
-                    )
+                    self._make_linked_nofk_column(relation)
                 )
 
         t.formDescription = t.make_form()
@@ -91,13 +74,39 @@ class HierachyConstructor:
                 relation.ref_table.name, relation.name
             )
 
+    def _make_linked_fk_column(self, relation):
+        return LinkedTableColumn(
+            self._linked_name(relation),
+            linkTableName=relation.ref_table.name,
+            linkSchema=self._schema,
+            fkName=relation.fk_col.name,
+            type=relation.fk_col.type_,
+            isRequired=relation.other_side.is_mandatory,
+            isMultiple=False,
+            linkType=TableLinkType(TableLinkType.DROPDOWN),
+            isUnique=relation.fk_col in relation.table.uniques
+        )
+
+    def _make_linked_nofk_column(self, relation):
+        return LinkedTableColumn(
+            self._linked_name(relation),
+            linkTableName=relation.ref_table.name,
+            linkSchema=self._schema,
+            isMultiple=relation.other_side.is_multiple,
+            linkType=TableLinkType(TableLinkType.COMBINED),
+            isRequired=relation.other_side.is_mandatory,
+            isUnique=False
+        )
+
     def _make_column(self, column):
         params = dict(
             rowName=column.name,
             isPk=column.pk,
             isRequired=column.not_null,
-            type=column.type,
-            isUnique=column.unique
+            type=column.type_,
+            isUnique=column.unique,
+            isAuto=column.auto_inc,
+            isEditable=not column.auto_inc
         )
         if (column.type_ == 'timestamp'):
             params['dateFormat'] = 'DD-MM-YYYY HH:mm:ss'

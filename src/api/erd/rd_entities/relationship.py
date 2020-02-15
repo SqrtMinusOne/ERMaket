@@ -29,6 +29,14 @@ class ORMRelationship:
         if self._ref_rel:
             self._ref_rel._ref_rel = self
 
+    @property
+    def this_side(self):
+        return self.relation.sides[self.side_index]
+
+    @property
+    def other_side(self):
+        return self.ref_rel.this_side
+
     def __repr__(self):
         ret = f'<ORMRelationship table.name={self.table.name}'
         ret += f', ref_table.name={self.ref_table.name}'
