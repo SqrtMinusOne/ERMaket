@@ -1,4 +1,4 @@
-from magic_repr import make_repr
+# from magic_repr import make_repr
 
 from .xml_object import XMLObject
 
@@ -29,5 +29,17 @@ class Side(XMLObject):
         tag.append(self.new_tag('isMultiple', str(self.is_multiple).lower()))
         return tag
 
+    def __repr__(self):
+        ret = f'<Side [{self.id_ref}]: '
+        if self.is_multiple:
+            ret += 'N, '
+        else:
+            ret += '1, '
+        if self.is_mandatory:
+            ret += 'mandatory'
+        else:
+            ret += 'non-mandatory'
+        ret += '>'
+        return ret
 
-Side.__repr__ = make_repr('id_ref', 'is_mandatory', 'is_multiple')
+# Side.__repr__ = make_repr('id_ref', 'is_mandatory', 'is_multiple')

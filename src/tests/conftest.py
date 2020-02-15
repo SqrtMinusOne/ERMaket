@@ -58,6 +58,13 @@ def algorithm(sample_erd):
 
 
 @pytest.fixture()
+def alg_test_options():
+    return {
+        "respect_n_obligation": True,
+    }
+
+
+@pytest.fixture()
 def randomize(autouse=True):
     np.random.seed(42)
 

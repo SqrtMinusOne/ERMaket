@@ -193,7 +193,7 @@ class Algorithm:
     def _resolve_check_not_last(self):
         for table in self.tables.values():
             for relationship in table.check_not_empty:
-                counterpart = relationship.ref_table.get_to_table(table)
+                counterpart = relationship.ref_rel
                 relationship.ref_table.check_not_last.append(counterpart)
 
 

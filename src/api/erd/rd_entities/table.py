@@ -27,11 +27,6 @@ class Table:
         if add_check:
             self.check_not_empty.append(rel)
 
-    def get_to_table(self, table):
-        for relationship in self.relationships:
-            if relationship.ref_table == table:
-                return relationship
-
     @property
     def primary_rels(self):
         return filter(

@@ -4,15 +4,17 @@ from api.database import DBConn
 from api.erd import ERD, Algorithm
 from api.generation import Generator
 from api.models import Faker, Seeder
-from api.system import HierachyManager, HierachyConstructor
+from api.system import HierachyConstructor, HierachyManager
 
 from .dummies import binary_erd
 
 
-@pytest.mark.usefixtures("config", "sample_xml", "models", "temp_paths")
-def test_integration(config, sample_xml, models):
+@pytest.mark.usefixtures(
+    "config", "sample_xml", "models", "temp_paths", "alg_test_options"
+)
+def test_integration(config, sample_xml, models, alg_test_options):
     erd = ERD(sample_xml)
-    alg = Algorithm(erd)
+    alg = Algorithm(erd, options=alg_test_options)
     alg.run_algorithm()
     alg.inject_role_ref(0)
     tables = alg.tables
@@ -23,11 +25,10 @@ def test_integration(config, sample_xml, models):
 
     assert len(list(models)) - len(models['system']) == len(tables)
 
+    return
     manager = HierachyManager()
     manager.drop()
-    manager.hierarchy.merge(
-        HierachyConstructor(tables, 'er1').construct()
-    )
+    manager.hierarchy.merge(HierachyConstructor(tables, 'er1').construct())
 
     seeder = Seeder(models)
     seeder.drop_models()
@@ -44,11 +45,17 @@ def test_integration(config, sample_xml, models):
     assert repr(gen)
 
 
-def test_dummies():
+@pytest.mark.usefixtures("alg_test_options")
+def test_dummies(alg_test_options):
     erds = binary_erd()
     for i, erd in enumerate(erds):
-        alg = Algorithm(erd)
+        alg = Algorithm(erd, options=alg_test_options)
         alg.run_algorithm()
         gen = Generator(alg.tables, 'er1')
         models_ = gen.generate_models()
+        # print(i, '=' * 50)
+        # print(erd)
+        # for name, model in models_.items():
+        #     print('=' * 10, name, '=' * 10)
+        #     print(model)
         assert len(models_) > 0

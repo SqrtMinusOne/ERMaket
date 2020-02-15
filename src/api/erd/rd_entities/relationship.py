@@ -6,6 +6,7 @@ class ORMRelationship:
         name,
         relation,
         side_index,
+        ref_rel=None,
         fk_col=None,
         secondary_table=None,
     ):
@@ -14,8 +15,19 @@ class ORMRelationship:
         self.name = name
         self.relation = relation
         self.side_index = side_index
+        self.ref_rel = ref_rel
         self.fk_col = fk_col
         self.secondary_table = secondary_table
+
+    @property
+    def ref_rel(self):
+        return self._ref_rel
+
+    @ref_rel.setter
+    def ref_rel(self, value):
+        self._ref_rel = value
+        if self._ref_rel:
+            self._ref_rel._ref_rel = self
 
     def __repr__(self):
         ret = f'<ORMRelationship table.name={self.table.name}'

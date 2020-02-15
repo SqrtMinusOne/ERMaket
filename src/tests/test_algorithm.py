@@ -23,11 +23,21 @@ TEST_OPTIONS = {
 }
 
 
+def check_sanity(alg: Algorithm):
+    for table in alg.tables.values():
+        assert table.pk is not None
+        for fk_col in table.foreign_keys:
+            assert fk_col.fk.column is not None
+        for relationship in table.relationships:
+            assert relationship.ref_rel is not None
+
+
 @pytest.mark.usefixtures("sample_xml")
-def test_examlple(sample_xml):
+def test_example(sample_xml):
     erd = ERD(sample_xml)
     algorithm = Algorithm(erd, options=TEST_OPTIONS)
     algorithm.run_algorithm()
+    check_sanity(algorithm)
 
 
 def test_merge():
@@ -40,6 +50,7 @@ def test_merge():
 
     alg = Algorithm(erd, options=TEST_OPTIONS)
     alg.run_algorithm()
+    check_sanity(alg)
     assert len(alg.tables) == 1
     # print(alg)
 
@@ -57,6 +68,7 @@ def test_binary():
         # print('==================================================')
         assert len(alg.tables) > 0
         assert test_erd.successful_iters == 1
+        check_sanity(alg)
 
 
 def test_non_binary():
@@ -64,3 +76,4 @@ def test_non_binary():
         alg = Algorithm(erd, options=TEST_OPTIONS)
         alg.run_algorithm()
         assert len(alg.tables) > 0
+        check_sanity(alg)

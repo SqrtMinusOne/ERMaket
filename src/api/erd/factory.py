@@ -1,4 +1,4 @@
-from itertools import permutations
+from itertools import permutations, combinations
 from typing import List
 
 from api.erd.er_entities import Attribute, Entity, Relation
@@ -52,9 +52,9 @@ class Factory:
         )
 
     def make_rel(table, add_check=False, *args, **kwargs):
-        table.add_rel(
-            ORMRelationship(table=table, *args, **kwargs), add_check=add_check
-        )
+        rel = ORMRelationship(table=table, *args, **kwargs)
+        table.add_rel(rel, add_check=add_check)
+        return rel
 
     @staticmethod
     def direct_link(relation: Relation, table1: Table, table2: Table, resp_n):
@@ -69,7 +69,7 @@ class Factory:
         )
         table2.add_fk(fk_col)  # add fk to b
 
-        Factory.make_rel(  # add rel to b
+        ref_rel = Factory.make_rel(  # add rel to b
             table2,
             ref_table=table1,
             name=relation.name,
@@ -80,6 +80,7 @@ class Factory:
         Factory.make_rel(  # add rel to a
             table1,
             ref_table=table2,
+            ref_rel=ref_rel,
             name=relation.name,
             relation=relation,
             side_index=0,
@@ -108,15 +109,15 @@ class Factory:
         [linked.add_fk(fk) for fk in fks]
         unique = [
             i for i in range(len(relation.sides))
-            if relation.sides[i].is_multiple
+            if not relation.sides[i].is_multiple
         ]
         if len(unique) == 1 or len(unique) > 1 and junique:
             linked.uniques = [fks[i] for i in unique]
 
-        [
+        rels = [
             Factory.make_rel(
                 tables[i1],
-                add_check=add_check and relation.sides[i1].is_mandatory,
+                add_check=add_check and relation.sides[i2].is_mandatory,
                 ref_table=tables[i2],
                 name=relation.name,
                 secondary_table=linked,
@@ -124,7 +125,10 @@ class Factory:
                 side_index=i1
             ) for i1, i2 in permutations(range(len(tables)), 2)
         ]
-
+        [
+            setattr(r1, 'ref_rel', r2)
+            for r1, r2 in combinations(rels, 2)
+        ]
         return linked
 
     @staticmethod
