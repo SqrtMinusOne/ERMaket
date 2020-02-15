@@ -59,7 +59,7 @@ class HierachyConstructor:
                         type=relation.fk_col.type_,
                         isMultiple=False,
                         linkType=TableLinkType(TableLinkType.DROPDOWN),
-                        isRequired=relation.fk_col.not_null
+                        isRequired=relation.fk_col.not_null,
                     )
                 )
             else:
@@ -96,7 +96,8 @@ class HierachyConstructor:
             rowName=column.name,
             isPk=column.pk,
             isRequired=column.not_null,
-            type=column.type_
+            type=column.type,
+            isUnique=column.unique
         )
         if (column.type_ == 'timestamp'):
             params['dateFormat'] = 'DD-MM-YYYY HH:mm:ss'

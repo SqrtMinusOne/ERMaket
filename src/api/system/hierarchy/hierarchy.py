@@ -118,15 +118,19 @@ class Hierachy(_Hierarchy):
         res = []
         for elem in self.values:
             res.append(elem.to_object())
-        return {
-            'hierarchy': res,
-            'root': [elem.id for elem in self._root]
-        }
+        return {'hierarchy': res, 'root': [elem.id for elem in self._root]}
 
     def extract(self, roles):
         h = Hierachy()
+        schemas = set()
+        for table in self.tables:
+            if len(table.accessRights.get(roles)) > 0:
+                schemas.add(table.schema)
         for elem in self.values:
-            if len(elem.accessRights.get(roles)) > 0:
+            if (
+                len(elem.accessRights.get(roles)) > 0 or
+                isinstance(elem, Table) and elem.schema in schemas
+            ):
                 h.append(elem)
         h.set_tree()
         return h

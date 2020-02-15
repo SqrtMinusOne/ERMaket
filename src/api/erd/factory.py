@@ -38,7 +38,6 @@ class Factory:
         ondelete='cascade',
         onupdate='cascade',
         relation_name=None,
-        add_rel=True,
         **kwargs
     ):
         return Column(
@@ -47,66 +46,86 @@ class Factory:
                 ondelete=ondelete,
                 onupdate=onupdate,
                 relation_name=relation_name,
-                add_rel=add_rel
             ),
             *args,
             **kwargs
         )
 
-    @staticmethod
-    def make_rel(table, fk_col):
-        fk = fk_col.fk
-        assert fk.add_rel is True
+    def make_rel(table, add_check=False, *args, **kwargs):
         table.add_rel(
-            ORMRelationship(
-                table=table,
-                ref_table=fk.table,
-                name=fk.relation_name,
-                fk_col=fk_col,
-                is_multiple=False
-            )
-        )
-        fk.table.add_rel(
-            ORMRelationship(
-                table=fk.table,
-                ref_table=table,
-                name=fk.relation_name,
-                is_multiple=fk.column.unique
-            )
+            ORMRelationship(table=table, *args, **kwargs), add_check=add_check
         )
 
     @staticmethod
-    def relation_to_table(relation: Relation, tables: List[Table]) -> Table:
+    def direct_link(relation: Relation, table1: Table, table2: Table, resp_n):
+        a, b = relation.sides[0], relation.sides[1]
+        fk_col = Factory.make_fk(
+            table1,
+            relation_name=relation.name,
+            unique=b.is_multiple,
+            not_null=not a.is_mandatory,
+            onupdate='cascade',
+            ondelete='cascade'
+        )
+        table2.add_fk(fk_col)  # add fk to b
+
+        Factory.make_rel(  # add rel to b
+            table2,
+            ref_table=table1,
+            name=relation.name,
+            fk_col=fk_col,
+            relation=relation,
+            side_index=1
+        )
+        Factory.make_rel(  # add rel to a
+            table1,
+            ref_table=table2,
+            name=relation.name,
+            relation=relation,
+            side_index=0,
+            add_check=resp_n and b.is_mandatory
+        )
+
+    def secondary_link(
+        relation: Relation, tables: List[Table], add_check: bool, junique: bool
+    ):
         if len(tables) == 2:
             name = f"{tables[0].name}_{relation.name}_{tables[1].name}"
         else:
             name = relation.name
         name = NamesConverter.table_name(name)
-        table = Table(name=name, columns=[])
-        multiplicity = [side.is_multiple for side in relation.sides]
-        [
-            table.add_fk(
-                Factory.make_fk(
-                    linked,
-                    relation_name=relation.name,
-                    add_rel=False,
-                    unique=False
-                )
-            ) for linked in tables
+        linked = Table(name=name, columns=[])
+        fks = [
+            Factory.make_fk(
+                table,
+                relation_name=relation.name,
+                unique=False,
+                not_null=False,
+                onupdate='cascade',
+                ondelete='cascade'
+            ) for table in tables
         ]
-        # TODO joint unique index
-        [
-            table1.add_rel(
-                ORMRelationship(
-                    table=table1,
-                    ref_table=table2,
-                    name=relation.name,
-                    secondary_table=table,
-                    is_multiple=multiplicity[tables.index(table2)]
-                )
-            ) for table1, table2 in permutations(tables, 2)
+        [linked.add_fk(fk) for fk in fks]
+        unique = [
+            i for i in range(len(relation.sides))
+            if relation.sides[i].is_multiple
         ]
-        return table
+        if len(unique) == 1 or len(unique) > 1 and junique:
+            linked.uniques = [fks[i] for i in unique]
+
+        [
+            Factory.make_rel(
+                tables[i1],
+                add_check=add_check and relation.sides[i1].is_mandatory,
+                ref_table=tables[i2],
+                name=relation.name,
+                secondary_table=linked,
+                relation=relation,
+                side_index=i1
+            ) for i1, i2 in permutations(range(len(tables)), 2)
+        ]
+
+        return linked
 
     @staticmethod
     def auto_pk(table):

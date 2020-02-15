@@ -12,13 +12,11 @@ class ForeignKey:
         onupdate='cascade',
         ondelete='cascade',
         relation_name=None,
-        add_rel=True
     ):
         self.table = table
         self.column = column
         self.onupdate, self.ondelete = onupdate, ondelete
         self.relation_name = relation_name
-        self.add_rel = add_rel
 
     def __repr__(self):
         if self.column is not None:
@@ -27,7 +25,7 @@ class ForeignKey:
             column_name = "unresolved"
         repr_ = (
             f'<ForeignKey table_name="{self.table.name}"'
-            f' column_name="{column_name}"'
+            f' column.name="{column_name}"'
         )
         if self.ondelete != "cascade":
             repr_ += f' ondelete="{self.ondelete}"'

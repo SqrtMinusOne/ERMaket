@@ -4,24 +4,28 @@ class ORMRelationship:
         table,
         ref_table,
         name,
+        relation,
+        side_index,
         fk_col=None,
         secondary_table=None,
-        is_multiple=True
     ):
         self.table = table
         self.ref_table = ref_table
         self.name = name
+        self.relation = relation
+        self.side_index = side_index
         self.fk_col = fk_col
         self.secondary_table = secondary_table
-        self.is_multiple = is_multiple
 
     def __repr__(self):
         ret = f'<ORMRelationship table.name={self.table.name}'
         ret += f', ref_table.name={self.ref_table.name}'
         ret += f', name={self.name}'
+        ret += f', relation.name={self.relation.name}'
+        ret += f', side_index={self.side_index}'
         if self.fk_col:
             ret += f', fk_col.name={self.fk_col.name}'
         if self.secondary_table:
-            ret += ', secondary_table.name={self.secondary_table.name}'
+            ret += f', secondary_table.name={self.secondary_table.name}'
         ret += '>'
         return ret

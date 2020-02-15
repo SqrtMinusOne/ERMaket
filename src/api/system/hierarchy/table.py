@@ -15,7 +15,7 @@ __all__ = [
 
 _table_column_attrs = [
     'rowName', 'text', 'isSort', 'isFilter', 'isEditable', 'isPk',
-    'isRequired', 'type', 'dateFormat'
+    'isRequired', 'type', 'dateFormat', 'isVisible', 'isUnique'
 ]
 
 _table_column_types = {
@@ -24,6 +24,8 @@ _table_column_types = {
     'isFilter': caster.bool_cast,
     'isEditable': caster.bool_cast,
     'isRequired': caster.bool_cast,
+    'isVisible': caster.bool_cast,
+    'isUnique': caster.bool_cast,
 }
 
 _TableColumn = xmltuple(
@@ -40,7 +42,8 @@ TableColumn = defaultify_init(
     isPk=False,
     isSort=True,
     isFilter=True,
-    isEditable=True
+    isEditable=True,
+    isVisible=True
 )
 
 TableLinkType = xmlenum(
@@ -91,11 +94,12 @@ TableColumns = xmlall(
 __Table = xmltuple(
     '__Table', 'tableEntry', [
         *_element_attrs, 'tableName', 'schema', 'linesOnPage', 'columns',
-        'formDescription', 'pagination'
+        'formDescription', 'pagination', 'hidden'
     ], [*_element_children_classes, TableColumns, FormDescription],
     _element_kws, {
         **_element_types, 'linesOnPage': int,
-        'pagination': caster.bool_cast
+        'pagination': caster.bool_cast,
+        'hidden': caster.bool_cast,
     }
 )
 
@@ -105,7 +109,8 @@ _Table = defaultify_init(
     linesOnPage=50,
     columns=lambda self: TableColumns(),
     tableName=lambda self: self.name,
-    pagination=True
+    pagination=True,
+    hidden=False
 )
 
 
