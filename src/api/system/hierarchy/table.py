@@ -1,4 +1,5 @@
 import stringcase
+
 from utils import caster, defaultify_init
 
 from .elements import (_element_attrs, _element_children_classes, _element_kws,
@@ -62,8 +63,8 @@ TableLinkType = xmlenum(
 _link_type_mappings = {}
 _link_type_mappings[TableLinkType.SIMPLE] = LinkType.SIMPLE
 _link_type_mappings[TableLinkType.DROPDOWN] = LinkType.DROPDOWN
-_link_type_mappings[TableLinkType.LINKED] = LinkType.LINKEDFORM
-_link_type_mappings[TableLinkType.COMBINED] = LinkType.LINKEDFORM
+_link_type_mappings[TableLinkType.LINKED] = LinkType.LINKEDTABLE
+_link_type_mappings[TableLinkType.COMBINED] = LinkType.LINKEDTABLE
 
 _LinkedTableColumn = xmltuple(
     '_LinkedTableColumn',
@@ -108,7 +109,8 @@ __Table = xmltuple(
         'formDescription', 'pagination', 'hidden'
     ], [*_element_children_classes, TableColumns, FormDescription],
     _element_kws, {
-        **_element_types, 'linesOnPage': int,
+        **_element_types,
+        'linesOnPage': int,
         'pagination': caster.bool_cast,
         'hidden': caster.bool_cast,
     }
@@ -130,22 +132,17 @@ class Table(_Table):
         form = FormDescription(self.schema, self.tableName)
         for column in self.columns:
             if column._tag_name == 'column':
-                form.fields.append(
-                    SimpleField(
-                        tableField=column.rowName,
-                        text=column.text,
-                        isEditable=True
-                    )
-                )
+                attrs = {
+                    'rowName': column.rowName,
+                    'text': column.text,
+                    'isEditable': column.isEditable
+                }
+                form.fields.append(SimpleField(**attrs))
             else:
                 form.fields.append(
                     LinkedField(
-                        tableField=column.rowName,
-                        text=column.text,
-                        isEditable=True,
+                        **attrs,
                         linkType=_link_type_mappings[column.linkType.value],
-                        linkSchema=column.linkSchema,
-                        linkTableName=column.linkTableName
                     )
                 )
         return form

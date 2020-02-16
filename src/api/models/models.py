@@ -2,12 +2,14 @@ import glob
 import importlib
 import logging
 
-from marshmallow_sqlalchemy import ModelConversionError, ModelSchema
-# from sqlalchemy.inspection import inspect
-# from marshmallow_sqlalchemy.fields import Nested
+from marshmallow_sqlalchemy import ModelConversionError, SQLAlchemyAutoSchema
 
 from api import Config
 from api.database import DBConn
+
+# from sqlalchemy.inspection import inspect
+# from marshmallow_sqlalchemy.fields import Nested
+
 
 __all__ = ['Models']
 
@@ -102,6 +104,8 @@ class Models:
             model = class_
             sqla_session = DBConn.scoped_session
             include_fk = True
+            load_instance = True
+            include_relationships = True
 
         # for rel in inspect(class_).relationships:
         #     to_nest = rel.mapper.class_
@@ -110,7 +114,9 @@ class Models:
         #     setattr(Meta, rel.class_attribute.key, nested)
 
         schema_class_name = self._marsh_name(class_)
-        schema_class = type(schema_class_name, (ModelSchema, ), {"Meta": Meta})
+        schema_class = type(
+            schema_class_name, (SQLAlchemyAutoSchema, ), {"Meta": Meta}
+        )
         setattr(class_, "__marshmallow__", schema_class)
 
     def __getattr__(self, key):

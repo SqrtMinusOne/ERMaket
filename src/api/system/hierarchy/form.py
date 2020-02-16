@@ -21,16 +21,23 @@ LinkType = xmlenum(
     GROUPEDFORM='groupedForm'
 )
 
+_field_attrs = [
+    'rowName', 'text', 'isEditable'
+]
+
+_field_types = {
+    'isEditable': caster.bool_cast
+}
+
 SimpleField = xmltuple(
-    'SimpleField', 'simpleField', ['tableField', 'text', 'isEditable'],
-    types={'isEditable': caster.bool_cast}
+    'SimpleField', 'simpleField', _field_attrs,
+    types=_field_types
 )
 
 LinkedField = xmltuple(
     'LinkedField', 'linkedField',
-    ['tableField', 'text', 'isEditable', 'linkType', 'linkSchema',
-     'linkTableName'], [LinkType],
-    types={'isEditable': caster.bool_cast}
+    [*_field_attrs, 'linkType'], [LinkType],
+    types=_field_types
 )
 
 FormFields = xmlall(
