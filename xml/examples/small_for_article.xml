@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<erModel xmlns="ermaket" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ermaket er.xsd">
+    <entity id="1">
+        <name>Task</name>
+        <attribute>
+            <name>Name</name>
+            <isPk>true</isPk>
+            <type>varchar(200)</type>
+        </attribute>
+        <attribute>
+            <name>Due date</name>
+            <type>date</type>
+        </attribute>
+        <attribute>
+            <name>Description</name>
+            <type>text</type>
+        </attribute>
+    </entity>
+    <entity id="2">
+        <name>List</name>
+        <attribute>
+            <name>Name</name>
+            <isPk>true</isPk>
+            <type>varchar(200)</type>
+        </attribute>
+    </entity>
+    <relation>
+        <name>belongs_to</name>
+        <side>
+            <idRef>1</idRef>
+            <isMandatory>false</isMandatory>
+            <isMultiple>true</isMultiple>
+        </side>
+        <side>
+            <idRef>2</idRef>
+            <isMandatory>true</isMandatory>
+            <isMultiple>false</isMultiple>
+        </side>
+    </relation>
+</erModel>

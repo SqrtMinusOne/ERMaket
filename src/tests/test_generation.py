@@ -19,7 +19,7 @@ def test_integration(config, sample_xml, models, alg_test_options):
     alg.inject_role_ref(0)
     tables = alg.tables
 
-    gen = Generator(tables, 'er1')
+    gen = Generator(tables, 'er1', add_check=True)
     gen.generate_folder()
     gen.generate_system_models()
 
@@ -50,7 +50,7 @@ def test_dummies(alg_test_options):
     for i, erd in enumerate(erds):
         alg = Algorithm(erd, options=alg_test_options)
         alg.run_algorithm()
-        gen = Generator(alg.tables, 'er1')
+        gen = Generator(alg.tables, 'er1', add_check=True)
         models_ = gen.generate_models()
         # print(i, '=' * 50)
         # print(erd)

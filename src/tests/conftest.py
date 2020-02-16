@@ -86,7 +86,7 @@ def empty_db():
 
     alg.inject_role_ref(0)
 
-    gen = Generator(alg.tables, 'er1')
+    gen = Generator(alg.tables, 'er1', add_check=True)
     gen.generate_folder()
     gen.generate_system_models()
 

@@ -14,7 +14,7 @@ __all__ = ['Generator']
 
 
 class Generator:
-    def __init__(self, tables, schema):
+    def __init__(self, tables, schema, add_check=False):
         self._config = Config()
         self._env = Environment(
             loader=FileSystemLoader(
@@ -27,12 +27,16 @@ class Generator:
         self._env.lstrip_blocks = True
         self._template = self._env.get_template('model.tmpl.py')
 
+        self._add_check = add_check
+
         self._tables = tables
         self._schema = schema
 
     def _generate_model(self, name):
         render = self._template.render(
-            schema=self._schema, table=self._tables[name]
+            schema=self._schema,
+            table=self._tables[name],
+            add_check=self._add_check
         )
         return self._postprocess_python(render)
 

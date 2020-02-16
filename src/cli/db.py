@@ -56,15 +56,26 @@ def create():
     is_flag=True,
     help='Do not generate system tables'
 )
-def generate(xml, schema, no_system):
+@click.option(
+    "--folder",
+    help="Folder where to put the generated classes",
+    type=click.Path()
+)
+@click.option(
+    "--check",
+    help="Add methods to check mandatory relationships",
+    is_flag=True,
+    default=False
+)
+def generate(xml, schema, no_system, folder, check):
     with open(xml, 'r') as f:
         xml = f.read()
     erd = ERD(xml)
     alg = Algorithm(erd)
     alg.run_algorithm()
 
-    gen = Generator(alg.tables, schema)
-    gen.generate_folder()
+    gen = Generator(alg.tables, schema, add_check=check)
+    gen.generate_folder(folder)
     if not no_system:
         gen.generate_system_models()
 
@@ -94,7 +105,10 @@ def clear(folder, schema):
     '--fake', help='Make human-readable data', default=False, is_flag=True
 )
 @click.option(
-    '--refill', help='Drop & create tables before', default=False, is_flag=True
+    '--refill',
+    help='Drop & create tables before',
+    default=False,
+    is_flag=True
 )
 def fake(all, schema, num, config, fake, refill):
     DBConn()
