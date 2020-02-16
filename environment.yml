@@ -32,5 +32,5 @@ dependencies:
     - flask-login
     - prettierfier
     - deepmerge
-    - flask-session
+    - git+https://github.com/SqrtMinusOne/flask-session.git
     - flask_cors
