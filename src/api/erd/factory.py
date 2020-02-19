@@ -63,7 +63,7 @@ class Factory:
             table1,
             relation_name=relation.name,
             unique=not b.is_multiple,
-            not_null=not a.is_mandatory,
+            not_null=a.is_mandatory,
             onupdate='cascade',
             ondelete='cascade'
         )

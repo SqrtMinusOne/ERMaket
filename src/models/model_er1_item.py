@@ -33,7 +33,7 @@ class Er1Item(Base):
         sa.ForeignKey(
             'er1.subtask.name', ondelete='cascade', onupdate='cascade'
         ),
-        nullable=True,
+        nullable=False,
     )
 
     contains_subtask = sa.orm.relationship(

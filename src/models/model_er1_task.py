@@ -35,7 +35,7 @@ class Er1Task(Base):
     list_id = sa.Column(
         sa.BigInteger(),
         sa.ForeignKey('er1.list.id', ondelete='cascade', onupdate='cascade'),
-        nullable=True,
+        nullable=False,
     )
 
     comment_is_written_to = sa.orm.relationship(
