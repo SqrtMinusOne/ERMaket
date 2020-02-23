@@ -4,11 +4,12 @@ from .elements import (_element_attrs, _element_children_classes, _element_kws,
                        _element_types)
 from .xmlall import xmlall
 from .xmlenum import xmlenum
+from .xmllist import xmllist
 from .xmltuple import xmltuple
 
 __all__ = [
     'LinkType', 'SimpleField', 'LinkedField', 'FormFields', 'FormDescription',
-    'Form'
+    'Form', 'FormGroups', 'FormGroup'
 ]
 
 LinkType = xmlenum(
@@ -22,36 +23,49 @@ LinkType = xmlenum(
 )
 
 _field_attrs = [
-    'rowName', 'text', 'isEditable'
+    'rowName', 'text', 'isEditable', 'isVisible', 'default', 'hint', 'help'
 ]
 
-_field_types = {
-    'isEditable': caster.bool_cast
-}
+_field_types = {'isEditable': caster.bool_cast, 'isVisible': caster.bool_cast}
 
-SimpleField = xmltuple(
-    'SimpleField', 'simpleField', _field_attrs,
+_field_defaults = {'isVisible': True}
+
+_SimpleField = xmltuple(
+    'SimpleField', 'simpleField', _field_attrs, types=_field_types
+)
+
+SimpleField = defaultify_init(_SimpleField, 'SimpleField', **_field_defaults)
+
+_LinkedField = xmltuple(
+    'LinkedField',
+    'linkedField', [*_field_attrs, 'linkType'], [LinkType],
     types=_field_types
 )
 
-LinkedField = xmltuple(
-    'LinkedField', 'linkedField',
-    [*_field_attrs, 'linkType'], [LinkType],
-    types=_field_types
-)
+LinkedField = defaultify_init(_LinkedField, 'LinkedField', **_field_defaults)
 
 FormFields = xmlall(
     'FormFields', 'fields', simple=SimpleField, linked=LinkedField
 )
 
-# TODO 16-01-20 09:03:35 conversion to form-generator schema
+RowNames = xmllist('RowNames', 'rows', 'rowName')
+
+_FormGroup = xmltuple('FormGroup', 'formGroup', ['legend', 'rows'], [RowNames])
+
+FormGroup = defaultify_init(_FormGroup, 'FormGroup', rows=lambda s: RowNames())
+
+FormGroups = xmllist('FormGroups', 'groups', FormGroup)
+
 _FormDescription = xmltuple(
-    'FormDescription', 'formDescription', ['schema', 'tableName', 'fields'],
-    [FormFields]
+    'FormDescription', 'formDescription',
+    ['schema', 'tableName', 'fields', 'groups'], [FormFields, FormGroups]
 )
 
 FormDescription = defaultify_init(
-    _FormDescription, 'FormDescription', fields=lambda s: FormFields()
+    _FormDescription,
+    'FormDescription',
+    fields=lambda s: FormFields(),
+    groups=lambda s: FormGroups()
 )
 
 Form = xmltuple(

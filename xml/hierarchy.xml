@@ -84,20 +84,33 @@
                     <rowName>name</rowName>
                     <text>Name</text>
                     <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
                 </simpleField>
                 <linkedField>
                     <rowName>name</rowName>
                     <text>Name</text>
                     <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
                     <linkType>linkedTable</linkType>
                 </linkedField>
                 <linkedField>
                     <rowName>name</rowName>
                     <text>Name</text>
                     <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
                     <linkType>linkedTable</linkType>
                 </linkedField>
             </fields>
+            <groups>
+                <formGroup>
+                    <legend>User</legend>
+                    <rows>
+                        <rowName>name</rowName>
+                        <rowName>comment_is_authored_by</rowName>
+                        <rowName>is_assigned_to_task</rowName>
+                    </rows>
+                </formGroup>
+            </groups>
         </formDescription>
         <pagination>True</pagination>
         <hidden>False</hidden>
@@ -257,53 +270,78 @@
                     <rowName>id</rowName>
                     <text>Id</text>
                     <isEditable>False</isEditable>
+                    <isVisible>True</isVisible>
                 </simpleField>
                 <simpleField>
                     <rowName>name</rowName>
                     <text>Name</text>
                     <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
                 </simpleField>
                 <simpleField>
                     <rowName>due_date</rowName>
                     <text>Due date</text>
                     <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
                 </simpleField>
                 <simpleField>
                     <rowName>description</rowName>
                     <text>Description</text>
                     <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
                 </simpleField>
                 <linkedField>
                     <rowName>description</rowName>
                     <text>Description</text>
                     <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
                     <linkType>linkedTable</linkType>
                 </linkedField>
                 <linkedField>
                     <rowName>description</rowName>
                     <text>Description</text>
                     <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
                     <linkType>dropdown</linkType>
                 </linkedField>
                 <linkedField>
                     <rowName>description</rowName>
                     <text>Description</text>
                     <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
                     <linkType>linkedTable</linkType>
                 </linkedField>
                 <linkedField>
                     <rowName>description</rowName>
                     <text>Description</text>
                     <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
                     <linkType>linkedTable</linkType>
                 </linkedField>
                 <linkedField>
                     <rowName>description</rowName>
                     <text>Description</text>
                     <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
                     <linkType>linkedTable</linkType>
                 </linkedField>
             </fields>
+            <groups>
+                <formGroup>
+                    <legend>Task</legend>
+                    <rows>
+                        <rowName>id</rowName>
+                        <rowName>name</rowName>
+                        <rowName>due_date</rowName>
+                        <rowName>description</rowName>
+                        <rowName>comment_is_written_to</rowName>
+                        <rowName>belongs_to_list</rowName>
+                        <rowName>attachment_is_attached</rowName>
+                        <rowName>subtask_contains</rowName>
+                        <rowName>is_assigned_to_user</rowName>
+                    </rows>
+                </formGroup>
+            </groups>
         </formDescription>
         <pagination>True</pagination>
         <hidden>False</hidden>
@@ -372,20 +410,33 @@
                     <rowName>name</rowName>
                     <text>Name</text>
                     <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
                 </simpleField>
                 <linkedField>
                     <rowName>name</rowName>
                     <text>Name</text>
                     <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
                     <linkType>dropdown</linkType>
                 </linkedField>
                 <linkedField>
                     <rowName>name</rowName>
                     <text>Name</text>
                     <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
                     <linkType>linkedTable</linkType>
                 </linkedField>
             </fields>
+            <groups>
+                <formGroup>
+                    <legend>Subtask</legend>
+                    <rows>
+                        <rowName>name</rowName>
+                        <rowName>contains_task</rowName>
+                        <rowName>item_contains</rowName>
+                    </rows>
+                </formGroup>
+            </groups>
         </formDescription>
         <pagination>True</pagination>
         <hidden>False</hidden>
@@ -468,25 +519,40 @@
                     <rowName>id</rowName>
                     <text>Id</text>
                     <isEditable>False</isEditable>
+                    <isVisible>True</isVisible>
                 </simpleField>
                 <simpleField>
                     <rowName>text</rowName>
                     <text>Text</text>
                     <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
                 </simpleField>
                 <linkedField>
                     <rowName>text</rowName>
                     <text>Text</text>
                     <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
                     <linkType>dropdown</linkType>
                 </linkedField>
                 <linkedField>
                     <rowName>text</rowName>
                     <text>Text</text>
                     <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
                     <linkType>dropdown</linkType>
                 </linkedField>
             </fields>
+            <groups>
+                <formGroup>
+                    <legend>Comment</legend>
+                    <rows>
+                        <rowName>id</rowName>
+                        <rowName>text</rowName>
+                        <rowName>is_authored_by_user</rowName>
+                        <rowName>is_written_to_task</rowName>
+                    </rows>
+                </formGroup>
+            </groups>
         </formDescription>
         <pagination>True</pagination>
         <hidden>False</hidden>
@@ -550,19 +616,32 @@
                     <rowName>id</rowName>
                     <text>Id</text>
                     <isEditable>False</isEditable>
+                    <isVisible>True</isVisible>
                 </simpleField>
                 <simpleField>
                     <rowName>name</rowName>
                     <text>Name</text>
                     <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
                 </simpleField>
                 <linkedField>
                     <rowName>name</rowName>
                     <text>Name</text>
                     <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
                     <linkType>linkedTable</linkType>
                 </linkedField>
             </fields>
+            <groups>
+                <formGroup>
+                    <legend>List</legend>
+                    <rows>
+                        <rowName>id</rowName>
+                        <rowName>name</rowName>
+                        <rowName>task_belongs_to</rowName>
+                    </rows>
+                </formGroup>
+            </groups>
         </formDescription>
         <pagination>True</pagination>
         <hidden>False</hidden>
@@ -627,19 +706,32 @@
                     <rowName>id</rowName>
                     <text>Id</text>
                     <isEditable>False</isEditable>
+                    <isVisible>True</isVisible>
                 </simpleField>
                 <simpleField>
                     <rowName>contents</rowName>
                     <text>Contents</text>
                     <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
                 </simpleField>
                 <linkedField>
                     <rowName>contents</rowName>
                     <text>Contents</text>
                     <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
                     <linkType>dropdown</linkType>
                 </linkedField>
             </fields>
+            <groups>
+                <formGroup>
+                    <legend>Attachment</legend>
+                    <rows>
+                        <rowName>id</rowName>
+                        <rowName>contents</rowName>
+                        <rowName>is_attached_task</rowName>
+                    </rows>
+                </formGroup>
+            </groups>
         </formDescription>
         <pagination>True</pagination>
         <hidden>False</hidden>
@@ -717,24 +809,39 @@
                     <rowName>id</rowName>
                     <text>Id</text>
                     <isEditable>False</isEditable>
+                    <isVisible>True</isVisible>
                 </simpleField>
                 <simpleField>
                     <rowName>name</rowName>
                     <text>Name</text>
                     <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
                 </simpleField>
                 <simpleField>
                     <rowName>status</rowName>
                     <text>Status</text>
                     <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
                 </simpleField>
                 <linkedField>
                     <rowName>status</rowName>
                     <text>Status</text>
                     <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
                     <linkType>dropdown</linkType>
                 </linkedField>
             </fields>
+            <groups>
+                <formGroup>
+                    <legend>Item</legend>
+                    <rows>
+                        <rowName>id</rowName>
+                        <rowName>name</rowName>
+                        <rowName>status</rowName>
+                        <rowName>contains_subtask</rowName>
+                    </rows>
+                </formGroup>
+            </groups>
         </formDescription>
         <pagination>True</pagination>
         <hidden>False</hidden>
@@ -750,6 +857,12 @@
             <schema>er1</schema>
             <tableName>user_is_assigned_to_task</tableName>
             <fields/>
+            <groups>
+                <formGroup>
+                    <legend>User is assigned to task</legend>
+                    <rows/>
+                </formGroup>
+            </groups>
         </formDescription>
         <pagination>True</pagination>
         <hidden>False</hidden>

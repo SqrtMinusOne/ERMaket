@@ -1,10 +1,10 @@
 import stringcase
-
 from utils import caster, defaultify_init
 
 from .elements import (_element_attrs, _element_children_classes, _element_kws,
                        _element_types)
-from .form import FormDescription, LinkedField, LinkType, SimpleField
+from .form import (FormDescription, FormGroup, LinkedField, LinkType,
+                   SimpleField)
 from .xmlall import xmlall
 from .xmlenum import xmlenum
 from .xmltuple import xmltuple
@@ -130,6 +130,7 @@ _Table = defaultify_init(
 class Table(_Table):
     def make_form(self):
         form = FormDescription(self.schema, self.tableName)
+        group = FormGroup(legend=self.name)
         for column in self.columns:
             if column._tag_name == 'column':
                 attrs = {
@@ -145,4 +146,6 @@ class Table(_Table):
                         linkType=_link_type_mappings[column.linkType.value],
                     )
                 )
+            group.rows.append(column.rowName)
+        form.groups.append(group)
         return form
