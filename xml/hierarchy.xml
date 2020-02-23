@@ -87,15 +87,15 @@
                     <isVisible>True</isVisible>
                 </simpleField>
                 <linkedField>
-                    <rowName>name</rowName>
-                    <text>Name</text>
+                    <rowName>comment_is_authored_by</rowName>
+                    <text>Comment is authored by</text>
                     <isEditable>True</isEditable>
                     <isVisible>True</isVisible>
                     <linkType>linkedTable</linkType>
                 </linkedField>
                 <linkedField>
-                    <rowName>name</rowName>
-                    <text>Name</text>
+                    <rowName>is_assigned_to_task</rowName>
+                    <text>Is assigned to task</text>
                     <isEditable>True</isEditable>
                     <isVisible>True</isVisible>
                     <linkType>linkedTable</linkType>
@@ -291,36 +291,36 @@
                     <isVisible>True</isVisible>
                 </simpleField>
                 <linkedField>
-                    <rowName>description</rowName>
-                    <text>Description</text>
+                    <rowName>comment_is_written_to</rowName>
+                    <text>Comment is written to</text>
                     <isEditable>True</isEditable>
                     <isVisible>True</isVisible>
                     <linkType>linkedTable</linkType>
                 </linkedField>
                 <linkedField>
-                    <rowName>description</rowName>
-                    <text>Description</text>
+                    <rowName>belongs_to_list</rowName>
+                    <text>Belongs to list</text>
                     <isEditable>True</isEditable>
                     <isVisible>True</isVisible>
                     <linkType>dropdown</linkType>
                 </linkedField>
                 <linkedField>
-                    <rowName>description</rowName>
-                    <text>Description</text>
+                    <rowName>attachment_is_attached</rowName>
+                    <text>Attachment is attached</text>
                     <isEditable>True</isEditable>
                     <isVisible>True</isVisible>
                     <linkType>linkedTable</linkType>
                 </linkedField>
                 <linkedField>
-                    <rowName>description</rowName>
-                    <text>Description</text>
+                    <rowName>subtask_contains</rowName>
+                    <text>Subtask contains</text>
                     <isEditable>True</isEditable>
                     <isVisible>True</isVisible>
                     <linkType>linkedTable</linkType>
                 </linkedField>
                 <linkedField>
-                    <rowName>description</rowName>
-                    <text>Description</text>
+                    <rowName>is_assigned_to_user</rowName>
+                    <text>Is assigned to user</text>
                     <isEditable>True</isEditable>
                     <isVisible>True</isVisible>
                     <linkType>linkedTable</linkType>
@@ -413,15 +413,15 @@
                     <isVisible>True</isVisible>
                 </simpleField>
                 <linkedField>
-                    <rowName>name</rowName>
-                    <text>Name</text>
+                    <rowName>contains_task</rowName>
+                    <text>Contains task</text>
                     <isEditable>True</isEditable>
                     <isVisible>True</isVisible>
                     <linkType>dropdown</linkType>
                 </linkedField>
                 <linkedField>
-                    <rowName>name</rowName>
-                    <text>Name</text>
+                    <rowName>item_contains</rowName>
+                    <text>Item contains</text>
                     <isEditable>True</isEditable>
                     <isVisible>True</isVisible>
                     <linkType>linkedTable</linkType>
@@ -528,15 +528,15 @@
                     <isVisible>True</isVisible>
                 </simpleField>
                 <linkedField>
-                    <rowName>text</rowName>
-                    <text>Text</text>
+                    <rowName>is_authored_by_user</rowName>
+                    <text>Is authored by user</text>
                     <isEditable>True</isEditable>
                     <isVisible>True</isVisible>
                     <linkType>dropdown</linkType>
                 </linkedField>
                 <linkedField>
-                    <rowName>text</rowName>
-                    <text>Text</text>
+                    <rowName>is_written_to_task</rowName>
+                    <text>Is written to task</text>
                     <isEditable>True</isEditable>
                     <isVisible>True</isVisible>
                     <linkType>dropdown</linkType>
@@ -625,8 +625,8 @@
                     <isVisible>True</isVisible>
                 </simpleField>
                 <linkedField>
-                    <rowName>name</rowName>
-                    <text>Name</text>
+                    <rowName>task_belongs_to</rowName>
+                    <text>Task belongs to</text>
                     <isEditable>True</isEditable>
                     <isVisible>True</isVisible>
                     <linkType>linkedTable</linkType>
@@ -715,8 +715,8 @@
                     <isVisible>True</isVisible>
                 </simpleField>
                 <linkedField>
-                    <rowName>contents</rowName>
-                    <text>Contents</text>
+                    <rowName>is_attached_task</rowName>
+                    <text>Is attached task</text>
                     <isEditable>True</isEditable>
                     <isVisible>True</isVisible>
                     <linkType>dropdown</linkType>
@@ -824,8 +824,8 @@
                     <isVisible>True</isVisible>
                 </simpleField>
                 <linkedField>
-                    <rowName>status</rowName>
-                    <text>Status</text>
+                    <rowName>contains_subtask</rowName>
+                    <text>Contains subtask</text>
                     <isEditable>True</isEditable>
                     <isVisible>True</isVisible>
                     <linkType>dropdown</linkType>

@@ -16,7 +16,8 @@ __all__ = [
 
 _table_column_attrs = [
     'rowName', 'text', 'isSort', 'isFilter', 'isEditable', 'isPk',
-    'isRequired', 'type', 'dateFormat', 'isVisible', 'isUnique', 'isAuto'
+    'isRequired', 'type', 'dateFormat', 'isVisible', 'isUnique', 'isAuto',
+    'default'
 ]
 
 _table_column_types = {
@@ -132,12 +133,12 @@ class Table(_Table):
         form = FormDescription(self.schema, self.tableName)
         group = FormGroup(legend=self.name)
         for column in self.columns:
+            attrs = {
+                'rowName': column.rowName,
+                'text': column.text,
+                'isEditable': column.isEditable
+            }
             if column._tag_name == 'column':
-                attrs = {
-                    'rowName': column.rowName,
-                    'text': column.text,
-                    'isEditable': column.isEditable
-                }
                 form.fields.append(SimpleField(**attrs))
             else:
                 form.fields.append(

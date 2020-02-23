@@ -23,7 +23,7 @@ LinkType = xmlenum(
 )
 
 _field_attrs = [
-    'rowName', 'text', 'isEditable', 'isVisible', 'default', 'hint', 'help'
+    'rowName', 'text', 'isEditable', 'isVisible', 'hint', 'help'
 ]
 
 _field_types = {'isEditable': caster.bool_cast, 'isVisible': caster.bool_cast}
