@@ -24,6 +24,7 @@ class TestSeeder(unittest.TestCase):
         models = Models()
         seeder = Seeder(models)
         faker = Faker(models)
+        seeder.drop_models()
         seeder.create_models()
         faker.fake_all(10)
         with DBConn.get_session() as db:

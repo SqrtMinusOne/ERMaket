@@ -33,7 +33,7 @@ class DBConn:
 
     @staticmethod
     @contextmanager
-    def get_session():
+    def get_session(**kwargs):
         """
         Get automatically closing sessions
 
@@ -43,18 +43,18 @@ class DBConn:
             # do stuff
         ```
         """
-        session = DBConn.Session()
+        session = DBConn.Session(**kwargs)
         yield session
         session.close()
 
     @staticmethod
     @contextmanager
-    def ensure_session(session):
+    def ensure_session(session, **kwargs):
         """
         If session is None, make a new one
         """
         if session is None:
-            session = DBConn.Session()
+            session = DBConn.Session(**kwargs)
             yield session
             session.close()
         else:

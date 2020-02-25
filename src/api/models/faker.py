@@ -3,6 +3,7 @@ import logging
 import sqlalchemy as sa
 import tqdm
 from mixer.backend.sqlalchemy import Mixer
+from sqlalchemy.inspection import inspect
 
 from api.database import DBConn
 
@@ -20,12 +21,14 @@ class Faker:
     Class for automatic filling the database with test data
 
     """
+
     def __init__(self, models: Models, verbose=False, fake=False):
         self._models = models
         self._verbose = verbose
         self._mixer = None
         self._fake = fake
         self._silence_system_warn = False
+        self._max_resolve = 5
 
     def _init_mixer(self, db):
         self._mixer = Mixer(session=db, commit=False, fake=self._fake)
@@ -52,7 +55,7 @@ class Faker:
         :param schema: schema name
         :param entries: {model_name: number_of_entries}
         model_name is generated camelCase
-        :param default_num: number of entries, if table_name is not in entries
+        :param default_num: number of entries, if t_name is not in entries
         """
         if 'system' in self._models.schemas and not self._silence_system_warn:
             logging.warning(
@@ -72,7 +75,7 @@ class Faker:
             if self._verbose:
                 bar = tqdm.tqdm(total=total)
 
-            with DBConn.get_session() as db:
+            with DBConn.get_session(autoflush=False) as db:
                 self._init_mixer(db)
                 while len(generated) > 0:
                     finished = []
@@ -86,9 +89,10 @@ class Faker:
                             generated[name] += 1
                             if self._verbose:
                                 bar.update(1)
+                            not_resolved[name] = 0
                         else:
                             not_resolved[name] += 1
-                            if not_resolved[name] > 3:
+                            if not_resolved[name] > self._max_resolve:
                                 raise ResolveError(
                                     f"Can't resolve foreign keys for {name}"
                                 )
@@ -115,18 +119,18 @@ class Faker:
         """
         attributes = {}
         resolved = True
+        relationships = inspect(model).relationships.values()
         for name, attr in dict(model.__table__.columns).items():
             if attr.foreign_keys:
                 fk = next(iter(attr.foreign_keys))
             else:
                 continue
-            table_name = '.'.join(fk._column_tokens[:-1])
+            t_name = '.'.join(fk._column_tokens[:-1])
             # backref_name = fk._column_tokens[1]
             column = fk._column_tokens[-1]
-            # TODO check unique constraint
             entry = list(
                 db.execute(
-                    f"SELECT {column} FROM {table_name} ORDER BY RANDOM() LIMIT 1"
+                    f"SELECT {column} FROM {t_name} ORDER BY RANDOM() LIMIT 1"
                 )
             )
             if not entry:
@@ -134,10 +138,22 @@ class Faker:
                 break
             else:
                 attributes[name] = entry[0][0]
-                self._flush_faked(db)
-                # attributes[backref_name] = \
-                #     self._mixer.SELECT(**{column: entry[0][0]})
+                rel = self._get_relationship(relationships, name)
+                if rel:
+                    target = self._models[rel.target.schema][rel.argument.arg]
+                    search = {}
+                    search[column] = entry[0][0]
+                    obj = db.query(target).filter_by(**search).first()
+                    attributes[rel.class_attribute.key] = obj
         if resolved:
             faked = self._mixer.blend(model, **attributes)
             db.add(faked)
         return resolved
+
+    def _get_relationship(self, relationships, column_name):
+        for r in relationships:
+            if any([
+                c.name == column_name
+                for c in r.local_columns
+            ]):
+                return r
