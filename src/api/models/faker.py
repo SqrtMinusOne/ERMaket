@@ -28,7 +28,7 @@ class Faker:
         self._mixer = None
         self._fake = fake
         self._silence_system_warn = False
-        self._max_resolve = 5
+        self._max_resolve = 20
 
     def _init_mixer(self, db):
         self._mixer = Mixer(session=db, commit=False, fake=self._fake)
