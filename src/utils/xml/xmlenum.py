@@ -1,6 +1,6 @@
 from magic_repr import make_repr
 
-from api.erd.er_entities import XMLObject, ConvertableXML
+from .xml_object import XMLObject, ConvertableXML
 
 __all__ = ['xmlenum']
 

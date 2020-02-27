@@ -1,9 +1,6 @@
 from magic_repr import make_repr
 
-from api.erd.er_entities import ConvertableXML, XMLObject
-
-from .xmlenum import xmlenum
-from .xmllist import xmllist
+from utils.xml import xmlenum, xmllist, ConvertableXML, XMLObject
 
 __all__ = ['AccessRight', 'RoleAccess', 'AccessRights']
 

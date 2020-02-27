@@ -4,8 +4,8 @@ from bs4 import BeautifulSoup
 
 from api.config import Config
 from api.erd import ERD
-from api.erd.er_entities import Entity, Relation, XMLObject
-from api.system.hierarchy import xmlall, xmlenum, xmllist, xmltuple, xmltag
+from api.erd.er_entities import Entity, Relation
+from utils.xml import XMLObject, xmlall, xmlenum, xmllist, xmltuple, xmltag
 from utils import defaultify_init
 
 

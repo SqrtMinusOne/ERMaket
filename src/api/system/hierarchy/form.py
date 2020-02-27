@@ -2,10 +2,7 @@ from utils import caster, defaultify_init
 
 from .elements import (_element_attrs, _element_children_classes, _element_kws,
                        _element_types)
-from .xmlall import xmlall
-from .xmlenum import xmlenum
-from .xmllist import xmllist
-from .xmltuple import xmltuple
+from utils.xml import xmlenum, xmllist, xmltuple, xmlall
 
 __all__ = [
     'LinkType', 'SimpleField', 'LinkedField', 'FormFields', 'FormDescription',

@@ -1,7 +1,7 @@
 from magic_repr import make_repr
 
 from .attribute import Attribute
-from .xml_object import XMLObject
+from utils.xml import XMLObject
 
 __all__ = ['Entity']
 

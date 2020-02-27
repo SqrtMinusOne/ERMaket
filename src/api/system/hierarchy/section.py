@@ -1,8 +1,6 @@
 from .elements import (_element_attrs, _element_children_classes, _element_kws,
                        _element_types)
-from .xmllist import xmllist
-from .xmltag import xmltag
-from .xmltuple import xmltuple
+from utils.xml import xmllist, xmltuple, xmltag
 
 __all__ = ['Section', 'Children']
 

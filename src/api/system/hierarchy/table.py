@@ -5,9 +5,7 @@ from .elements import (_element_attrs, _element_children_classes, _element_kws,
                        _element_types)
 from .form import (FormDescription, FormGroup, LinkedField, LinkType,
                    SimpleField)
-from .xmlall import xmlall
-from .xmlenum import xmlenum
-from .xmltuple import xmltuple
+from utils.xml import xmlall, xmltuple, xmlenum
 
 __all__ = [
     'Table', 'TableColumn', 'TableColumns', 'TableLinkType',

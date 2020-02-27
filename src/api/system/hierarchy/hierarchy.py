@@ -1,13 +1,12 @@
 from bs4 import BeautifulSoup
 
 from api import Config
-from api.erd.er_entities import XMLObject
+from utils.xml import XMLObject, xmlall
 
 from .elements import Page, PrebuiltPage
 from .form import Form
 from .section import Section
 from .table import Table
-from .xmlall import xmlall
 
 __all__ = ['Hierachy']
 

@@ -4,7 +4,8 @@ from bs4 import BeautifulSoup
 from magic_repr import make_repr
 
 from api import Config
-from api.erd.er_entities import Entity, Relation, XMLObject
+from api.erd.er_entities import Entity, Relation
+from utils.xml import XMLObject
 
 __all__ = ['ERD']
 

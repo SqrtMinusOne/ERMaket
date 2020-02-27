@@ -1,7 +1,6 @@
 from .access import AccessRights
-from .xmlenum import xmlenum
-from .xmllist import xmllist
-from .xmltuple import xmltuple
+
+from utils.xml import xmlenum, xmllist, xmltuple
 
 __all__ = [
     'Button', 'Trigger', 'Buttons', 'Triggers', 'Page',

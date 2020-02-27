@@ -1,6 +1,6 @@
 from magic_repr import make_repr
 
-from .xml_object import XMLObject
+from utils.xml import XMLObject
 
 __all__ = ['Attribute']
 

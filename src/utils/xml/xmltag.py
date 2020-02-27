@@ -1,6 +1,6 @@
 from magic_repr import make_repr
 
-from api.erd.er_entities import ConvertableXML, XMLObject
+from .xml_object import ConvertableXML, XMLObject
 
 __all__ = ['xmltag']
 
