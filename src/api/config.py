@@ -1,11 +1,13 @@
 import json
 
+from utils import Singleton
+
 __all__ = ['Config']
 
 _configs = {}
 
 
-class Config:
+class Config(metaclass=Singleton):
     """configs JSON wrapper"""
     configs = {}
 

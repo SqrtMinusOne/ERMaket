@@ -3,7 +3,6 @@ import shutil
 from collections import namedtuple
 from pathlib import Path
 
-import numpy as np
 import pytest
 from deepmerge import always_merger
 
@@ -14,6 +13,7 @@ from api.generation import Generator
 from api.models import Faker, Models, Seeder
 from api.system import HierachyConstructor, HierachyManager, UserManager
 from app import create_app
+from utils import Singleton
 
 SAMPLE_ERD = '../xml/example.xml'
 
@@ -26,14 +26,16 @@ def sample_xml():
 
 @pytest.fixture()
 def config():
-    config = Config(reload=True)
+    with Singleton.block():
+        config = Config(reload=True)
     return config
 
 
 @pytest.fixture()
 def models():
     DBConn()
-    return Models()
+    with Singleton.block():
+        return Models()
 
 
 @pytest.fixture()
@@ -64,14 +66,21 @@ def alg_test_options():
     }
 
 
+@pytest.fixture(autouse=True)
+def reset_singletons():
+    Singleton.reset()
+
+
 @pytest.fixture()
-def randomize(autouse=True):
-    np.random.seed(42)
+def block_singletons():
+    with Singleton.block():
+        yield
 
 
 @pytest.fixture(scope='module')
 def empty_db():
-    config = Config(reload=True)
+    config = Config()
+    config.read(reload=True)
 
     with open(SAMPLE_ERD, 'r') as f:
         xml = f.read()
@@ -150,6 +159,7 @@ def test_db(empty_db):
 @pytest.fixture(scope='module')
 def client(test_db, clear_test_logs):
     config = Config()
+    config.read(reload=True)
     config.configs['Logging'] = always_merger.merge(
         config.Logging, config.TestingLogging
     )
@@ -169,6 +179,7 @@ def client(test_db, clear_test_logs):
 @pytest.fixture(scope='session')
 def clear_test_logs():
     config = Config()
+    config.read(reload=True)
     try:
         os.remove(
             config.TestingLogging['handlers']['file_handler']['filename']

@@ -2,6 +2,9 @@ from sqlalchemy_json_querybuilder.querybuilder.search import Search
 from sqlalchemy import func, select
 
 
+__all__ = ['QueryBuilder']
+
+
 class QueryBuilder:
     def __init__(self, session):
         self._session = session

@@ -6,6 +6,7 @@ from marshmallow_sqlalchemy import ModelConversionError, SQLAlchemyAutoSchema
 
 from api import Config
 from api.database import DBConn
+from utils import Singleton
 
 # from sqlalchemy.inspection import inspect
 # from marshmallow_sqlalchemy.fields import Nested
@@ -14,7 +15,7 @@ from api.database import DBConn
 __all__ = ['Models']
 
 
-class Models:
+class Models(metaclass=Singleton):
     """A class for managing the SQLAlchemy models directory.
     As models are generated classes, they have to be imported dynamically.
 

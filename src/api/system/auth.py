@@ -2,6 +2,7 @@ from sqlalchemy.orm.exc import NoResultFound
 
 from api.database import DBConn
 from api.models import Models
+from utils import Singleton
 
 from .hierarchy_manager import HierachyManager
 
@@ -20,7 +21,7 @@ def get_or_create(session, model, defaults=None, **kwargs):
             return instance
 
 
-class UserManager:
+class UserManager(metaclass=Singleton):
     def __init__(self):
         self.models = Models()
         self._User = self.models['system']['User']

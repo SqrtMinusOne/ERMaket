@@ -14,6 +14,7 @@ def test_connection():
         assert sess
 
 
+@pytest.mark.usefixtures("block_singletons")
 def test_models():
     models = Models()
     assert len(models.schemas) > 0

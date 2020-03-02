@@ -4,13 +4,14 @@ import os
 
 from api.config import Config
 from api.system.hierarchy import Hierachy
+from utils import Singleton
 
 __all__ = ['HierachyManager']
 
 _hierarchy = None
 
 
-class HierachyManager:
+class HierachyManager(metaclass=Singleton):
     def __init__(self, reload=False, save=True):
         self._config = Config()
         self.read(reload)
