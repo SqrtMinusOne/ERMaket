@@ -143,13 +143,14 @@ def test_db(empty_db):
     TestData = namedtuple(
         'TestData', [
             'admin_user', 'normal_user', 'model', 'model_name', 'field_name',
-            'schema'
+            'schema', 'hierarchy'
         ]
     )
     return TestData(
         admin_user=admin,
         normal_user=normal,
         model=model,
+        hierarchy=hierarchy_manager.h,
         model_name=model_name,
         field_name=field_name,
         schema='er1'

@@ -1,7 +1,8 @@
 import pytest
 
 from api.database import DBConn
-from api.queries import QueryBuilder
+from api.models import Faker
+from api.queries import QueryBuilder, Transaction
 
 
 def _get_sample(db, test_db):
@@ -33,3 +34,27 @@ def test_fetch_one(test_db):
         builder = QueryBuilder(db)
         found_obj = builder.fetch_one(test_db.model, filter_by=[criterion])
         assert obj == found_obj
+
+
+@pytest.mark.usefixtures('test_db', 'models')
+def test_create(test_db, models):
+    model = next(iter(models))
+    entry = test_db.hierarchy.get_table_entry(
+        model.__table_args__['schema'], model.__tablename__
+    )
+
+    with DBConn.get_session() as db:
+        faker = Faker(models, db=db)
+        faked = faker.fake_one(model, db)
+        data = faked.__marshmallow__().dump(faked)
+
+        transaction = {}
+        transaction[entry.id] = {
+            'create': {
+                'dummy_key': {
+                    'newData': data
+                }
+            }
+        }
+        Transaction(db, transaction)
+        # t.execute() TODO

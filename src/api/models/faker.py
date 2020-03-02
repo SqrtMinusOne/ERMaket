@@ -22,13 +22,16 @@ class Faker:
 
     """
 
-    def __init__(self, models: Models, verbose=False, fake=False):
+    def __init__(self, models: Models, verbose=False, fake=False, db=None):
         self._models = models
         self._verbose = verbose
         self._mixer = None
         self._fake = fake
         self._silence_system_warn = False
         self._max_resolve = 20
+
+        if db:
+            self._init_mixer(db)
 
     def _init_mixer(self, db):
         self._mixer = Mixer(session=db, commit=False, fake=self._fake)
@@ -104,18 +107,12 @@ class Faker:
             if self._verbose:
                 bar.close()
 
-    def _flush_faked(self, db):
-        try:
-            db.commit()
-        except sa.exc.IntegrityError:
-            db.rollback()  # TODO logging
-
-    def _fake_model(self, model, db):
+    def fake_one(self, model, db):
         """Generate fake model
 
         :param model: SQLAlchemy model
         :param db: session, connection or engine
-        :returns: True, if foreign_keys were resolved successfully
+        :returns: model instance, if fks were resolved successfully
         """
         attributes = {}
         resolved = True
@@ -147,8 +144,21 @@ class Faker:
                     attributes[rel.class_attribute.key] = obj
         if resolved:
             faked = self._mixer.blend(model, **attributes)
+            return faked
+        return None
+
+    def _flush_faked(self, db):
+        try:
+            db.commit()
+        except sa.exc.IntegrityError:
+            db.rollback()  # TODO logging
+
+    def _fake_model(self, model, db):
+        faked = self.fake_one(model, db)
+        if faked:
             db.add(faked)
-        return resolved
+            return True
+        return False
 
     def _get_relationship(self, relationships, column_name):
         for r in relationships:
