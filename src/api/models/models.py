@@ -103,7 +103,7 @@ class Models(metaclass=Singleton):
 
         class Meta(object):
             model = class_
-            sqla_session = DBConn.scoped_session
+            # sqla_session = DBConn.scoped_session
             include_fk = True
             load_instance = True
             include_relationships = True

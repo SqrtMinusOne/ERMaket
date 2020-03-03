@@ -44,9 +44,12 @@ def test_create(test_db, models):
     )
 
     with DBConn.get_session() as db:
+        count = db.query(model).count()
+
         faker = Faker(models, db=db)
         faked = faker.fake_one(model, db)
         data = faked.__marshmallow__().dump(faked)
+        db.rollback()
 
         transaction = {}
         transaction[entry.id] = {
@@ -56,5 +59,7 @@ def test_create(test_db, models):
                 }
             }
         }
-        Transaction(db, transaction)
-        # t.execute() TODO
+        t = Transaction(db, transaction)
+        t.execute()
+
+        assert db.query(model).count() == count + 1

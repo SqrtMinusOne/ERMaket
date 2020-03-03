@@ -50,7 +50,7 @@ class Transaction:
             if pk.isAuto:
                 del kwargs[pk.rowName]
 
-            obj = model(**kwargs)
+            obj = model.__marshmallow__().load(kwargs, session=self._db)
             self._db.add(obj)
 
     def _process_update(self, _id):
