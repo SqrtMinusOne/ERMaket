@@ -29,6 +29,7 @@ class Transaction:
             raise exp
 
     def _prepare(self):
+        self._params = {int(_id): unit for _id, unit in self._params.items()}
         for _id in self._params.keys():
             table = self._hierarchy.h.get_by_id(_id)
             name = NamesConverter.class_name(table.schema, table.tableName)

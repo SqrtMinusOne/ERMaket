@@ -7,7 +7,9 @@ from api.queries import Transaction
 
 __all__ = ['transaction']
 
-transaction = Blueprint('transaction', 'transaction', url_prefix='/change')
+transaction = Blueprint(
+    'transaction', 'transaction', url_prefix='/transaction'
+)
 CORS(transaction, supports_credentials=True)
 
 
@@ -16,6 +18,6 @@ CORS(transaction, supports_credentials=True)
 def process():
     data = request.form or request.json
     with DBConn.get_session() as db:
-        transaction = Transaction(db, data)
+        transaction = Transaction(db, data['transaction'])
         transaction.execute()
     return jsonify({"ok": True})
