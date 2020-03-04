@@ -1,5 +1,5 @@
-from api.models import Models, NamesConverter
 from api.config import Config
+from api.models import Models, NamesConverter
 from api.system import HierachyManager
 
 __all__ = ['Transaction']
@@ -39,7 +39,12 @@ class Transaction:
             self._pks[_id] = table.pk
 
     def _process_id(self, _id):
-        self._process_create(_id)
+        if 'create' in self._params[_id]:
+            self._process_create(_id)
+        if 'delete' in self._params[_id]:
+            self._process_delete(_id)
+        if 'update' in self._params[_id]:
+            self._process_update(_id)
 
     def _process_create(self, _id):
         pk = self._pks[_id]
@@ -53,8 +58,25 @@ class Transaction:
             obj = model.__marshmallow__().load(kwargs, session=self._db)
             self._db.add(obj)
 
-    def _process_update(self, _id):
-        pass  # TODO
-
     def _process_delete(self, _id):
-        pass
+        pk = self._pks[_id]
+        model = self._extracted[_id]
+
+        for key in self._params[_id]['delete'].keys():
+            self._db.query(model).filter_by(**{pk.rowName: key}).delete()
+
+    def _process_update(self, _id):
+        model = self._extracted[_id]
+        pk = self._pks[_id]
+        for update in self._params[_id]['update'].values():
+
+            # TODO Optimize?
+            item = self._db.query(model).filter_by(
+                **{
+                    pk.rowName: update['oldData'][pk.rowName]
+                }
+            ).first()
+            new_item = model.__marshmallow__().load(
+                update['newData'], session=self._db, instance=item
+            )
+            self._db.add(new_item)

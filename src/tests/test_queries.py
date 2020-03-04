@@ -3,6 +3,7 @@ import pytest
 from api.database import DBConn
 from api.models import Faker
 from api.queries import QueryBuilder, Transaction
+from api.system.hierarchy import LinkedTableColumn
 
 
 def _get_sample(db, test_db):
@@ -38,10 +39,8 @@ def test_fetch_one(test_db):
 
 @pytest.mark.usefixtures('test_db', 'models')
 def test_create(test_db, models):
-    model = next(iter(models))
-    entry = test_db.hierarchy.get_table_entry(
-        model.__table_args__['schema'], model.__tablename__
-    )
+    model = test_db.model
+    entry = test_db.entry
 
     with DBConn.get_session() as db:
         count = db.query(model).count()
@@ -52,14 +51,71 @@ def test_create(test_db, models):
         db.rollback()
 
         transaction = {}
-        transaction[entry.id] = {
-            'create': {
-                'dummy_key': {
-                    'newData': data
-                }
-            }
-        }
+        transaction[entry.id] = {'create': {'dummy_key': {'newData': data}}}
         t = Transaction(db, transaction)
         t.execute()
 
         assert db.query(model).count() == count + 1
+
+
+@pytest.mark.usefixtures('test_db')
+def test_delete(test_db):
+    model = test_db.model
+    entry = test_db.entry
+
+    with DBConn.get_session() as db:
+        count = db.query(model).count()
+        item = db.query(model).first()
+        data = model.__marshmallow__().dump(item)
+        key = data[entry.pk.rowName]
+
+        transaction = {entry.id: {'delete': {key: True}}}
+
+        t = Transaction(db, transaction)
+        t.execute()
+
+        assert db.query(model).count() == count - 1
+
+
+@pytest.mark.usefixtures('test_db', 'models')
+def test_update(test_db, models):
+    model = test_db.model
+    entry = test_db.entry
+    not_pk = next(
+        col for col in entry.columns
+        if not col.isPk and not isinstance(col, LinkedTableColumn)
+    )
+
+    with DBConn.get_session() as db:
+        item = db.query(model).first()
+        old_data = model.__marshmallow__().dump(item)
+        key = old_data[entry.pk.rowName]
+
+        faker = Faker(models, db=db)
+        faked = faker.fake_one(model, db)
+        fake_data = faked.__marshmallow__().dump(faked)
+        db.rollback()
+
+        new_data = old_data.copy()
+        new_data[not_pk.rowName] = fake_data[not_pk.rowName]
+
+        transaction = {
+            entry.id:
+                {
+                    'update': {
+                        key: {
+                            'newData': new_data,
+                            'oldData': old_data
+                        }
+                    }
+                }
+        }
+
+        t = Transaction(db, transaction)
+        t.execute()
+
+        changed_item = db.query(model).filter_by(**{
+            entry.pk.rowName: key
+        }).first()
+        assert getattr(changed_item,
+                       not_pk.rowName) == new_data[not_pk.rowName]
