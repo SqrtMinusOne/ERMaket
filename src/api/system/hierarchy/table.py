@@ -148,3 +148,9 @@ class Table(_Table):
             group.rows.append(column.rowName)
         form.groups.append(group)
         return form
+
+    @property
+    def pk(self):
+        for column in self.columns:
+            if column.isPk:
+                return column

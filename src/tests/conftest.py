@@ -135,6 +135,9 @@ def test_db(empty_db):
     model = next(iter(models))
     model_name = model.__name__
     field_name = next(iter(model.__table__.columns)).name
+    entry = hierarchy_manager.h.get_table_entry(
+        model.__table_args__['schema'], model.__tablename__
+    )
 
     User = namedtuple('User', ['user', 'login', 'password'])
     admin = User(admin_user, 'admin', 'password')
@@ -143,13 +146,15 @@ def test_db(empty_db):
     TestData = namedtuple(
         'TestData', [
             'admin_user', 'normal_user', 'model', 'model_name', 'field_name',
-            'schema'
+            'schema', 'hierarchy', 'entry'
         ]
     )
     return TestData(
         admin_user=admin,
         normal_user=normal,
         model=model,
+        entry=entry,
+        hierarchy=hierarchy_manager.h,
         model_name=model_name,
         field_name=field_name,
         schema='er1'

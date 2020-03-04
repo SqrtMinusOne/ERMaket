@@ -1,4 +1,8 @@
+import json
+
 import pytest
+
+from api.database import DBConn
 
 
 def login(client, user):
@@ -69,3 +73,24 @@ def test_get(client, test_db):
     # assert client.get(table_url).status_code == 403
     # assert client.get(entry_url).status_code == 403
     client.post('/auth/logout')
+
+
+@pytest.mark.usefixtures("client", "test_db")
+def test_transaction(client, test_db):
+    model = test_db.model
+    entry = test_db.entry
+
+    with DBConn.get_session() as db:
+        item = db.query(model).first()
+        data = model.__marshmallow__().dump(item)
+        key = data[entry.pk.rowName]
+
+        transaction = {entry.id: {'delete': {key: True}}}
+    login(client, test_db.admin_user)
+    response = client.post(
+        '/transaction/execute',
+        data=json.dumps({'transaction': transaction}),
+        content_type='application/json'
+    )
+
+    assert response.status_code == 200

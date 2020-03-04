@@ -29,7 +29,7 @@ def create_app():
 
     login_manager = LoginManager()
     sess = Session()
-    models = Models(system_only=True)
+    models = Models()
     User = models['system']['User']
 
     @login_manager.user_loader
@@ -78,9 +78,10 @@ def create_app():
 
         DBConn()
 
-        from blueprints import tables, auth
+        from blueprints import tables, auth, transaction
         app.register_blueprint(tables)
         app.register_blueprint(auth)
+        app.register_blueprint(transaction)
     else:
         logging.info('Skipping reloader')
     return app

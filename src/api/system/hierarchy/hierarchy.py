@@ -171,7 +171,7 @@ class Hierachy(_Hierarchy):
         try:
             if isinstance(id, XMLObject):
                 return self._ids[id.value]
-            return self.ids[id]
+            return self._ids[id]
         except KeyError:
             return None
 
