@@ -57,6 +57,8 @@
                 <linkSchema>er1</linkSchema>
                 <linkType>combined</linkType>
                 <isMultiple>True</isMultiple>
+                <linkRequired>True</linkRequired>
+                <linkMultiple>False</linkMultiple>
             </linkedColumn>
             <linkedColumn>
                 <rowName>is_assigned_to_task</rowName>
@@ -74,6 +76,8 @@
                 <linkSchema>er1</linkSchema>
                 <linkType>combined</linkType>
                 <isMultiple>True</isMultiple>
+                <linkRequired>False</linkRequired>
+                <linkMultiple>True</linkMultiple>
             </linkedColumn>
         </columns>
         <formDescription>
@@ -191,6 +195,8 @@
                 <linkSchema>er1</linkSchema>
                 <linkType>combined</linkType>
                 <isMultiple>True</isMultiple>
+                <linkRequired>True</linkRequired>
+                <linkMultiple>False</linkMultiple>
             </linkedColumn>
             <linkedColumn>
                 <rowName>belongs_to_list</rowName>
@@ -209,6 +215,8 @@
                 <linkType>dropdown</linkType>
                 <fkName>list_id</fkName>
                 <isMultiple>False</isMultiple>
+                <linkRequired>False</linkRequired>
+                <linkMultiple>True</linkMultiple>
             </linkedColumn>
             <linkedColumn>
                 <rowName>attachment_is_attached</rowName>
@@ -226,6 +234,8 @@
                 <linkSchema>er1</linkSchema>
                 <linkType>combined</linkType>
                 <isMultiple>True</isMultiple>
+                <linkRequired>True</linkRequired>
+                <linkMultiple>False</linkMultiple>
             </linkedColumn>
             <linkedColumn>
                 <rowName>subtask_contains</rowName>
@@ -243,6 +253,8 @@
                 <linkSchema>er1</linkSchema>
                 <linkType>combined</linkType>
                 <isMultiple>True</isMultiple>
+                <linkRequired>True</linkRequired>
+                <linkMultiple>False</linkMultiple>
             </linkedColumn>
             <linkedColumn>
                 <rowName>is_assigned_to_user</rowName>
@@ -260,6 +272,8 @@
                 <linkSchema>er1</linkSchema>
                 <linkType>combined</linkType>
                 <isMultiple>True</isMultiple>
+                <linkRequired>False</linkRequired>
+                <linkMultiple>True</linkMultiple>
             </linkedColumn>
         </columns>
         <formDescription>
@@ -383,6 +397,8 @@
                 <linkType>dropdown</linkType>
                 <fkName>task_id</fkName>
                 <isMultiple>False</isMultiple>
+                <linkRequired>False</linkRequired>
+                <linkMultiple>True</linkMultiple>
             </linkedColumn>
             <linkedColumn>
                 <rowName>item_contains</rowName>
@@ -400,6 +416,8 @@
                 <linkSchema>er1</linkSchema>
                 <linkType>combined</linkType>
                 <isMultiple>True</isMultiple>
+                <linkRequired>True</linkRequired>
+                <linkMultiple>False</linkMultiple>
             </linkedColumn>
         </columns>
         <formDescription>
@@ -491,6 +509,8 @@
                 <linkType>dropdown</linkType>
                 <fkName>user_name</fkName>
                 <isMultiple>False</isMultiple>
+                <linkRequired>False</linkRequired>
+                <linkMultiple>True</linkMultiple>
             </linkedColumn>
             <linkedColumn>
                 <rowName>is_written_to_task</rowName>
@@ -509,6 +529,8 @@
                 <linkType>dropdown</linkType>
                 <fkName>task_id</fkName>
                 <isMultiple>False</isMultiple>
+                <linkRequired>False</linkRequired>
+                <linkMultiple>True</linkMultiple>
             </linkedColumn>
         </columns>
         <formDescription>
@@ -606,6 +628,8 @@
                 <linkSchema>er1</linkSchema>
                 <linkType>combined</linkType>
                 <isMultiple>True</isMultiple>
+                <linkRequired>True</linkRequired>
+                <linkMultiple>False</linkMultiple>
             </linkedColumn>
         </columns>
         <formDescription>
@@ -696,6 +720,8 @@
                 <linkType>dropdown</linkType>
                 <fkName>task_id</fkName>
                 <isMultiple>False</isMultiple>
+                <linkRequired>False</linkRequired>
+                <linkMultiple>True</linkMultiple>
             </linkedColumn>
         </columns>
         <formDescription>
@@ -799,6 +825,8 @@
                 <linkType>dropdown</linkType>
                 <fkName>subtask_name</fkName>
                 <isMultiple>False</isMultiple>
+                <linkRequired>False</linkRequired>
+                <linkMultiple>True</linkMultiple>
             </linkedColumn>
         </columns>
         <formDescription>

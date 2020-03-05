@@ -78,6 +78,11 @@ class Transaction:
                 }
             ).first()
             new_item = model.__marshmallow__().load(
-                update['newData'], session=self._db, instance=item
+                {
+                    **update['oldData'],
+                    **update['newData']
+                },
+                session=self._db,
+                instance=item
             )
             self._db.add(new_item)

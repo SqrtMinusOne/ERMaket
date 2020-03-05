@@ -74,10 +74,14 @@ _LinkedTableColumn = xmltuple(
         'linkType',
         'fkName',
         'isMultiple',
+        'linkRequired',
+        'linkMultiple'
     ], [TableLinkType],
     types={
         **_table_column_types,
         'isMultiple': caster.bool_cast,
+        'linkRequired': caster.bool_cast,
+        'linkMultiple': caster.bool_cast
     }
 )
 
@@ -92,6 +96,8 @@ LinkedTableColumn = defaultify_init(
     isAuto=False,
     isVisible=True,
     isRequired=False,
+    linkRequired=False,
+    linkMultiple=False,
     type='link',
     isUnique=False,
     linkType=lambda s: TableLinkType(TableLinkType.SIMPLE)

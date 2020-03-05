@@ -83,6 +83,8 @@ class HierachyConstructor:
             type=relation.fk_col.type_,
             isRequired=relation.other_side.is_mandatory,
             isMultiple=False,
+            linkRequired=relation.this_side.is_mandatory,
+            linkMultiple=relation.this_side.is_multiple,
             linkType=TableLinkType(TableLinkType.DROPDOWN),
             isUnique=relation.fk_col in relation.table.uniques
         )
@@ -93,6 +95,8 @@ class HierachyConstructor:
             linkTableName=relation.ref_table.name,
             linkSchema=self._schema,
             isMultiple=relation.other_side.is_multiple,
+            linkRequired=relation.this_side.is_mandatory,
+            linkMultiple=relation.this_side.is_multiple,
             linkType=TableLinkType(TableLinkType.COMBINED),
             isRequired=relation.other_side.is_mandatory,
             isUnique=False
