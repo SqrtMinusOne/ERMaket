@@ -75,7 +75,8 @@ _LinkedTableColumn = xmltuple(
         'fkName',
         'isMultiple',
         'linkRequired',
-        'linkMultiple'
+        'linkMultiple',
+        'linkName'
     ], [TableLinkType],
     types={
         **_table_column_types,
