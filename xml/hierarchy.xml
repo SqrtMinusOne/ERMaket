@@ -120,6 +120,12 @@
         </formDescription>
         <pagination>True</pagination>
         <hidden>False</hidden>
+        <defaultSort>
+            <sortColumn>
+                <rowName>name</rowName>
+                <sort>asc</sort>
+            </sortColumn>
+        </defaultSort>
     </tableEntry>
     <tableEntry id="2">
         <accessRights inherit="True"/>
@@ -366,6 +372,12 @@
         </formDescription>
         <pagination>True</pagination>
         <hidden>False</hidden>
+        <defaultSort>
+            <sortColumn>
+                <rowName>id</rowName>
+                <sort>asc</sort>
+            </sortColumn>
+        </defaultSort>
     </tableEntry>
     <tableEntry id="3">
         <accessRights inherit="True"/>
@@ -467,6 +479,12 @@
         </formDescription>
         <pagination>True</pagination>
         <hidden>False</hidden>
+        <defaultSort>
+            <sortColumn>
+                <rowName>name</rowName>
+                <sort>asc</sort>
+            </sortColumn>
+        </defaultSort>
     </tableEntry>
     <tableEntry id="4">
         <accessRights inherit="True"/>
@@ -589,6 +607,12 @@
         </formDescription>
         <pagination>True</pagination>
         <hidden>False</hidden>
+        <defaultSort>
+            <sortColumn>
+                <rowName>id</rowName>
+                <sort>asc</sort>
+            </sortColumn>
+        </defaultSort>
     </tableEntry>
     <tableEntry id="5">
         <accessRights inherit="True"/>
@@ -681,6 +705,12 @@
         </formDescription>
         <pagination>True</pagination>
         <hidden>False</hidden>
+        <defaultSort>
+            <sortColumn>
+                <rowName>id</rowName>
+                <sort>asc</sort>
+            </sortColumn>
+        </defaultSort>
     </tableEntry>
     <tableEntry id="6">
         <accessRights inherit="True"/>
@@ -774,6 +804,12 @@
         </formDescription>
         <pagination>True</pagination>
         <hidden>False</hidden>
+        <defaultSort>
+            <sortColumn>
+                <rowName>id</rowName>
+                <sort>asc</sort>
+            </sortColumn>
+        </defaultSort>
     </tableEntry>
     <tableEntry id="7">
         <accessRights inherit="True"/>
@@ -887,6 +923,12 @@
         </formDescription>
         <pagination>True</pagination>
         <hidden>False</hidden>
+        <defaultSort>
+            <sortColumn>
+                <rowName>id</rowName>
+                <sort>asc</sort>
+            </sortColumn>
+        </defaultSort>
     </tableEntry>
     <tableEntry id="8">
         <accessRights inherit="True"/>

@@ -2,7 +2,8 @@ import pytest
 
 from api.database import DBConn
 from api.models import Faker
-from api.queries import QueryBuilder, Transaction
+from api.queries import (ErrorsParser, InsufficientRightsError, QueryBuilder,
+                         Transaction)
 from api.system.hierarchy import LinkedTableColumn
 
 
@@ -52,6 +53,12 @@ def test_create(test_db, models):
 
         transaction = {}
         transaction[entry.id] = {'create': {'dummy_key': {'newData': data}}}
+
+        bad_t = Transaction(db, transaction, role_names=['dummy'])
+        with pytest.raises(InsufficientRightsError):
+            bad_t.execute()
+        assert db.query(model).count() == count
+
         t = Transaction(db, transaction)
         t.execute()
 
@@ -70,6 +77,11 @@ def test_delete(test_db):
         key = data[entry.pk.rowName]
 
         transaction = {entry.id: {'delete': {key: True}}}
+
+        bad_t = Transaction(db, transaction, role_names=['dummy'])
+        with pytest.raises(InsufficientRightsError):
+            bad_t.execute()
+        assert db.query(model).count() == count
 
         t = Transaction(db, transaction)
         t.execute()
@@ -111,6 +123,17 @@ def test_update(test_db, models):
                 }
         }
 
+        bad_t = Transaction(db, transaction, role_names=['dummy'])
+        with pytest.raises(InsufficientRightsError):
+            bad_t.execute()
+        not_changed_item = db.query(model).filter_by(
+            **{
+                entry.pk.rowName: key
+            }
+        ).first()
+        assert getattr(not_changed_item,
+                       not_pk.rowName) == old_data[not_pk.rowName]
+
         t = Transaction(db, transaction)
         t.execute()
 
@@ -119,3 +142,32 @@ def test_update(test_db, models):
         }).first()
         assert getattr(changed_item,
                        not_pk.rowName) == new_data[not_pk.rowName]
+
+
+@pytest.mark.usefixtures('test_db')
+def test_exception_handling(test_db):
+    entry = test_db.entry
+    with DBConn.get_session() as db:
+        transaction = {
+            entry.id:
+                {
+                    'create':
+                        {
+                            'dummy_key':
+                                {
+                                    'newData':
+                                        {
+                                            'jackshit': True,
+                                            'jackshit2': '12345'
+                                        }
+                                }
+                        }
+                }
+        }
+
+        t = Transaction(db, transaction)
+        try:
+            t.execute()
+        except Exception as exp:
+            error, _ = ErrorsParser.parse(exp)
+            assert len(error.info) > 0

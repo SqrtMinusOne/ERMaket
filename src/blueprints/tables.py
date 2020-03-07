@@ -1,6 +1,6 @@
 import simplejson as json
 from flask import Blueprint, abort, jsonify, request
-from flask_login import login_required, current_user
+from flask_login import current_user, login_required
 
 from api.database import DBConn
 from api.models import Models, NamesConverter
@@ -19,17 +19,17 @@ def bind_criterion(criterion, name):
     criterion['field_name'] = name + '.' + criterion['field_name']
 
 
-def get_filter_params(args, model_name, pagination=True):
+def get_filter_params(args, model_name, pagination=True, default_order=None):
     kwargs = {}
     kwargs['filter_by'] = json.loads(
         request.args.get('filter_by', default='[]', type=str)
     )
+    default_order = json.dumps(
+        default_order
+    ) if default_order is not None else '[]'
     if isinstance(kwargs['filter_by'], dict):
         [
-            [
-                bind_criterion(criterion, model_name)
-                for criterion in group
-            ]
+            [bind_criterion(criterion, model_name) for criterion in group]
             for group in kwargs['filter_by'].values()
         ]
     elif isinstance(kwargs['filter_by'], list):
@@ -42,7 +42,7 @@ def get_filter_params(args, model_name, pagination=True):
         kwargs['offset'] = request.args.get('offset', default=0, type=int)
         kwargs['limit'] = request.args.get('limit', default=10, type=int)
         kwargs['order_by'] = json.loads(
-            request.args.get('order_by', default='[]', type=str)
+            request.args.get('order_by', default=default_order, type=str)
         )
         for i in range(len(kwargs['order_by'])):
             order = kwargs['order_by'][i]
@@ -62,21 +62,19 @@ def get_model(db, schema, table, access_type):
         abort(403)
     name = NamesConverter.class_name(schema, table)
     model = models[schema][name]
-    return model, name
+    order = entry.get_default_sort()
+    return model, name, order
 
 
 @tables.route('/table/<schema>/<table>')
 @login_required
 def get_table(schema, table):
     with DBConn.get_session() as db:
-        model, name = get_model(db, schema, table, AccessRight.VIEW)
-        kwargs = get_filter_params(request.args, name)
+        model, name, order = get_model(db, schema, table, AccessRight.VIEW)
+        kwargs = get_filter_params(request.args, name, default_order=order)
         builder = QueryBuilder(db)
         data = builder.fetch_data(model, **kwargs)
-        result = {
-            "data": data,
-            "total": builder.count_data(model)
-        }
+        result = {"data": data, "total": builder.count_data(model)}
     return jsonify(result)
 
 
@@ -84,7 +82,7 @@ def get_table(schema, table):
 @login_required
 def get_entry(schema, table):
     with DBConn.get_session() as db:
-        model, name = get_model(db, schema, table, AccessRight.VIEW)
+        model, name, _ = get_model(db, schema, table, AccessRight.VIEW)
         kwargs = get_filter_params(request.args, name, pagination=False)
         builder = QueryBuilder(db)
         result = builder.fetch_one(model, **kwargs)

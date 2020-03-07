@@ -3,7 +3,7 @@ from flask_cors import CORS
 from flask_login import login_required
 
 from api.database import DBConn
-from api.queries import Transaction
+from api.queries import ErrorsParser, Transaction
 
 __all__ = ['transaction']
 
@@ -19,5 +19,15 @@ def process():
     data = request.form or request.json
     with DBConn.get_session() as db:
         transaction = Transaction(db, data['transaction'])
-        transaction.execute()
+        try:
+            transaction.execute()
+        except Exception as exp:
+            error, code = ErrorsParser.parse(exp)
+            return jsonify(
+                {
+                    "ok": False,
+                    "message": "Transaction error",
+                    "data": error._asdict()
+                }
+            ), code
     return jsonify({"ok": True})

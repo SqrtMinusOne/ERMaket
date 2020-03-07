@@ -58,6 +58,7 @@ class HierachyConstructor:
                 )
 
         t.formDescription = t.make_form()
+        t.set_default_sort()
         return t
 
     def _linked_name(self, relation):

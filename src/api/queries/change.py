@@ -1,14 +1,30 @@
+from magic_repr import make_repr
+
 from api.config import Config
 from api.models import Models, NamesConverter
 from api.system import HierachyManager
+from api.system.hierarchy import AccessRight
 
-__all__ = ['Transaction']
+__all__ = ['Transaction', 'InsufficientRightsError']
+
+
+class InsufficientRightsError(Exception):
+    def __init__(self, target, right):
+        self.target = target
+        self.right = right
+
+    def __str__(self):
+        return f'No {self.right} access for {self.target}'
+
+
+InsufficientRightsError.__repr__ = make_repr('target', 'right')
 
 
 class Transaction:
-    def __init__(self, session, params):
+    def __init__(self, session, params, role_names=None):
         self._db = session
         self._params = params
+        self._role_names = role_names
 
         self._models = Models()
         self._hierarchy = HierachyManager()
@@ -20,6 +36,7 @@ class Transaction:
 
     def execute(self):
         self._prepare()
+        self._check_rights()
         try:
             for _id in self._params.keys():
                 self._process_id(_id)
@@ -39,6 +56,29 @@ class Transaction:
 
             self._pks[_id] = table.pk
 
+    def _check_rights(self):
+        if self._role_names is None:
+            return
+        for _id in self._params.keys():
+            rights = self._tables[_id].accessRights
+            if (
+                self._has_entry(_id, 'create') or
+                self._has_entry(_id, 'update')
+            ) and not rights.has(self._role_names, AccessRight.CHANGE):
+                raise InsufficientRightsError(
+                    self._tables[_id], AccessRight.CHANGE
+                )
+            if (
+                self._has_entry(_id, 'delete') and
+                not rights.has(self._role_names, AccessRight.DELETE)
+            ):
+                raise InsufficientRightsError(
+                    self._tables[_id], AccessRight.DELETE
+                )
+
+    def _has_entry(self, _id, name):
+        return (name in self._params[_id] and len(self._params[_id][name]) > 0)
+
     def _process_id(self, _id):
         if 'create' in self._params[_id]:
             self._process_create(_id)
@@ -54,7 +94,10 @@ class Transaction:
         for data in self._params[_id]['create'].values():
             kwargs = data['newData']
             if pk.isAuto:
-                del kwargs[pk.rowName]
+                try:
+                    del kwargs[pk.rowName]
+                except KeyError:
+                    pass
 
             obj = model.__marshmallow__().load(kwargs, session=self._db)
             self._db.add(obj)

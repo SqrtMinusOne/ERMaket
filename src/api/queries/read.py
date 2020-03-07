@@ -18,8 +18,6 @@ class QueryBuilder:
             result = result.offset(offset)
         if limit >= 0:
             result = result.limit(limit)
-        # if offset < 0 and limit < 0:
-        #     result = result.all()
         return result
 
     def fetch_data(self, model, offset=0, limit=10, **kwargs):

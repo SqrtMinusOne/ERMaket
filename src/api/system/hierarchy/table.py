@@ -1,11 +1,12 @@
 import stringcase
+
 from utils import caster, defaultify_init
+from utils.xml import xmlall, xmlenum, xmllist, xmltuple
 
 from .elements import (_element_attrs, _element_children_classes, _element_kws,
                        _element_types)
 from .form import (FormDescription, FormGroup, LinkedField, LinkType,
                    SimpleField)
-from utils.xml import xmlall, xmltuple, xmlenum
 
 __all__ = [
     'Table', 'TableColumn', 'TableColumns', 'TableLinkType',
@@ -68,19 +69,11 @@ _link_type_mappings[TableLinkType.COMBINED] = LinkType.LINKEDTABLE
 _LinkedTableColumn = xmltuple(
     '_LinkedTableColumn',
     'linkedColumn', [
-        *_table_column_attrs,
-        'linkTableName',
-        'linkSchema',
-        'linkType',
-        'fkName',
-        'isMultiple',
-        'linkRequired',
-        'linkMultiple',
-        'linkName'
+        *_table_column_attrs, 'linkTableName', 'linkSchema', 'linkType',
+        'fkName', 'isMultiple', 'linkRequired', 'linkMultiple', 'linkName'
     ], [TableLinkType],
     types={
-        **_table_column_types,
-        'isMultiple': caster.bool_cast,
+        **_table_column_types, 'isMultiple': caster.bool_cast,
         'linkRequired': caster.bool_cast,
         'linkMultiple': caster.bool_cast
     }
@@ -105,6 +98,14 @@ LinkedTableColumn = defaultify_init(
     if s.fkName else TableLinkType(TableLinkType.LINKED)
 )
 
+SortOrder = xmlenum('SortOrder', 'sort', ASC='asc', DESC='desc')
+
+SortColumn = xmltuple(
+    'SortColumn', 'sortColumn', ['rowName', 'sort'], [SortOrder]
+)
+
+DefaultSort = xmllist('DefaultSort', 'defaultSort', SortColumn)
+
 TableColumns = xmlall(
     'TableColumns', 'columns', normal=TableColumn, linked=LinkedTableColumn
 )
@@ -112,8 +113,9 @@ TableColumns = xmlall(
 __Table = xmltuple(
     '__Table', 'tableEntry', [
         *_element_attrs, 'tableName', 'schema', 'linesOnPage', 'columns',
-        'formDescription', 'pagination', 'hidden'
-    ], [*_element_children_classes, TableColumns, FormDescription],
+        'formDescription', 'pagination', 'hidden', 'defaultSort'
+    ],
+    [*_element_children_classes, TableColumns, FormDescription, DefaultSort],
     _element_kws, {
         **_element_types,
         'linesOnPage': int,
@@ -155,6 +157,20 @@ class Table(_Table):
             group.rows.append(column.rowName)
         form.groups.append(group)
         return form
+
+    def set_default_sort(self):
+        pks = [col for col in self.columns if col.isPk]
+        if len(pks) == 1:
+            pk = pks[0]
+            self.defaultSort = DefaultSort(
+                [SortColumn(pk.rowName, SortOrder.ASC)]
+            )
+
+    def get_default_sort(self):
+        return [
+            f'{"-" if col.sort == SortOrder.DESC else ""}' +
+            f'{col.rowName}' for col in self.defaultSort
+        ]
 
     @property
     def pk(self):

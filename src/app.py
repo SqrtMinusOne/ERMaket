@@ -1,5 +1,6 @@
 import logging.config
 import os
+import traceback
 from pathlib import Path
 from tempfile import mkdtemp
 
@@ -63,9 +64,14 @@ def create_app():
     def internal_error(exception):
         app.logger.error(exception)
         if os.environ.get('FLASK_ENV') == 'development':
-            return jsonify({'ok': True, 'message': str(exception)}), 500
+            return jsonify(
+                {
+                    'ok': False,
+                    'message': traceback.format_exc()
+                }
+            ), 500
         else:
-            return jsonify({'ok': True, 'message': 'error'}), 500
+            return jsonify({'ok': False, 'message': 'error'}), 500
 
     if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == "true":
         logging.info('Starting app')
