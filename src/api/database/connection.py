@@ -32,6 +32,20 @@ class DBConn:
         cls.engine = cls.Session = None
 
     @staticmethod
+    def make_get_session(**kwargs):
+        engine = DBConn.get_engine(**kwargs)
+        Session = sessionmaker()
+        Session.configure(bind=engine)
+
+        @contextmanager
+        def get_session(**session_kwargs):
+            session = Session(**session_kwargs)
+            yield session
+            session.close()
+
+        return get_session
+
+    @staticmethod
     @contextmanager
     def get_session(**kwargs):
         """

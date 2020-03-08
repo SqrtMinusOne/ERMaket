@@ -34,3 +34,4 @@ dependencies:
     - deepmerge
     - git+https://github.com/SqrtMinusOne/flask-session.git
     - flask_cors
+    - boltons

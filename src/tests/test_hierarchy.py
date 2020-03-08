@@ -14,6 +14,7 @@ def test_constructor(algorithm):
     constructor = HierachyConstructor(algorithm.tables, 'er1', dummy_admin)
 
     hierarchy = constructor.construct()
+    constructor.insert_system_pages(hierarchy)
 
     xml1 = hierarchy.pretty_xml()
     xml2 = Hierachy.from_xml(hierarchy.pretty_xml()).pretty_xml()

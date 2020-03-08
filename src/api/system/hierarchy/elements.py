@@ -1,10 +1,10 @@
-from .access import AccessRights
-
 from utils.xml import xmlenum, xmllist, xmltuple
 
+from .access import AccessRights
+
 __all__ = [
-    'Button', 'Trigger', 'Buttons', 'Triggers', 'Page',
-    'PrebuiltPageType', 'PrebuiltPage'
+    'Button', 'Trigger', 'Buttons', 'Triggers', 'Page', 'PrebuiltPageType',
+    'PrebuiltPage'
 ]
 
 # Buttons
@@ -34,5 +34,6 @@ PrebuiltPageType = xmlenum(
 
 PrebuiltPage = xmltuple(
     'PrebuiltPage', 'prebuiltPageEntry', [*_element_attrs, 'type'],
-    [*_element_children_classes, PrebuiltPageType], _element_types
+    [*_element_children_classes, PrebuiltPageType], _element_kws,
+    _element_types
 )

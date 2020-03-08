@@ -1,9 +1,16 @@
+import logging
+
 import stringcase
 
 from api.models import NamesConverter as Names
 from api.system.hierarchy import (AccessRight, AccessRights, Hierachy,
-                                  LinkedTableColumn, RoleAccess, Section,
-                                  Table, TableColumn, TableLinkType)
+                                  LinkedTableColumn, PrebuiltPage,
+                                  PrebuiltPageType, RoleAccess, Section, Table,
+                                  TableColumn, TableLinkType)
+
+__all__ = ['HierachyConstructor']
+
+SYSTEM_SECTION = 'System'
 
 
 class HierachyConstructor:
@@ -25,6 +32,24 @@ class HierachyConstructor:
             parent.children.append(t.id)
         h.set_tree()
         return h
+
+    def insert_system_pages(self, h):
+        parent = h.get_by_name(SYSTEM_SECTION)
+        if parent:
+            logging.info('Section with system pages already exists')
+            return
+        parent = Section(
+            accessRights=self._global_rights(), name=SYSTEM_SECTION
+        )
+        h.append(parent)
+        sql = PrebuiltPage(
+            accessRights=AccessRights(),
+            name='SQL Console',
+            type=PrebuiltPageType.SQL
+        )
+        h.append(sql)
+        parent.children.append(sql.id)
+        h.set_tree()
 
     def _global_rights(self):
         rights = AccessRights(inherit=False)
@@ -49,13 +74,9 @@ class HierachyConstructor:
 
         for relation in table.relationships:
             if relation.fk_col:
-                t.columns.append(
-                    self._make_linked_fk_column(relation)
-                )
+                t.columns.append(self._make_linked_fk_column(relation))
             else:
-                t.columns.append(
-                    self._make_linked_nofk_column(relation)
-                )
+                t.columns.append(self._make_linked_nofk_column(relation))
 
         t.formDescription = t.make_form()
         t.set_default_sort()

@@ -63,7 +63,7 @@ def create_app():
 
     @app.errorhandler(Exception)
     def internal_error(exception):
-        app.logger.error(exception)
+        app.logger.error(traceback.format_exc())
         response = {'ok': False, 'message': repr(exception)}
         if os.environ.get('FLASK_ENV') == 'development':
             response['traceback'] = traceback.format_exc()
@@ -81,10 +81,11 @@ def create_app():
         DBConn()
         SqlExecutor()
 
-        from blueprints import tables, auth, transaction
+        from blueprints import tables, auth, transaction, sql
         app.register_blueprint(tables)
         app.register_blueprint(auth)
         app.register_blueprint(transaction)
+        app.register_blueprint(sql)
     else:
         logging.info('Skipping reloader')
     return app

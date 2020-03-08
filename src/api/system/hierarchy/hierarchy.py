@@ -175,6 +175,11 @@ class Hierachy(_Hierarchy):
         except KeyError:
             return None
 
+    def get_by_name(self, name):
+        for value in self.values:
+            if value.name == name:
+                return name
+
     def _new_id(self):
         while self._last_id in self._ids:
             self._last_id += 1

@@ -21,7 +21,10 @@ def hierarchy():
 )
 @click.option("--schema", prompt=True, help="Name of schema")
 @click.option("--admin", help="Admin role name")
-def generate(xml, schema, admin):
+@click.option(
+    '--system', is_flag=True, default=False, help="Insert system pages"
+)
+def generate(xml, schema, admin, system):
     with open(xml, 'r') as f:
         xml = f.read()
     erd = ERD(xml)
@@ -33,6 +36,8 @@ def generate(xml, schema, admin):
         role = DummyRole(admin)
     constructor = HierachyConstructor(alg.tables, schema, role)
     hierarchy = constructor.construct()
+    if system:
+        constructor.insert_system_pages(hierarchy)
 
     manager = HierachyManager()
     manager.hierarchy.merge(hierarchy)

@@ -951,4 +951,23 @@
         <pagination>True</pagination>
         <hidden>False</hidden>
     </tableEntry>
+    <section id="9">
+        <accessRights inherit="False">
+            <roleAccess>
+                <roleName>admin</roleName>
+                <access>view</access>
+                <access>change</access>
+                <access>delete</access>
+            </roleAccess>
+        </accessRights>
+        <name>System</name>
+        <children>
+            <childId>10</childId>
+        </children>
+    </section>
+    <prebuiltPageEntry id="10">
+        <accessRights inherit="True"/>
+        <name>SQL Console</name>
+        <type>sql</type>
+    </prebuiltPageEntry>
 </hierarchy>

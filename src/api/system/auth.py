@@ -1,7 +1,10 @@
+import logging
+
 from sqlalchemy.orm.exc import NoResultFound
 
 from api.database import DBConn
 from api.models import Models
+from api.system.hierarchy import PrebuiltPageType, AccessRight
 from utils import Singleton
 
 from .hierarchy_manager import HierachyManager
@@ -65,4 +68,29 @@ class UserManager(metaclass=Singleton):
         extracted = self._hierarchy_mgr.hierarchy.extract(roles)
         session['hierarchy'] = extracted.to_object()
         session['rights'] = extracted.extract_rights(roles)
+        self._set_sql(user, session, extracted)
+
         session.modified = True
+
+    def _set_sql(self, user, session, extracted):
+        roles = [role.name for role in user.roles]
+        has_sql = any([role.has_sql_access for role in user.roles])
+        if not has_sql:
+            return
+
+        sql_page = next(
+            (
+                page for page in extracted.prebuiltPages
+                if page.type == PrebuiltPageType.SQL
+            ), None
+        )
+        if sql_page is None:
+            logging.warn(
+                f'User {user} is set to have sql access, but has no sql'
+                'console page in the hirerarchy'
+            )
+        else:
+            if sql_page.accessRights.has(roles, AccessRight.CHANGE):
+                session['sql_user'] = 'sql'
+            elif sql_page.accessRights.has(roles, AccessRight.VIEW):
+                session['sql_user'] = 'view'

@@ -94,3 +94,20 @@ def test_transaction(client, test_db):
     )
 
     assert response.status_code == 200
+
+
+@pytest.mark.usefixtures("client", "test_db")
+def test_sql(client, test_db):
+    schema, table = test_db.schema, test_db.entry.tableName
+
+    query = f'SELECT * FROM {schema}.{table}'
+    login(client, test_db.admin_user)
+
+    response = client.post(
+        '/sql/execute',
+        data=json.dumps({'query': query}),
+        content_type='application/json'
+    )
+
+    assert response.status_code == 200
+    assert len(response.json["result"][0]) == len(response.json["keys"])

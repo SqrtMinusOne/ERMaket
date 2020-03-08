@@ -10,6 +10,10 @@
         "readonly": {
             "user": "readonly",
             "password": "readonly666"
+        },
+        "sql": {
+            "user": "sqluser",
+            "password": "sql8800"
         }
     },
     "XML": {

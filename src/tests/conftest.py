@@ -124,10 +124,13 @@ def test_db(empty_db):
         admin_user.roles = [admin_role]
         db.commit()
 
-        hierarchy_manager.h.merge(
-            HierachyConstructor(alg.tables, 'er1',
-                                admin_role=admin_role).construct()
+        constuctor = HierachyConstructor(
+            alg.tables, 'er1', admin_role=admin_role
         )
+        h = constuctor.construct()
+        constuctor.insert_system_pages(h)
+
+        hierarchy_manager.h.merge(h)
 
     faker = Faker(models)
     faker.fake_all(5)
