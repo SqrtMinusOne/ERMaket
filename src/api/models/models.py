@@ -120,6 +120,10 @@ class Models(metaclass=Singleton):
         )
         setattr(class_, "__marshmallow__", schema_class)
 
+    @property
+    def schema_names(self):
+        return list(self.schemas.keys())
+
     def __getattr__(self, key):
         return self.schemas[key]
 

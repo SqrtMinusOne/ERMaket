@@ -61,15 +61,15 @@ class DBConn:
             yield session
 
     @staticmethod
-    def get_engine(**kwargs):
+    def get_engine(user=None, password=None, **kwargs):
         """Initialize SQLAlchemy engine from configuration parameters
 
         :param **kwargs: to sqlalchemy.create_engine
         """
         config = Config()
         url = "postgresql://{0}:{1}@{2}:{3}/{4}".format(
-            config.Database['user'], config.Database['password'],
-            config.Database['host'], config.Database['port'],
-            config.Database['database']
+            user or config.Database['user'], password or
+            config.Database['password'], config.Database['host'],
+            config.Database['port'], config.Database['database']
         )
         return create_engine(url, **kwargs)

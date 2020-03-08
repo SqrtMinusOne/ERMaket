@@ -52,7 +52,14 @@ def test_create(test_db, models):
         db.rollback()
 
         transaction = {}
-        transaction[entry.id] = {'create': {'dummy_key': {'newData': data}}}
+        transaction[entry.id] = {
+            'create': {
+                'dummy_key': {
+                    'newData': data,
+                    'links': []
+                }
+            }
+        }
 
         bad_t = Transaction(db, transaction, role_names=['dummy'])
         with pytest.raises(InsufficientRightsError):
@@ -159,7 +166,8 @@ def test_exception_handling(test_db):
                                         {
                                             'jackshit': True,
                                             'jackshit2': '12345'
-                                        }
+                                        },
+                                    'links': []
                                 }
                         }
                 }

@@ -6,6 +6,12 @@
         "database": "ermaket",
         "port": "5432"
     },
+    "Users": {
+        "readonly": {
+            "user": "readonly",
+            "password": "readonly666"
+        }
+    },
     "XML": {
         "ErRootAttributes": {
             "xmlns": "ermaket",

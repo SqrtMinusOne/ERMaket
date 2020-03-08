@@ -12,6 +12,7 @@ from flask_session import Session
 from api import Config
 from api.database import DBConn
 from api.models import Models
+from api.queries import SqlExecutor
 
 __all__ = ['create_app']
 
@@ -78,6 +79,7 @@ def create_app():
         sess.init_app(app)
 
         DBConn()
+        SqlExecutor()
 
         from blueprints import tables, auth, transaction
         app.register_blueprint(tables)
