@@ -1,3 +1,6 @@
+import traceback
+import os
+
 from flask import Blueprint, jsonify, request
 from flask_cors import CORS
 from flask_login import login_required
@@ -17,17 +20,18 @@ CORS(transaction, supports_credentials=True)
 @login_required
 def process():
     data = request.form or request.json
-    with DBConn.get_session() as db:
+    with DBConn.get_session(autoflush=False) as db:
         transaction = Transaction(db, data['transaction'])
         try:
             transaction.execute()
         except Exception as exp:
             error, code = ErrorsParser.parse(exp)
-            return jsonify(
-                {
-                    "ok": False,
-                    "message": "Transaction error",
-                    "data": error._asdict()
-                }
-            ), code
+            response = {
+                "ok": False,
+                "message": error.message,
+                "data": error.info
+            }
+            if os.environ.get('FLASK_ENV') == 'development':
+                response['traceback'] = traceback.format_exc()
+            return jsonify(response), code
     return jsonify({"ok": True})

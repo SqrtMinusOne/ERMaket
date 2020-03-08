@@ -44,12 +44,9 @@ class ErrorsParser:
         try:
             info = dict(exp)
         except Exception:
-            info = None
+            info = {}
         return ParsedError(
             type(exp).__name__,
-            "Unknown exception",
-            info={
-                "repr": repr(exp),
-                **info
-            }
+            repr(exp),
+            info
         )

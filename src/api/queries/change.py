@@ -1,9 +1,8 @@
-from magic_repr import make_repr
-
 from api.config import Config
 from api.models import Models, NamesConverter
 from api.system import HierachyManager
 from api.system.hierarchy import AccessRight
+from magic_repr import make_repr
 
 __all__ = ['Transaction', 'InsufficientRightsError']
 
@@ -34,12 +33,18 @@ class Transaction:
         self._tables = {}
         self._pks = {}
 
+        self._objects = {}
+
     def execute(self):
         self._prepare()
         self._check_rights()
         try:
             for _id in self._params.keys():
-                self._process_id(_id)
+                self._objects[_id] = {}
+                self._process_create(_id)
+                self._process_delete(_id)
+                self._process_update(_id)
+            self._resolve_created()
             self._db.commit()
         except Exception as exp:
             self._db.rollback()
@@ -53,7 +58,6 @@ class Transaction:
             model = self._models[table.schema][name]
             self._extracted[_id] = model
             self._tables[_id] = table
-
             self._pks[_id] = table.pk
 
     def _check_rights(self):
@@ -79,19 +83,13 @@ class Transaction:
     def _has_entry(self, _id, name):
         return (name in self._params[_id] and len(self._params[_id][name]) > 0)
 
-    def _process_id(self, _id):
-        if 'create' in self._params[_id]:
-            self._process_create(_id)
-        if 'delete' in self._params[_id]:
-            self._process_delete(_id)
-        if 'update' in self._params[_id]:
-            self._process_update(_id)
-
     def _process_create(self, _id):
+        if 'create' not in self._params[_id]:
+            return
         pk = self._pks[_id]
         model = self._extracted[_id]
 
-        for data in self._params[_id]['create'].values():
+        for key, data in self._params[_id]['create'].items():
             kwargs = data['newData']
             if pk.isAuto:
                 try:
@@ -101,8 +99,12 @@ class Transaction:
 
             obj = model.__marshmallow__().load(kwargs, session=self._db)
             self._db.add(obj)
+            self._objects[_id][str(key)] = obj
 
     def _process_delete(self, _id):
+        if 'delete' not in self._params[_id]:
+            return
+
         pk = self._pks[_id]
         model = self._extracted[_id]
 
@@ -110,10 +112,12 @@ class Transaction:
             self._db.query(model).filter_by(**{pk.rowName: key}).delete()
 
     def _process_update(self, _id):
+        if 'update' not in self._params[_id]:
+            return
+
         model = self._extracted[_id]
         pk = self._pks[_id]
-        for update in self._params[_id]['update'].values():
-
+        for key, update in self._params[_id]['update'].items():
             # TODO Optimize?
             item = self._db.query(model).filter_by(
                 **{
@@ -129,3 +133,28 @@ class Transaction:
                 instance=item
             )
             self._db.add(new_item)
+            self._objects[_id][str(key)] = new_item
+
+    def _compare_keys(self, key1, key2):
+        return str(key1) == str(key2)
+
+    def _resolve_created(self):
+        for _id in self._params.keys():
+            if 'create' not in self._params[_id]:
+                continue
+            for key, created in self._params[_id]['create'].items():
+                for link in created['links']:
+                    obj = self._objects[link['id']][str(link['key'])]
+                    if link['fkName']:
+                        setattr(obj, link['fkName'], None)
+                        setattr(obj, link['rowName'], self._objects[_id][str(key)])
+                    else:
+                        key_field = self._tables[_id].pk.rowName
+                        refs = getattr(obj, link['rowName'])
+                        dummy = next(
+                            c for c in refs
+                            if self._compare_keys(getattr(c, key_field), key)
+                        )
+                        self._db.expunge(dummy)
+                        refs.remove(dummy)
+                        refs.append(self._objects[_id][str(key)])

@@ -63,15 +63,10 @@ def create_app():
     @app.errorhandler(Exception)
     def internal_error(exception):
         app.logger.error(exception)
+        response = {'ok': False, 'message': repr(exception)}
         if os.environ.get('FLASK_ENV') == 'development':
-            return jsonify(
-                {
-                    'ok': False,
-                    'message': traceback.format_exc()
-                }
-            ), 500
-        else:
-            return jsonify({'ok': False, 'message': 'error'}), 500
+            response['traceback'] = traceback.format_exc()
+        return jsonify(response), 500
 
     if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == "true":
         logging.info('Starting app')
