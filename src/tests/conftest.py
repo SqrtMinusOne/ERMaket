@@ -117,8 +117,8 @@ def test_db(empty_db):
     with DBConn.get_session() as db:
         admin_user = manager.add_user('admin', 'password', db)
         normal_user = manager.add_user('user', 'password', db)
-        admin_role = models['system']['Role'](
-            name='admin', can_reset_password=True, has_sql_access=True
+        admin_role = manager.add_role(
+            db=db, name='admin', can_reset_password=True, has_sql_access=True
         )
         db.add(admin_role)
         admin_user.roles = [admin_role]

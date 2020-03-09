@@ -63,13 +63,20 @@ class UserManager(metaclass=Singleton):
             db.commit()
         return user
 
+    def add_role(self, db=None, **kwargs):
+        Role = self.models['system']['Role']
+        with DBConn.ensure_session(db) as db:
+            role = Role(**kwargs)
+            db.add(role)
+            db.commit()
+        return role
+
     def login_user(self, user, session):
         roles = [role.name for role in user.roles]
         extracted = self._hierarchy_mgr.hierarchy.extract(roles)
         session['hierarchy'] = extracted.to_object()
         session['rights'] = extracted.extract_rights(roles)
         self._set_sql(user, session, extracted)
-
         session.modified = True
 
     def _set_sql(self, user, session, extracted):
