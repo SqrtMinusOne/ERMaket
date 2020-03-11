@@ -16,7 +16,7 @@ LinkType = xmlenum(
     DROPDOWN='dropdown',
     LINKEDTABLE='linkedTable',
     LINKEDFORM='linkedForm',
-    GROUPEDFORM='groupedForm'
+    # GROUPEDFORM='groupedForm'
 )
 
 _field_attrs = [

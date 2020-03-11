@@ -1,3 +1,5 @@
+from sqlalchemy.exc import ResourceClosedError
+
 from api import Config
 from api.database import DatabaseUserManager, DBConn
 from api.models import Models
@@ -37,9 +39,14 @@ class SqlExecutor:
     def execute(self, query, user=None):
         with self._session(user)() as db:
             result_proxy = db.execute(query)
-            rows = result_proxy.fetchall()
-            keys = result_proxy.keys()
-            return self._serialize(rows), keys
+            try:
+                rows = result_proxy.fetchall()
+                keys = result_proxy.keys()
+                db.commit()
+                return self._serialize(rows), keys
+            except ResourceClosedError:
+                db.commit()
+                return None, None
 
     def _serialize(self, rows):
         return [list(row) for row in rows]
