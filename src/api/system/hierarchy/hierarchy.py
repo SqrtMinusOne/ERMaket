@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 
 from api import Config
-from utils.xml import XMLObject, xmlall
+from utils.xml import RootMixin, XMLObject, xmlall
 
 from .elements import Page, PrebuiltPage
 from .form import Form
@@ -21,25 +21,13 @@ _Hierarchy = xmlall(
 )
 
 
-class Hierachy(_Hierarchy):
+class Hierachy(_Hierarchy, RootMixin):
     def __init__(self, xml=None):
         self._config = Config()
-        if xml is not None:
-            if isinstance(xml, BeautifulSoup):
-                self.soup = xml
-            else:
-                self.soup = BeautifulSoup(xml, features='xml')
-            args, kwargs = self._from_xml(self.soup.hierarchy)
-            super().__init__(*args, **kwargs)
-        else:
-            self.soup = BeautifulSoup(features='xml')
-            super().__init__()
-            self.soup.append(
-                self.soup.new_tag(
-                    self._tag_name, **self._config.XML['HierarchyAttributes']
-                )
-            )
-        XMLObject.soup = self.soup
+        args, kwargs = self._init_root(
+            xml, self._config.XML['HierarchyAttributes']
+        )
+        super().__init__(*args, **kwargs)
         self.set_tree()
 
     def set_tree(self):

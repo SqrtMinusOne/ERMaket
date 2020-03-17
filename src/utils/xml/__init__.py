@@ -1,3 +1,4 @@
+from .xmlroot import *
 from .xml_object import *
 from .xmlall import *
 from .xmlenum import *
