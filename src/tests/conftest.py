@@ -140,7 +140,9 @@ def test_db(empty_db):
     faker = Faker(models)
     faker.fake_all(10)
 
-    model = next(iter(models))
+    model = next(
+        iter(model for model in models if model.__table__.schema != 'system')
+    )
     model_name = model.__name__
     field_name = next(iter(model.__table__.columns)).name
     entry = hierarchy_manager.h.get_table_entry(
@@ -149,7 +151,7 @@ def test_db(empty_db):
 
     if entry is None:
         logging.warning('Entry not found')
-        logging.info(model.__table__.schema, model.__tablename__)
+        logging.info(f"{model.__table__.schema}, {model.__tablename__}")
         logging.info(hierarchy_manager.h.pretty_xml())
 
     User = namedtuple('User', ['user', 'login', 'password'])
