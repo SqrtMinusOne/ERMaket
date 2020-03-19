@@ -25,8 +25,10 @@ class Seeder:
 
         :param schema: if given, drops only ones in the given schema
         """
-        if schema is not None:
-            DBConn.engine.execute(f'DROP SCHEMA IF EXISTS {schema} CASCADE')
-            return
-        for schema in self._models.schemas.keys():
-            DBConn.engine.execute(f'DROP SCHEMA IF EXISTS {schema} CASCADE')
+        with DBConn.get_session() as db:
+            if schema is not None:
+                db.execute(f'DROP SCHEMA IF EXISTS {schema} CASCADE')
+                return
+            for schema in self._models.schemas.keys():
+                db.execute(f'DROP SCHEMA IF EXISTS {schema} CASCADE')
+            db.commit()

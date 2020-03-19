@@ -28,8 +28,11 @@ def test_models():
 
 @pytest.mark.usefixtures("models", "test_db")
 def test_marshmallow(models):
+    dumps = []
     with DBConn.get_session() as db:
         for model in iter(models):
             item = db.query(model).first()
             obj = model.__marshmallow__(session=db).dump(item)
-            assert obj is not None
+            dumps.append(obj)
+    for obj in dumps:
+        assert obj is not None

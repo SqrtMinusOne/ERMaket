@@ -13,16 +13,20 @@ def test_dump(test_db):
 
     with DBConn.get_session() as db:
         count_before = db.query(model).count()
-        assert count_before > 0
+    assert count_before > 0
 
     dumper.dump_schema(test_db.schema)
-    seeder.drop_models(test_db.schema)
+    dumper.dump_schema('system')
+    seeder.drop_models()
     seeder.create_models()
 
     with DBConn.get_session() as db:
-        assert db.query(model).count() == 0
+        count_empty = db.query(model).count()
+    assert count_empty == 0
 
+    dumper.load_schema('system')
     dumper.load_schema(test_db.schema)
 
     with DBConn.get_session() as db:
-        assert db.query(model).count() == count_before
+        count_after = db.query(model).count()
+    assert count_after == count_before

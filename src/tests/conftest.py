@@ -1,3 +1,4 @@
+import logging
 import os
 import shutil
 from collections import namedtuple
@@ -137,7 +138,7 @@ def test_db(empty_db):
         hierarchy_manager.h.merge(h)
 
     faker = Faker(models)
-    faker.fake_all(5)
+    faker.fake_all(10)
 
     model = next(iter(models))
     model_name = model.__name__
@@ -145,6 +146,11 @@ def test_db(empty_db):
     entry = hierarchy_manager.h.get_table_entry(
         model.__table__.schema, model.__tablename__
     )
+
+    if entry is None:
+        logging.warning('Entry not found')
+        logging.info(model.__table__.schema, model.__tablename__)
+        logging.info(hierarchy_manager.h.pretty_xml())
 
     User = namedtuple('User', ['user', 'login', 'password'])
     admin = User(admin_user, 'admin', 'password')

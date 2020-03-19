@@ -88,12 +88,13 @@ def test_delete(test_db):
         bad_t = Transaction(db, transaction, role_names=['dummy'])
         with pytest.raises(InsufficientRightsError):
             bad_t.execute()
-        assert db.query(model).count() == count
+        count_after_bad = db.query(model).count()
 
         t = Transaction(db, transaction)
         t.execute()
-
-        assert db.query(model).count() == count - 1
+        count_after_good = db.query(model).count()
+    assert count == count_after_bad
+    assert count == count_after_good + 1
 
 
 @pytest.mark.usefixtures('test_db', 'models')

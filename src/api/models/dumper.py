@@ -3,6 +3,8 @@ import logging
 import os
 from pathlib import Path
 
+import sqlalchemy as sa
+
 from api.config import Config
 from api.database import DBConn
 
@@ -50,13 +52,30 @@ class Dumper:
         db.execute('SET CONSTRAINTS ALL DEFERRED')
         for name, model in self._models[schema].items():
             filename = os.path.join(folder, f'{name}.csv')
+            casts = self._get_casts(model)
             with open(filename, 'r', newline='') as csvfile:
                 reader = csv.DictReader(csvfile)
                 # db.execute(model.__table__.insert(), list(reader))
-                db.bulk_insert_mappings(model, reader)
+                db.bulk_insert_mappings(
+                    model, (self._cast(obj, casts) for obj in reader)
+                )
             logging.info(f'Read {name} from {filename}')
         db.commit()
         logging.info(f'Finished loading {schema}')
+
+    def _get_casts(self, model):
+        casts = {}
+        for col in model.__table__.columns:
+            if isinstance(col.type, sa.Boolean):
+                casts[col.name] = lambda val: val == 'True'
+            else:
+                casts[col.name] = lambda val: val if val != '' else None
+        return casts
+
+    def _cast(self, obj, casts):
+        for col, cast in casts.items():
+            obj[col] = cast(obj[col])
+        return obj
 
     def _assert_folder(self, folder=None):
         if folder is None:
