@@ -175,7 +175,11 @@ class Factory:
         :rtype: Column
         """
         name = NamesConverter.attribute_name(attribute.name)
-        column = Column(name=name, type_=attribute.type_)
+        column = Column(
+            name=name,
+            type_=attribute.type_,
+            not_null=not attribute.is_null
+        )
         if attribute.is_pk and not ignore_pk:
             column.pk = True
         return column

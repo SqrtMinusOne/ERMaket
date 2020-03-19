@@ -38,14 +38,20 @@ def models():
         return Models()
 
 
-@pytest.fixture()
-def temp_paths(config):
+def set_temp_paths(config):
     shutil.rmtree('_temp', ignore_errors=True)
     Path('_temp/xml').mkdir(parents=True, exist_ok=True)
     Path('_temp/dump').mkdir(parents=True, exist_ok=True)
     config.Models['models_dir'] = '_temp'
+    config.Generation['base'] = '_temp.base'
+    config.Generation['base_folder'] = '_temp'
     config.XML['hierarchyPath'] = '_temp/xml/hierarchy.xml'
     config.Dump['folder'] = '_temp/dump'
+
+
+@pytest.fixture()
+def temp_paths(config):
+    set_temp_paths(config)
 
 
 @pytest.fixture()
@@ -90,13 +96,7 @@ def empty_db():
     alg = Algorithm(erd)
     alg.run_algorithm()
 
-    shutil.rmtree('_temp', ignore_errors=True)
-    Path('_temp/xml').mkdir(parents=True, exist_ok=True)
-    Path('_temp/dump').mkdir(parents=True, exist_ok=True)
-    config.Models['models_dir'] = '_temp'
-    config.XML['hierarchyPath'] = '_temp/xml/hierarchy.xml'
-    config.Dump['folder'] = '_temp/dump'
-
+    set_temp_paths(config)
     alg.inject_role_ref(0)
 
     gen = Generator(alg.tables, 'er1', add_check=True)
@@ -143,7 +143,7 @@ def test_db(empty_db):
     model_name = model.__name__
     field_name = next(iter(model.__table__.columns)).name
     entry = hierarchy_manager.h.get_table_entry(
-        model.__table_args__['schema'], model.__tablename__
+        model.__table__.schema, model.__tablename__
     )
 
     User = namedtuple('User', ['user', 'login', 'password'])

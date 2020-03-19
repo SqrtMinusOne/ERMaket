@@ -36,6 +36,7 @@ class Algorithm:
         self._set_pks()
         self._resolve_fks()
         self._resolve_check_not_last()
+        self._apply_fixes()
 
         logging.info(
             f'Converted {len(self.erd.entities)} entities'
@@ -195,6 +196,11 @@ class Algorithm:
             for relationship in table.check_not_empty:
                 counterpart = relationship.ref_rel
                 relationship.ref_table.check_not_last.append(counterpart)
+
+    def _apply_fixes(self):
+        for table in self._tables.values():
+            table.remove_duplicate_names()
+            table.resolve_recursive_relationships()
 
 
 Algorithm.__repr__ = make_repr('_tables')

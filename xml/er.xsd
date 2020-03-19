@@ -36,6 +36,7 @@
         <xs:sequence>
             <xs:element name="name" type="xs:string" />
             <xs:element name="isPk" type="xs:boolean" default="false" minOccurs="0" />
+            <xs:element name="isNull" type="xs:boolean" default="false" minOccurs="0" />
             <xs:element name="type" type="fieldTypes" />
         </xs:sequence>
     </xs:complexType>

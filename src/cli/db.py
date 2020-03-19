@@ -67,15 +67,47 @@ def create():
     is_flag=True,
     default=False
 )
-def generate(xml, schema, no_system, folder, check):
+@click.option(
+    "--prefix",
+    help="Prefix for the generated files",
+    default="model_"
+)
+@click.option(
+    "--base-module",
+    help="Base module import path. There has to be only one base.",
+    default="models.base"
+)
+@click.option(
+    "--base-folder",
+    help="Base module location folder",
+    default="models"
+)
+def generate(
+    xml,
+    schema,
+    no_system,
+    folder,
+    check,
+    prefix,
+    base_module,
+    base_folder
+):
     with open(xml, 'r') as f:
         xml = f.read()
     erd = ERD(xml)
     alg = Algorithm(erd)
     alg.run_algorithm()
 
-    gen = Generator(alg.tables, schema, add_check=check)
-    gen.generate_folder(folder)
+    gen = Generator(
+        alg.tables,
+        schema,
+        folder=folder,
+        prefix=prefix,
+        add_check=check,
+        base_module=base_module,
+        base_folder=base_folder
+    )
+    gen.generate_folder()
     if not no_system:
         gen.generate_system_models()
 
@@ -86,8 +118,8 @@ def generate(xml, schema, no_system, folder, check):
 @click.option("--folder", help="Folder to clear", type=click.Path())
 @click.option("--schema", help="Schema to clear")
 def clear(folder, schema):
-    gen = Generator(None, None)
-    gen.clear_folder(folder=folder, schema=schema)
+    gen = Generator(None, folder=folder)
+    gen.clear_folder(schema=schema)
 
 
 @db.command(help='Dump data')

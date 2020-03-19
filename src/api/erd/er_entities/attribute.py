@@ -6,10 +6,17 @@ __all__ = ['Attribute']
 
 
 class Attribute(XMLObject):
-    def __init__(self, name: str, type_: str, is_pk: bool = False):
+    def __init__(
+        self,
+        name: str,
+        type_: str,
+        is_pk: bool = False,
+        is_null=False
+    ):
         self.name = name
         self.type_ = type_
         self.is_pk = is_pk
+        self.is_null = is_null
 
     @property
     def _tag_name(self):
@@ -18,8 +25,12 @@ class Attribute(XMLObject):
     @classmethod
     def _from_xml(cls, tag):
         isPk = True if tag.isPk and tag.isPk.text == 'true' else False
+        is_null = True if tag.isNull and tag.isNull.text == 'true' else False
         return cls._make_args(
-            name=tag.find('name').text, type_=tag.type.text, is_pk=isPk
+            name=tag.find('name').text,
+            type_=tag.type.text,
+            is_pk=isPk,
+            is_null=is_null
         )
 
     def to_xml(self):

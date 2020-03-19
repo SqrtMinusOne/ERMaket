@@ -3,7 +3,7 @@
 
 import sqlalchemy as sa
 
-from .base import Base
+from models.base import Base
 
 __all__ = ['Er1Task']
 

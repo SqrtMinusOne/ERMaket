@@ -50,6 +50,8 @@
             "system_user_has_role.tmpl.py",
             "__init__.tmpl.py"
         ],
+        "base": "models.base",
+        "base_folder": "models",
         "warning": [
             "# This file was generated automatically and will be overwritten",
             "# with next generation. Make changes with caution",

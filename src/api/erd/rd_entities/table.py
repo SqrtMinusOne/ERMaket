@@ -27,6 +27,38 @@ class Table:
         if add_check:
             self.check_not_empty.append(rel)
 
+    def remove_duplicate_names(self):
+        used_names = {}
+        repeats = {}
+        for col in [*self.columns, *self.foreign_keys]:
+            if col.name not in used_names:
+                used_names[col.name] = col
+            else:
+                if col.name in repeats:
+                    repeats[col.name].append(col)
+                else:
+                    repeats[col.name] = [used_names[col.name], col]
+        for name, cols in repeats.items():
+            for i, col in enumerate(cols):
+                col.name = f"{col.name}_{i}"
+
+    def resolve_recursive_relationships(self):
+        recursive = [
+            rel for rel in self.relationships if rel.table == rel.ref_table
+        ]
+        resolved = set()
+        for rel in recursive:
+            if rel.name in resolved:
+                self.relationships.remove(rel)
+                continue
+            if rel.secondary_table:
+                fk = next(
+                    col for col in rel.secondary_table.foreign_keys
+                    if col.fk.relation_name == rel.name
+                )
+                rel.fk_col = fk
+            resolved.add(rel.name)
+
     @property
     def primary_rels(self):
         return filter(

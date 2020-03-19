@@ -22,10 +22,19 @@ unique=True,
 autoincrement=True,
 {%- endif -%}
 {% endmacro %}
-
+{%- macro back_populates(rel) -%}
+{%- if rel.table != rel.ref_table -%}
+, back_populates='{{ Names.referrer_rel_name(table.name, rel.name) }}'
+{%- endif -%}
+{%- endmacro -%}
+{%- macro secondary_recursive(rel) -%}
+{%- if rel.table == rel.ref_table -%}
+, foreign_keys='{{ Names.class_name(schema, rel.secondary_table.name) }}.{{ Names.attribute_name(rel.fk_col.name) }}'
+{%- endif -%}
+{%- endmacro -%}
 import sqlalchemy as sa
 
-from .base import Base
+from {{ base_module }} import Base
 
 __all__ = ['{{ Names.class_name(schema, table.name) }}']
 
@@ -52,11 +61,11 @@ class {{ Names.class_name(schema, table.name) }}(Base):
     {%- if rel.fk_col is not none %}
     {{ Names.referrer_rel_name(rel.ref_table.name, rel.name) }} = sa.orm.relationship('{{ Names.class_name(schema, rel.ref_table.name) }}', back_populates='{{ Names.referral_rel_name(table.name, rel.name) }}', foreign_keys=[{{ Names.attribute_name(rel.fk_col.name) }}])
     {%- else %}
-    {{ Names.referral_rel_name(rel.ref_table.name, rel.name) }} = sa.orm.relationship('{{ Names.class_name(schema, rel.ref_table.name) }}', back_populates='{{ Names.referrer_rel_name(table.name, rel.name) }}')
+    {{ Names.referral_rel_name(rel.ref_table.name, rel.name) }} = sa.orm.relationship('{{ Names.class_name(schema, rel.ref_table.name) }}'{{ back_populates(rel) }})
     {% endif -%}
     {% endfor -%}
     {%- for rel in table.secondary_rels %}
-    {{ Names.referrer_rel_name(rel.ref_table.name, rel.name) }} = sa.orm.relationship('{{ Names.class_name(schema, rel.ref_table.name) }}', secondary='{{ schema }}.{{ rel.secondary_table.name }}', back_populates='{{ Names.referrer_rel_name(table.name, rel.name) }}')
+    {{ Names.referrer_rel_name(rel.ref_table.name, rel.name) }} = sa.orm.relationship('{{ Names.class_name(schema, rel.ref_table.name) }}', secondary='{{ schema }}.{{ rel.secondary_table.name }}'{{ back_populates(rel) }}{{ secondary_recursive(rel) }})
     {% endfor -%}
     {% if table._system_ref == '__user' %}
     {{ roles_ref() }}

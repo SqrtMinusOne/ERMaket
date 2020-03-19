@@ -1,7 +1,7 @@
-import glob
 import importlib
 import logging
-
+import os
+from fnmatch import fnmatch
 from marshmallow_sqlalchemy import ModelConversionError, SQLAlchemyAutoSchema
 
 from api import Config
@@ -10,7 +10,6 @@ from utils import Singleton
 
 # from sqlalchemy.inspection import inspect
 # from marshmallow_sqlalchemy.fields import Nested
-
 
 __all__ = ['Models']
 
@@ -43,23 +42,17 @@ class Models(metaclass=Singleton):
 
     def _import(self):
         loaded = 0
-        if not self._system_only:
-            loaded += self._import_files(
-                glob.glob(
-                    "{0}/{1}*.py".format(
-                        self.config.Models['models_dir'],
-                        self.config.Models['model_prefix']
-                    )
-                )
-            )
-        loaded += self._import_files(
-            glob.glob(
-                "{0}/{1}*.py".format(
-                    self.config.Models['models_dir'],
-                    self.config.Models['system_prefix']
-                )
-            )
-        )
+        found = []
+        for subdir, dirs, files in os.walk(self.config.Models['models_dir']):
+            for f in files:
+                if (
+                    fnmatch(f, f"{self.config.Models['model_prefix']}*.py")
+                    and not self._system_only
+                ):
+                    found.append(os.path.join(subdir, f))
+                elif fnmatch(f, f"{self.config.Models['system_prefix']}*.py"):
+                    found.append(os.path.join(subdir, f))
+        loaded = self._import_files(found)
         self._setup_marshmallows()
         if not self._system_only:
             logging.info(f'Schemas loaded: {len(self.schemas)}')
@@ -75,7 +68,7 @@ class Models(metaclass=Singleton):
 
             for class_name in module.__all__:
                 model = getattr(module, class_name)
-                schema = model.__table_args__['schema']
+                schema = model.__table__.schema
                 try:
                     self.schemas[schema][class_name] = model
                     self._paths[schema][class_name] = module_name
