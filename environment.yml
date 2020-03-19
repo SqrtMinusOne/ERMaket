@@ -36,3 +36,4 @@ dependencies:
     - flask_cors
     - boltons
     - pytest-timeout
+    - pytest-instafail

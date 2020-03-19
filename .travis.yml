@@ -29,7 +29,7 @@ before_script:
     - psql -c 'ALTER USER ermaket WITH CREATEROLE;' -U postgres
 
 script:
-    - cd src && export PYTHONPATH=$PYTHONPATH:$(pwd) && python -m pytest --cov-config=.coveragerc --cov=. --timeout=30
+    - cd src && export PYTHONPATH=$PYTHONPATH:$(pwd) && python -m pytest --timeout=30 --instafail --cov-config=.coveragerc --cov=. --log-cli-level=INFO
 
 after_success:
     bash <(curl -s https://codecov.io/bash)
