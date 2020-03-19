@@ -109,3 +109,6 @@ _*
 !__init__.tmpl.py
 obj.json
 .vscode
+
+# Dumps
+dump

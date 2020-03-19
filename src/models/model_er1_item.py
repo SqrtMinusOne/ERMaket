@@ -31,7 +31,11 @@ class Er1Item(Base):
     subtask_name = sa.Column(
         sa.String(256),
         sa.ForeignKey(
-            'er1.subtask.name', ondelete='cascade', onupdate='cascade'
+            'er1.subtask.name',
+            ondelete='cascade',
+            onupdate='cascade',
+            deferrable=True,
+            initially="DEFERRED"
         ),
         nullable=False,
     )

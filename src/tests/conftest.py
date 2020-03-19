@@ -15,7 +15,7 @@ from api.system import HierachyConstructor, HierachyManager, UserManager
 from app import create_app
 from utils import Singleton
 
-SAMPLE_ERD = '../xml/example.xml'
+SAMPLE_ERD = '../xml/examples/task_management.xml'
 
 
 @pytest.fixture()
@@ -42,8 +42,10 @@ def models():
 def temp_paths(config):
     shutil.rmtree('_temp', ignore_errors=True)
     Path('_temp/xml').mkdir(parents=True, exist_ok=True)
+    Path('_temp/dump').mkdir(parents=True, exist_ok=True)
     config.Models['models_dir'] = '_temp'
     config.XML['hierarchyPath'] = '_temp/xml/hierarchy.xml'
+    config.Dump['folder'] = '_temp/dump'
 
 
 @pytest.fixture()
@@ -90,8 +92,10 @@ def empty_db():
 
     shutil.rmtree('_temp', ignore_errors=True)
     Path('_temp/xml').mkdir(parents=True, exist_ok=True)
+    Path('_temp/dump').mkdir(parents=True, exist_ok=True)
     config.Models['models_dir'] = '_temp'
     config.XML['hierarchyPath'] = '_temp/xml/hierarchy.xml'
+    config.Dump['folder'] = '_temp/dump'
 
     alg.inject_role_ref(0)
 

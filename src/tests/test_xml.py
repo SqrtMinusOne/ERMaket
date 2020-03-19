@@ -5,14 +5,16 @@ from bs4 import BeautifulSoup
 from api.config import Config
 from api.erd import ERD
 from api.erd.er_entities import Entity, Relation
-from utils.xml import XMLObject, xmlall, xmlenum, xmllist, xmltuple, xmltag
 from utils import defaultify_init
+from utils.xml import XMLObject, xmlall, xmlenum, xmllist, xmltag, xmltuple
+
+EXAMPLE_XML = '../xml/examples/task_management.xml'
 
 
 class TestXML(unittest.TestCase):
     def setUp(self):
         Config(reload=True)
-        with open('../xml/example.xml', 'r') as f:
+        with open(EXAMPLE_XML, 'r') as f:
             self.xml = f.read()
         self.soup = BeautifulSoup(self.xml, 'xml')
         XMLObject.soup = self.soup

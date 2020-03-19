@@ -34,7 +34,13 @@ class Er1Task(Base):
 
     list_id = sa.Column(
         sa.BigInteger(),
-        sa.ForeignKey('er1.list.id', ondelete='cascade', onupdate='cascade'),
+        sa.ForeignKey(
+            'er1.list.id',
+            ondelete='cascade',
+            onupdate='cascade',
+            deferrable=True,
+            initially="DEFERRED"
+        ),
         nullable=False,
     )
 

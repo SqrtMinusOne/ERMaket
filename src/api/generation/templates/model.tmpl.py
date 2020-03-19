@@ -46,7 +46,7 @@ class {{ Names.class_name(schema, table.name) }}(Base):
     {{ Names.attribute_name(col.name) }} = sa.Column(sa.{{ sa_type(col.type_, col.name) }}, {{ column_attrs(col) }})
     {%- endfor %}
     {% for col in table.foreign_keys %}
-    {{ Names.attribute_name(col.name) }} = sa.Column(sa.{{ sa_type(col.type_, col.name) }}, sa.ForeignKey('{{ schema }}.{{ col.fk.table.name }}.{{ col.fk.column.name }}', ondelete='{{ col.fk.ondelete }}', onupdate='{{ col.fk.onupdate }}'), {{ column_attrs(col) }})
+    {{ Names.attribute_name(col.name) }} = sa.Column(sa.{{ sa_type(col.type_, col.name) }}, sa.ForeignKey('{{ schema }}.{{ col.fk.table.name }}.{{ col.fk.column.name }}', ondelete='{{ col.fk.ondelete }}', onupdate='{{ col.fk.onupdate }}', deferrable=True, initially="DEFERRED"), {{ column_attrs(col) }})
     {%- endfor %}
     {% for rel in table.primary_rels -%}
     {%- if rel.fk_col is not none %}

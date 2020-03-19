@@ -4,7 +4,7 @@ import simplejson as json
 from api.database import DBConn
 from api.erd import ERD, Algorithm
 from api.generation import Generator
-from api.models import Faker, Models, Seeder
+from api.models import Dumper, Faker, Models, Seeder
 
 __all__ = ['db']
 
@@ -88,6 +88,24 @@ def generate(xml, schema, no_system, folder, check):
 def clear(folder, schema):
     gen = Generator(None, None)
     gen.clear_folder(folder=folder, schema=schema)
+
+
+@db.command(help='Dump data')
+@click.option("--folder", help="Folder to dump", default=None)
+@click.option("--schema", help="Schema to dump", prompt=True)
+@click.option("--format", help="Format", default='csv')
+def dump(folder, schema, format):
+    dumper = Dumper()
+    dumper.dump_schema(folder=folder, schema=schema, format=format)
+
+
+@db.command(help="Load data from the dump")
+@click.option("--folder", help="Folder with dumps", default=None)
+@click.option("--schema", help="Schema with dumps", prompt=True)
+@click.option("--format", help="Format", default='csv')
+def load(folder, schema, format):
+    dumper = Dumper()
+    dumper.load_schema(folder=folder, schema=schema, format=format)
 
 
 @db.command(help='Fake data')

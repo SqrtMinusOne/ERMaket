@@ -26,7 +26,13 @@ class Er1Attachment(Base):
 
     task_id = sa.Column(
         sa.BigInteger(),
-        sa.ForeignKey('er1.task.id', ondelete='cascade', onupdate='cascade'),
+        sa.ForeignKey(
+            'er1.task.id',
+            ondelete='cascade',
+            onupdate='cascade',
+            deferrable=True,
+            initially="DEFERRED"
+        ),
         nullable=False,
     )
 

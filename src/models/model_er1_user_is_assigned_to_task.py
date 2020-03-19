@@ -14,13 +14,25 @@ class Er1UserIsAssignedToTask(Base):
 
     user_name = sa.Column(
         sa.String(256),
-        sa.ForeignKey('er1.user.name', ondelete='cascade', onupdate='cascade'),
+        sa.ForeignKey(
+            'er1.user.name',
+            ondelete='cascade',
+            onupdate='cascade',
+            deferrable=True,
+            initially="DEFERRED"
+        ),
         primary_key=True,
         nullable=False,
     )
     task_id = sa.Column(
         sa.BigInteger(),
-        sa.ForeignKey('er1.task.id', ondelete='cascade', onupdate='cascade'),
+        sa.ForeignKey(
+            'er1.task.id',
+            ondelete='cascade',
+            onupdate='cascade',
+            deferrable=True,
+            initially="DEFERRED"
+        ),
         primary_key=True,
         nullable=False,
     )

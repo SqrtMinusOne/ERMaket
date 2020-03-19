@@ -27,7 +27,20 @@
             "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
             "xsi:schemaLocation": "ermaket_hierarchy settings.xsd"
         },
-        "hierarchyPath" : "../xml/hierarchy.xml"
+        "ScriptListAttributes": {
+            "xmlns": "ermaket_scriptlist",
+            "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+            "xsi:schemaLocation": "ermaket_hierarchy scripts.xsd"
+        },
+        "hierarchyPath" : "../xml/hierarchy.xml",
+        "scriptsPath": "../xml/scripts.xml"
+    },
+    "Scripts": {
+        "folder": "scripts",
+        "prefix": "script_"
+    },
+    "Dump": {
+        "folder": "../dump"
     },
     "Generation": {
         "templates_folder": "api/generation/templates/",
