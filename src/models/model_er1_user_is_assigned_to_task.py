@@ -35,4 +35,5 @@ class Er1UserIsAssignedToTask(Base):
         ),
         primary_key=True,
         nullable=False,
+        autoincrement=False,
     )

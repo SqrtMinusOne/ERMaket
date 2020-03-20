@@ -53,13 +53,18 @@ class Dumper:
         for name, model in self._models[schema].items():
             filename = os.path.join(folder, f'{name}.csv')
             casts = self._get_casts(model)
-            with open(filename, 'r', newline='') as csvfile:
-                reader = csv.DictReader(csvfile)
-                # db.execute(model.__table__.insert(), list(reader))
-                db.bulk_insert_mappings(
-                    model, (self._cast(obj, casts) for obj in reader)
+            try:
+                with open(filename, 'r', newline='') as csvfile:
+                    reader = csv.DictReader(csvfile)
+                    # db.execute(model.__table__.insert(), list(reader))
+                    db.bulk_insert_mappings(
+                        model, (self._cast(obj, casts) for obj in reader)
+                    )
+                logging.info(f'Read {name} from {filename}')
+            except FileNotFoundError:
+                logging.info(
+                    f'File {filename} for the model "{name}" not found'
                 )
-            logging.info(f'Read {name} from {filename}')
         db.commit()
         logging.info(f'Finished loading {schema}')
 

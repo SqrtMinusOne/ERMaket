@@ -20,6 +20,8 @@ unique=True,
 {%- endif -%}
 {%- if col.auto_inc and not col.fk -%}
 autoincrement=True,
+{%- elif col.pk and not col.auto_inc and col.type_.startswith('int') -%}
+autoincrement=False,
 {%- endif -%}
 {% endmacro %}
 {%- macro back_populates(rel) -%}

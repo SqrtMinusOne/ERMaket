@@ -32,6 +32,8 @@
             <childId>19</childId>
             <childId>20</childId>
             <childId>21</childId>
+            <childId>22</childId>
+            <childId>23</childId>
         </children>
     </section>
     <tableEntry id="1">
@@ -150,8 +152,8 @@
                 <linkName>has</linkName>
             </linkedColumn>
             <linkedColumn>
-                <rowName>died_at_death_place</rowName>
-                <text>Died at death place</text>
+                <rowName>died_at_place</rowName>
+                <text>Died at place</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -161,7 +163,7 @@
                 <isVisible>True</isVisible>
                 <isUnique>False</isUnique>
                 <isAuto>False</isAuto>
-                <linkTableName>death_place</linkTableName>
+                <linkTableName>place</linkTableName>
                 <linkSchema>phil</linkSchema>
                 <linkType>combined</linkType>
                 <isMultiple>True</isMultiple>
@@ -170,8 +172,8 @@
                 <linkName>died_at</linkName>
             </linkedColumn>
             <linkedColumn>
-                <rowName>was_born_at_birth_place</rowName>
-                <text>Was born at birth place</text>
+                <rowName>was_born_at_place</rowName>
+                <text>Was born at place</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -181,7 +183,7 @@
                 <isVisible>True</isVisible>
                 <isUnique>False</isUnique>
                 <isAuto>False</isAuto>
-                <linkTableName>birth_place</linkTableName>
+                <linkTableName>place</linkTableName>
                 <linkSchema>phil</linkSchema>
                 <linkType>combined</linkType>
                 <isMultiple>True</isMultiple>
@@ -248,6 +250,26 @@
                 <linkRequired>True</linkRequired>
                 <linkMultiple>True</linkMultiple>
                 <linkName>has</linkName>
+            </linkedColumn>
+            <linkedColumn>
+                <rowName>lived_in_era</rowName>
+                <text>Lived in era</text>
+                <isSort>True</isSort>
+                <isFilter>True</isFilter>
+                <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <isRequired>False</isRequired>
+                <type>link</type>
+                <isVisible>True</isVisible>
+                <isUnique>False</isUnique>
+                <isAuto>False</isAuto>
+                <linkTableName>era</linkTableName>
+                <linkSchema>phil</linkSchema>
+                <linkType>combined</linkType>
+                <isMultiple>True</isMultiple>
+                <linkRequired>True</linkRequired>
+                <linkMultiple>True</linkMultiple>
+                <linkName>lived_in</linkName>
             </linkedColumn>
             <linkedColumn>
                 <rowName>belongs_to_philosophical_school</rowName>
@@ -373,15 +395,15 @@
                     <linkType>linkedTable</linkType>
                 </linkedField>
                 <linkedField>
-                    <rowName>died_at_death_place</rowName>
-                    <text>Died at death place</text>
+                    <rowName>died_at_place</rowName>
+                    <text>Died at place</text>
                     <isEditable>True</isEditable>
                     <isVisible>True</isVisible>
                     <linkType>linkedTable</linkType>
                 </linkedField>
                 <linkedField>
-                    <rowName>was_born_at_birth_place</rowName>
-                    <text>Was born at birth place</text>
+                    <rowName>was_born_at_place</rowName>
+                    <text>Was born at place</text>
                     <isEditable>True</isEditable>
                     <isVisible>True</isVisible>
                     <linkType>linkedTable</linkType>
@@ -403,6 +425,13 @@
                 <linkedField>
                     <rowName>has_notable_idea</rowName>
                     <text>Has notable idea</text>
+                    <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
+                    <linkType>linkedTable</linkType>
+                </linkedField>
+                <linkedField>
+                    <rowName>lived_in_era</rowName>
+                    <text>Lived in era</text>
                     <isEditable>True</isEditable>
                     <isVisible>True</isVisible>
                     <linkType>linkedTable</linkType>
@@ -446,11 +475,12 @@
                         <rowName>has_page_wiki_page</rowName>
                         <rowName>wiki_page_id</rowName>
                         <rowName>name_has</rowName>
-                        <rowName>died_at_death_place</rowName>
-                        <rowName>was_born_at_birth_place</rowName>
+                        <rowName>died_at_place</rowName>
+                        <rowName>was_born_at_place</rowName>
                         <rowName>has_nationality</rowName>
                         <rowName>has_main_interest</rowName>
                         <rowName>has_notable_idea</rowName>
+                        <rowName>lived_in_era</rowName>
                         <rowName>belongs_to_philosophical_school</rowName>
                         <rowName>is_author_of_work</rowName>
                         <rowName>influenced_philosopher</rowName>
@@ -464,8 +494,134 @@
     </tableEntry>
     <tableEntry id="2">
         <accessRights inherit="True"/>
-        <name>Death place</name>
-        <tableName>death_place</tableName>
+        <name>Era</name>
+        <tableName>era</tableName>
+        <schema>phil</schema>
+        <linesOnPage>50</linesOnPage>
+        <columns>
+            <column>
+                <rowName>name</rowName>
+                <text>Name</text>
+                <isSort>True</isSort>
+                <isFilter>True</isFilter>
+                <isEditable>True</isEditable>
+                <isPk>True</isPk>
+                <isRequired>True</isRequired>
+                <type>text</type>
+                <isVisible>True</isVisible>
+                <isUnique>True</isUnique>
+                <isAuto>False</isAuto>
+            </column>
+            <column>
+                <rowName>abstract</rowName>
+                <text>Abstract</text>
+                <isSort>True</isSort>
+                <isFilter>True</isFilter>
+                <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <isRequired>False</isRequired>
+                <type>text</type>
+                <isVisible>True</isVisible>
+                <isUnique>False</isUnique>
+                <isAuto>False</isAuto>
+            </column>
+            <linkedColumn>
+                <rowName>lived_in_philosopher</rowName>
+                <text>Lived in philosopher</text>
+                <isSort>True</isSort>
+                <isFilter>True</isFilter>
+                <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <isRequired>True</isRequired>
+                <type>link</type>
+                <isVisible>True</isVisible>
+                <isUnique>False</isUnique>
+                <isAuto>False</isAuto>
+                <linkTableName>philosopher</linkTableName>
+                <linkSchema>phil</linkSchema>
+                <linkType>combined</linkType>
+                <isMultiple>True</isMultiple>
+                <linkRequired>False</linkRequired>
+                <linkMultiple>True</linkMultiple>
+                <linkName>lived_in</linkName>
+            </linkedColumn>
+            <linkedColumn>
+                <rowName>has_page_wiki_page</rowName>
+                <text>Has page wiki page</text>
+                <isSort>True</isSort>
+                <isFilter>True</isFilter>
+                <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <isRequired>False</isRequired>
+                <type>link</type>
+                <isVisible>True</isVisible>
+                <isUnique>False</isUnique>
+                <isAuto>False</isAuto>
+                <linkTableName>wiki_page</linkTableName>
+                <linkSchema>phil</linkSchema>
+                <linkType>combined</linkType>
+                <isMultiple>False</isMultiple>
+                <linkRequired>False</linkRequired>
+                <linkMultiple>False</linkMultiple>
+                <linkName>has_page</linkName>
+            </linkedColumn>
+        </columns>
+        <formDescription>
+            <schema>phil</schema>
+            <tableName>era</tableName>
+            <fields>
+                <simpleField>
+                    <rowName>name</rowName>
+                    <text>Name</text>
+                    <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
+                </simpleField>
+                <simpleField>
+                    <rowName>abstract</rowName>
+                    <text>Abstract</text>
+                    <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
+                </simpleField>
+                <linkedField>
+                    <rowName>lived_in_philosopher</rowName>
+                    <text>Lived in philosopher</text>
+                    <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
+                    <linkType>linkedTable</linkType>
+                </linkedField>
+                <linkedField>
+                    <rowName>has_page_wiki_page</rowName>
+                    <text>Has page wiki page</text>
+                    <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
+                    <linkType>linkedTable</linkType>
+                </linkedField>
+            </fields>
+            <groups>
+                <formGroup>
+                    <legend>Era</legend>
+                    <rows>
+                        <rowName>name</rowName>
+                        <rowName>abstract</rowName>
+                        <rowName>lived_in_philosopher</rowName>
+                        <rowName>has_page_wiki_page</rowName>
+                    </rows>
+                </formGroup>
+            </groups>
+        </formDescription>
+        <pagination>True</pagination>
+        <hidden>False</hidden>
+        <defaultSort>
+            <sortColumn>
+                <rowName>name</rowName>
+                <sort>asc</sort>
+            </sortColumn>
+        </defaultSort>
+    </tableEntry>
+    <tableEntry id="3">
+        <accessRights inherit="True"/>
+        <name>Place</name>
+        <tableName>place</tableName>
         <schema>phil</schema>
         <linesOnPage>50</linesOnPage>
         <columns>
@@ -523,93 +679,6 @@
                 <linkMultiple>True</linkMultiple>
                 <linkName>died_at</linkName>
             </linkedColumn>
-        </columns>
-        <formDescription>
-            <schema>phil</schema>
-            <tableName>death_place</tableName>
-            <fields>
-                <simpleField>
-                    <rowName>name</rowName>
-                    <text>Name</text>
-                    <isEditable>True</isEditable>
-                    <isVisible>True</isVisible>
-                </simpleField>
-                <linkedField>
-                    <rowName>has_page_wiki_page</rowName>
-                    <text>Has page wiki page</text>
-                    <isEditable>True</isEditable>
-                    <isVisible>True</isVisible>
-                    <linkType>dropdown</linkType>
-                </linkedField>
-                <linkedField>
-                    <rowName>died_at_philosopher</rowName>
-                    <text>Died at philosopher</text>
-                    <isEditable>True</isEditable>
-                    <isVisible>True</isVisible>
-                    <linkType>linkedTable</linkType>
-                </linkedField>
-            </fields>
-            <groups>
-                <formGroup>
-                    <legend>Death place</legend>
-                    <rows>
-                        <rowName>name</rowName>
-                        <rowName>has_page_wiki_page</rowName>
-                        <rowName>died_at_philosopher</rowName>
-                    </rows>
-                </formGroup>
-            </groups>
-        </formDescription>
-        <pagination>True</pagination>
-        <hidden>False</hidden>
-        <defaultSort>
-            <sortColumn>
-                <rowName>name</rowName>
-                <sort>asc</sort>
-            </sortColumn>
-        </defaultSort>
-    </tableEntry>
-    <tableEntry id="3">
-        <accessRights inherit="True"/>
-        <name>Birth place</name>
-        <tableName>birth_place</tableName>
-        <schema>phil</schema>
-        <linesOnPage>50</linesOnPage>
-        <columns>
-            <column>
-                <rowName>name</rowName>
-                <text>Name</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
-                <isEditable>True</isEditable>
-                <isPk>True</isPk>
-                <isRequired>True</isRequired>
-                <type>text</type>
-                <isVisible>True</isVisible>
-                <isUnique>True</isUnique>
-                <isAuto>False</isAuto>
-            </column>
-            <linkedColumn>
-                <rowName>has_page_wiki_page</rowName>
-                <text>Has page wiki page</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
-                <isEditable>True</isEditable>
-                <isPk>False</isPk>
-                <isRequired>True</isRequired>
-                <type>int4</type>
-                <isVisible>True</isVisible>
-                <isUnique>False</isUnique>
-                <isAuto>False</isAuto>
-                <linkTableName>wiki_page</linkTableName>
-                <linkSchema>phil</linkSchema>
-                <linkType>dropdown</linkType>
-                <fkName>wiki_page_id</fkName>
-                <isMultiple>False</isMultiple>
-                <linkRequired>False</linkRequired>
-                <linkMultiple>False</linkMultiple>
-                <linkName>has_page</linkName>
-            </linkedColumn>
             <linkedColumn>
                 <rowName>was_born_at_philosopher</rowName>
                 <text>Was born at philosopher</text>
@@ -633,7 +702,7 @@
         </columns>
         <formDescription>
             <schema>phil</schema>
-            <tableName>birth_place</tableName>
+            <tableName>place</tableName>
             <fields>
                 <simpleField>
                     <rowName>name</rowName>
@@ -649,6 +718,13 @@
                     <linkType>dropdown</linkType>
                 </linkedField>
                 <linkedField>
+                    <rowName>died_at_philosopher</rowName>
+                    <text>Died at philosopher</text>
+                    <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
+                    <linkType>linkedTable</linkType>
+                </linkedField>
+                <linkedField>
                     <rowName>was_born_at_philosopher</rowName>
                     <text>Was born at philosopher</text>
                     <isEditable>True</isEditable>
@@ -658,10 +734,11 @@
             </fields>
             <groups>
                 <formGroup>
-                    <legend>Birth place</legend>
+                    <legend>Place</legend>
                     <rows>
                         <rowName>name</rowName>
                         <rowName>has_page_wiki_page</rowName>
+                        <rowName>died_at_philosopher</rowName>
                         <rowName>was_born_at_philosopher</rowName>
                     </rows>
                 </formGroup>
@@ -703,7 +780,7 @@
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
-                <isRequired>True</isRequired>
+                <isRequired>False</isRequired>
                 <type>int8</type>
                 <isVisible>True</isVisible>
                 <isUnique>False</isUnique>
@@ -730,8 +807,8 @@
                 <linkName>has_page</linkName>
             </linkedColumn>
             <linkedColumn>
-                <rowName>birth_place_has_page</rowName>
-                <text>Birth place has page</text>
+                <rowName>place_has_page</rowName>
+                <text>Place has page</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
@@ -741,27 +818,7 @@
                 <isVisible>True</isVisible>
                 <isUnique>False</isUnique>
                 <isAuto>False</isAuto>
-                <linkTableName>birth_place</linkTableName>
-                <linkSchema>phil</linkSchema>
-                <linkType>combined</linkType>
-                <isMultiple>False</isMultiple>
-                <linkRequired>True</linkRequired>
-                <linkMultiple>False</linkMultiple>
-                <linkName>has_page</linkName>
-            </linkedColumn>
-            <linkedColumn>
-                <rowName>death_place_has_page</rowName>
-                <text>Death place has page</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
-                <isEditable>True</isEditable>
-                <isPk>False</isPk>
-                <isRequired>False</isRequired>
-                <type>link</type>
-                <isVisible>True</isVisible>
-                <isUnique>False</isUnique>
-                <isAuto>False</isAuto>
-                <linkTableName>death_place</linkTableName>
+                <linkTableName>place</linkTableName>
                 <linkSchema>phil</linkSchema>
                 <linkType>combined</linkType>
                 <isMultiple>False</isMultiple>
@@ -830,6 +887,26 @@
                 <linkName>has_page</linkName>
             </linkedColumn>
             <linkedColumn>
+                <rowName>has_page_era</rowName>
+                <text>Has page era</text>
+                <isSort>True</isSort>
+                <isFilter>True</isFilter>
+                <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <isRequired>False</isRequired>
+                <type>link</type>
+                <isVisible>True</isVisible>
+                <isUnique>False</isUnique>
+                <isAuto>False</isAuto>
+                <linkTableName>era</linkTableName>
+                <linkSchema>phil</linkSchema>
+                <linkType>combined</linkType>
+                <isMultiple>False</isMultiple>
+                <linkRequired>False</linkRequired>
+                <linkMultiple>False</linkMultiple>
+                <linkName>has_page</linkName>
+            </linkedColumn>
+            <linkedColumn>
                 <rowName>has_page_philosophical_school</rowName>
                 <text>Has page philosophical school</text>
                 <isSort>True</isSort>
@@ -874,15 +951,8 @@
                     <linkType>linkedTable</linkType>
                 </linkedField>
                 <linkedField>
-                    <rowName>birth_place_has_page</rowName>
-                    <text>Birth place has page</text>
-                    <isEditable>True</isEditable>
-                    <isVisible>True</isVisible>
-                    <linkType>linkedTable</linkType>
-                </linkedField>
-                <linkedField>
-                    <rowName>death_place_has_page</rowName>
-                    <text>Death place has page</text>
+                    <rowName>place_has_page</rowName>
+                    <text>Place has page</text>
                     <isEditable>True</isEditable>
                     <isVisible>True</isVisible>
                     <linkType>linkedTable</linkType>
@@ -909,6 +979,13 @@
                     <linkType>linkedTable</linkType>
                 </linkedField>
                 <linkedField>
+                    <rowName>has_page_era</rowName>
+                    <text>Has page era</text>
+                    <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
+                    <linkType>linkedTable</linkType>
+                </linkedField>
+                <linkedField>
                     <rowName>has_page_philosophical_school</rowName>
                     <text>Has page philosophical school</text>
                     <isEditable>True</isEditable>
@@ -923,11 +1000,11 @@
                         <rowName>id</rowName>
                         <rowName>total_visits</rowName>
                         <rowName>philosopher_has_page</rowName>
-                        <rowName>birth_place_has_page</rowName>
-                        <rowName>death_place_has_page</rowName>
+                        <rowName>place_has_page</rowName>
                         <rowName>work_has_page</rowName>
                         <rowName>has_page_main_interest</rowName>
                         <rowName>has_page_notable_idea</rowName>
+                        <rowName>has_page_era</rowName>
                         <rowName>has_page_philosophical_school</rowName>
                     </rows>
                 </formGroup>
@@ -950,29 +1027,16 @@
         <linesOnPage>50</linesOnPage>
         <columns>
             <column>
-                <rowName>id</rowName>
-                <text>Id</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
-                <isEditable>False</isEditable>
-                <isPk>True</isPk>
-                <isRequired>True</isRequired>
-                <type>int8</type>
-                <isVisible>True</isVisible>
-                <isUnique>True</isUnique>
-                <isAuto>True</isAuto>
-            </column>
-            <column>
                 <rowName>nationality</rowName>
                 <text>Nationality</text>
                 <isSort>True</isSort>
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
-                <isPk>False</isPk>
+                <isPk>True</isPk>
                 <isRequired>True</isRequired>
                 <type>text</type>
                 <isVisible>True</isVisible>
-                <isUnique>False</isUnique>
+                <isUnique>True</isUnique>
                 <isAuto>False</isAuto>
             </column>
             <linkedColumn>
@@ -1001,12 +1065,6 @@
             <tableName>nationality</tableName>
             <fields>
                 <simpleField>
-                    <rowName>id</rowName>
-                    <text>Id</text>
-                    <isEditable>False</isEditable>
-                    <isVisible>True</isVisible>
-                </simpleField>
-                <simpleField>
                     <rowName>nationality</rowName>
                     <text>Nationality</text>
                     <isEditable>True</isEditable>
@@ -1024,7 +1082,6 @@
                 <formGroup>
                     <legend>Nationality</legend>
                     <rows>
-                        <rowName>id</rowName>
                         <rowName>nationality</rowName>
                         <rowName>has_philosopher</rowName>
                     </rows>
@@ -1035,7 +1092,7 @@
         <hidden>False</hidden>
         <defaultSort>
             <sortColumn>
-                <rowName>id</rowName>
+                <rowName>nationality</rowName>
                 <sort>asc</sort>
             </sortColumn>
         </defaultSort>
@@ -1666,18 +1723,18 @@
     </tableEntry>
     <tableEntry id="11">
         <accessRights inherit="True"/>
-        <name>Philosopher died at death place</name>
-        <tableName>philosopher_died_at_death_place</tableName>
+        <name>Philosopher died at place</name>
+        <tableName>philosopher_died_at_place</tableName>
         <schema>phil</schema>
         <linesOnPage>50</linesOnPage>
         <columns/>
         <formDescription>
             <schema>phil</schema>
-            <tableName>philosopher_died_at_death_place</tableName>
+            <tableName>philosopher_died_at_place</tableName>
             <fields/>
             <groups>
                 <formGroup>
-                    <legend>Philosopher died at death place</legend>
+                    <legend>Philosopher died at place</legend>
                     <rows/>
                 </formGroup>
             </groups>
@@ -1687,18 +1744,18 @@
     </tableEntry>
     <tableEntry id="12">
         <accessRights inherit="True"/>
-        <name>Philosopher was born at birth place</name>
-        <tableName>philosopher_was_born_at_birth_place</tableName>
+        <name>Philosopher was born at place</name>
+        <tableName>philosopher_was_born_at_place</tableName>
         <schema>phil</schema>
         <linesOnPage>50</linesOnPage>
         <columns/>
         <formDescription>
             <schema>phil</schema>
-            <tableName>philosopher_was_born_at_birth_place</tableName>
+            <tableName>philosopher_was_born_at_place</tableName>
             <fields/>
             <groups>
                 <formGroup>
-                    <legend>Philosopher was born at birth place</legend>
+                    <legend>Philosopher was born at place</legend>
                     <rows/>
                 </formGroup>
             </groups>
@@ -1813,6 +1870,48 @@
     </tableEntry>
     <tableEntry id="18">
         <accessRights inherit="True"/>
+        <name>Philosopher lived in era</name>
+        <tableName>philosopher_lived_in_era</tableName>
+        <schema>phil</schema>
+        <linesOnPage>50</linesOnPage>
+        <columns/>
+        <formDescription>
+            <schema>phil</schema>
+            <tableName>philosopher_lived_in_era</tableName>
+            <fields/>
+            <groups>
+                <formGroup>
+                    <legend>Philosopher lived in era</legend>
+                    <rows/>
+                </formGroup>
+            </groups>
+        </formDescription>
+        <pagination>True</pagination>
+        <hidden>False</hidden>
+    </tableEntry>
+    <tableEntry id="19">
+        <accessRights inherit="True"/>
+        <name>Era has page wiki page</name>
+        <tableName>era_has_page_wiki_page</tableName>
+        <schema>phil</schema>
+        <linesOnPage>50</linesOnPage>
+        <columns/>
+        <formDescription>
+            <schema>phil</schema>
+            <tableName>era_has_page_wiki_page</tableName>
+            <fields/>
+            <groups>
+                <formGroup>
+                    <legend>Era has page wiki page</legend>
+                    <rows/>
+                </formGroup>
+            </groups>
+        </formDescription>
+        <pagination>True</pagination>
+        <hidden>False</hidden>
+    </tableEntry>
+    <tableEntry id="20">
+        <accessRights inherit="True"/>
         <name>Philosopher belongs to philosophical school</name>
         <tableName>philosopher_belongs_to_philosophical_school</tableName>
         <schema>phil</schema>
@@ -1832,7 +1931,7 @@
         <pagination>True</pagination>
         <hidden>False</hidden>
     </tableEntry>
-    <tableEntry id="19">
+    <tableEntry id="21">
         <accessRights inherit="True"/>
         <name>Philosophical school has page wiki page</name>
         <tableName>philosophical_school_has_page_wiki_page</tableName>
@@ -1853,7 +1952,7 @@
         <pagination>True</pagination>
         <hidden>False</hidden>
     </tableEntry>
-    <tableEntry id="20">
+    <tableEntry id="22">
         <accessRights inherit="True"/>
         <name>Philosopher is author of work</name>
         <tableName>philosopher_is_author_of_work</tableName>
@@ -1874,7 +1973,7 @@
         <pagination>True</pagination>
         <hidden>False</hidden>
     </tableEntry>
-    <tableEntry id="21">
+    <tableEntry id="23">
         <accessRights inherit="True"/>
         <name>Philosopher influenced philosopher</name>
         <tableName>philosopher_influenced_philosopher</tableName>
