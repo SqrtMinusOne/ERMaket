@@ -12,8 +12,12 @@ _hierarchy = None
 
 
 class HierachyManager(metaclass=Singleton):
-    def __init__(self, reload=False, save=True):
+    def __init__(self, reload=False, save=True, path=None):
         self._config = Config()
+        if path is not None:
+            self._path = path
+        else:
+            self._path = self._config.XML['hierarchyPath']
         self.read(reload)
         if save:
             atexit.register(lambda manager: manager.save(), self)
@@ -25,8 +29,8 @@ class HierachyManager(metaclass=Singleton):
     def read(self, reload):
         global _hierarchy
         if _hierarchy is None or reload:
-            if os.path.exists(self._config.XML['hierarchyPath']):
-                with open(self._config.XML['hierarchyPath']) as f:
+            if os.path.exists(self._path):
+                with open(self._path) as f:
                     _hierarchy = Hierachy.from_xml(f.read())
                 logging.info(
                     f'Read hierarchy. Elements number: {len(_hierarchy)}'
@@ -37,7 +41,7 @@ class HierachyManager(metaclass=Singleton):
         self.hierarchy = _hierarchy
 
     def save(self):
-        with open(self._config.XML['hierarchyPath'], 'w') as f:
+        with open(self._path, 'w') as f:
             f.write(self.hierarchy.pretty_xml())
         try:
             logging.info(

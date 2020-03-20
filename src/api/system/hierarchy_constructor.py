@@ -75,6 +75,8 @@ class HierachyConstructor:
         for relation in table.relationships:
             if relation.fk_col:
                 t.columns.append(self._make_linked_fk_column(relation))
+                if relation.fk_col.pk:
+                    t.columns.append(self._make_hidden_pk_column(relation))
             else:
                 t.columns.append(self._make_linked_nofk_column(relation))
 
@@ -125,6 +127,11 @@ class HierachyConstructor:
             isRequired=relation.other_side.is_mandatory,
             isUnique=False
         )
+
+    def _make_hidden_pk_column(self, relation):
+        col = self._make_column(relation.fk_col)
+        col.isVisible = False
+        return col
 
     def _make_column(self, column):
         params = dict(

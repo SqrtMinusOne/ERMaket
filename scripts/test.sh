@@ -1,3 +1,4 @@
+python manage.py --log db clear
 python manage.py --log db generate --xml ../xml/examples/task_management.xml --schema er1
 python manage.py --log db drop -y
 python manage.py --log db create

@@ -112,3 +112,6 @@ obj.json
 
 # Dumps
 dump
+
+# Generated stuff
+src/models/philosophy

@@ -1,4 +1,4 @@
-import glob
+from fnmatch import fnmatch
 import logging
 import os
 
@@ -78,19 +78,22 @@ class Generator:
         return files
 
     def clear_folder(self, schema=None):
-        path = f"{self._folder}/{self._prefix}"
+        prefix = self._prefix
         if schema:
-            path += schema
-        path += '*'
-        for f in glob.glob(path):
-            os.remove(f)
-            logging.info(f'Removed file: {f}')
+            prefix += schema
+        for subdir, dirs, files in os.walk(self._folder):
+            for f in files:
+                if fnmatch(f, f"{prefix}*.py"):
+                    os.remove(os.path.join(subdir, f))
+                    logging.info(f'Removed file: {os.path.join(subdir, f)}')
 
     def generate_system_models(self):
         for system_template in self._config.Generation['system_templates']:
             filename = system_template[:-8] + '.py'
             render = self._env.get_template(system_template).render(
-                base_module=self._base_module
+                base_module=self._base_module,
+                import_base=self._folder == self._base_folder,
+                import_system=True
             )
             render = self._postprocess_python(render)
             self._save_file(self._folder, filename, render)

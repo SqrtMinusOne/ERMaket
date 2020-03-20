@@ -80,6 +80,7 @@ def create():
 @click.option(
     "--base-folder",
     help="Base module location folder",
+    type=click.Path(),
     default="models"
 )
 def generate(
@@ -118,7 +119,7 @@ def generate(
 @click.option("--folder", help="Folder to clear", type=click.Path())
 @click.option("--schema", help="Schema to clear")
 def clear(folder, schema):
-    gen = Generator(None, folder=folder)
+    gen = Generator(None, folder=folder, schema=schema)
     gen.clear_folder(schema=schema)
 
 

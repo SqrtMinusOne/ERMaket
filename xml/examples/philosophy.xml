@@ -42,7 +42,7 @@
     <entity id="3">
         <name>WikiPage</name>
         <attribute>
-            <name>wikiPageId</name>
+            <name>id</name>
             <type>int4</type>
             <isPk>true</isPk>
         </attribute>

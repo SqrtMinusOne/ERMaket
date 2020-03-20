@@ -167,9 +167,11 @@ class Table(_Table):
             )
 
     def get_default_sort(self):
+        if self.defaultSort is None:
+            return []
         return [
-            f'{"-" if col.sort == SortOrder.DESC else ""}' +
-            f'{col.rowName}' for col in self.defaultSort
+            f'{"-" if col.sort == SortOrder.DESC else ""}' + f'{col.rowName}'
+            for col in self.defaultSort
         ]
 
     @property
@@ -177,3 +179,7 @@ class Table(_Table):
         for column in self.columns:
             if column.isPk:
                 return column
+
+    @property
+    def empty(self):
+        return len(self.columns) == 0
