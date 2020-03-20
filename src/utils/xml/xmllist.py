@@ -23,7 +23,7 @@ def make_init(kws):
     return __init__
 
 
-def make_to_xml(tag_name, children_class, children_tag):
+def make_to_xml(tag_name, children_class, children_tag, kws):
     def to_xml(self):
         tag = self.soup.new_tag(tag_name)
         if children_class is not None:
@@ -33,10 +33,7 @@ def make_to_xml(tag_name, children_class, children_tag):
                 tag.append(self.new_tag(children_tag, value))
                 for value in self.values
             ]
-        [
-            tag.__setitem__(key, value)
-            for key, value in self.__dict__.items() if key != 'values'
-        ]
+        [tag.__setitem__(key, getattr(self, key)) for key in kws]
         return tag
 
     return to_xml
@@ -73,6 +70,7 @@ def make_append(children_class):
             self.values.append(children_class(value))
         else:
             self.values.append(value)
+
     return append
 
 
@@ -89,7 +87,7 @@ def xmllist(classname, tag_name, children, kws=None):
             "__init__":
                 make_init(kws),
             "to_xml":
-                make_to_xml(tag_name, children_class, children_tag),
+                make_to_xml(tag_name, children_class, children_tag, kws),
             "_from_xml":
                 make_from_xml(children_class),
             "__len__":
@@ -102,8 +100,10 @@ def xmllist(classname, tag_name, children, kws=None):
                 lambda self, key: self.values.__delitem__(key),
             "__iter__":
                 lambda self: iter(self.values),
-            "append": make_append(children_class),
-            "to_object": to_object,
+            "append":
+                make_append(children_class),
+            "to_object":
+                to_object,
             "_tag_name":
                 tag_name
         }
