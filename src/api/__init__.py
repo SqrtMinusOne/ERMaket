@@ -5,3 +5,4 @@ from .queries import *
 from .erd import *
 from .generation import *
 from .system import *
+from .scripts import *

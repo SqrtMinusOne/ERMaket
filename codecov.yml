@@ -4,6 +4,7 @@ coverage:
   precision: 2
   ignore:
     - "./src/api/generation/templates/*"
+    - './src/tests/dummy_scripts/*'
 
   status:
     project:

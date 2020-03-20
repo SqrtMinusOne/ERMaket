@@ -43,11 +43,18 @@ def set_temp_paths(config):
     shutil.rmtree('_temp', ignore_errors=True)
     Path('_temp/xml').mkdir(parents=True, exist_ok=True)
     Path('_temp/dump').mkdir(parents=True, exist_ok=True)
+    Path('_temp/scripts').mkdir(parents=True, exist_ok=True)
     config.Models['models_dir'] = '_temp'
     config.Generation['base'] = '_temp.base'
     config.Generation['base_folder'] = '_temp'
     config.XML['hierarchyPath'] = '_temp/xml/hierarchy.xml'
+    config.XML['scriptsPath'] = '_temp/xml/scripts.xml'
     config.Dump['folder'] = '_temp/dump'
+    config.Scripts['folder'] = '_temp/scripts'
+
+    shutil.copytree(
+        'tests/dummy_scripts', '_temp/scripts', dirs_exist_ok=True
+    )
 
 
 @pytest.fixture()
