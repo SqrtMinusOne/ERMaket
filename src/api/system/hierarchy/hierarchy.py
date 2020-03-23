@@ -7,6 +7,7 @@ from .elements import Page, PrebuiltPage
 from .form import Form
 from .section import Section
 from .table import Table
+from .scripts import Trigger, Triggers
 
 __all__ = ['Hierachy']
 
@@ -17,7 +18,8 @@ _Hierarchy = xmlall(
     forms=Form,
     tables=Table,
     pages=Page,
-    prebuiltPages=PrebuiltPage
+    prebuiltPages=PrebuiltPage,
+    globalTriggers=Trigger,
 )
 
 
@@ -29,6 +31,7 @@ class Hierachy(_Hierarchy, RootMixin):
         )
         super().__init__(*args, **kwargs)
         self.set_tree()
+        self._set_triggers()
 
     def set_tree(self):
         self._set_ids()
@@ -67,6 +70,9 @@ class Hierachy(_Hierarchy, RootMixin):
                 self._tables[table.schema][table.tableName] = table
             except KeyError:
                 self._tables[table.schema] = {table.tableName: table}
+
+    def _set_triggers(self):
+        self.triggers = Triggers(self.globalTriggers)
 
     def get_table_entry(self, schema, name):
         try:

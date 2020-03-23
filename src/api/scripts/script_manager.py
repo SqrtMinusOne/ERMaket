@@ -18,22 +18,23 @@ class Context:
         activation=Activation.CALL,
         user=None,
         elem=None,
-        request_data=None,
-        transaction=None,
+        request=None,
+        request_info=None,
         exec_data=None
     ):
         self.activation = Activation.CALL
         self.user = user
         self.elem = elem
-        self.request_data = request_data,
-        self.transaction = transaction
+        self.request = request,
+        self.request_info = request_info
         self.exec_data = exec_data
 
 
 class ReturnContext:
-    def __init__(self, append_request=None, abort=None):
+    def __init__(self, append_request=None, abort=None, abort_msg=""):
         self.append_request = {} if append_request is None else append_request
         self.abort = abort
+        self.abort_msg = abort_msg
 
 
 class ScriptManager(metaclass=Singleton):

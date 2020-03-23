@@ -197,7 +197,7 @@ def test_db(empty_db):
 @pytest.fixture(scope='module')
 def client(test_db, clear_test_logs):
     config = Config()
-    config.read(reload=True)
+    # config.read(reload=True)
     config.configs['Logging'] = always_merger.merge(
         config.Logging, config.TestingLogging
     )

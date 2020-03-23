@@ -13,7 +13,6 @@ from api import Config
 from api.database import DBConn
 from api.models import Models
 from api.queries import SqlExecutor
-from api.scripts import ScriptManager
 
 __all__ = ['create_app']
 
@@ -85,14 +84,11 @@ def create_app():
 
     DBConn()
     SqlExecutor()
-    script_manager = ScriptManager()
 
-    from flask import session
-    script_manager.set_session(session)
-
-    from blueprints import tables, auth, transaction, sql
+    from blueprints import tables, auth, transaction, sql, business_logic
     app.register_blueprint(tables)
     app.register_blueprint(auth)
     app.register_blueprint(transaction)
     app.register_blueprint(sql)
+    app.register_blueprint(business_logic)
     return app

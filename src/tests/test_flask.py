@@ -62,9 +62,11 @@ def test_get(client, test_db):
     login(client, test_db.admin_user)
 
     response = client.get(table_url)
+    assert response.status_code == 200
     assert len(response.json) > 0
 
     response = client.get(entry_url)
+    assert response.status_code == 200
     assert response.json
 
     client.post('/auth/logout')
@@ -111,3 +113,34 @@ def test_sql(client, test_db):
 
     assert response.status_code == 200
     assert len(response.json["result"][0]) == len(response.json["keys"])
+
+
+@pytest.mark.usefixtures("client", "test_db")
+def test_call_script(client, test_db):
+    login(client, test_db.admin_user)
+    response = client.post(
+        "/scripts/execute/1",
+        data=json.dumps({'activation': 'call'}),
+        content_type='application/json'
+    )
+
+    assert response.status_code == 200
+    assert response.json['business_logic']['done'] == 'step_1'
+
+    response = client.post(
+        "/scripts/execute/1",
+        data=json.dumps({'activation': 'call'}),
+        content_type='application/json'
+    )
+
+    assert response.status_code == 200
+    assert response.json['business_logic']['done'] == 'step_2'
+
+    response = client.post(
+        "/scripts/execute/1",
+        data=json.dumps({'activation': 'call'}),
+        content_type='application/json'
+    )
+
+    assert response.status_code == 200
+    assert response.json['business_logic']['done'] == 'step_1'

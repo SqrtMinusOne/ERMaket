@@ -1,3 +1,5 @@
+from collections import namedtuple
+
 import simplejson as json
 from flask import Blueprint, abort, jsonify, request
 from flask_login import current_user, login_required
@@ -5,11 +7,15 @@ from flask_login import current_user, login_required
 from api.database import DBConn
 from api.models import Models, NamesConverter
 from api.queries import QueryBuilder
+from api.scripts import ServerScriptExecutor
 from api.system import UserManager
-from api.system.hierarchy import AccessRight
+from api.system.hierarchy import AccessRight, Activation
 
 models = Models()
 user_mgr = UserManager()
+scripts = ServerScriptExecutor()
+
+TableRequestInfo = namedtuple('TableRequestInfo', ['model'])
 
 __all__ = ['tables']
 tables = Blueprint('tables', 'tables', url_prefix='/tables')
@@ -63,18 +69,28 @@ def get_model(db, schema, table, access_type):
     name = NamesConverter.class_name(schema, table)
     model = models[schema][name]
     order = entry.get_default_sort()
-    return model, name, order
+    return entry, model, name, order
 
 
 @tables.route('/table/<schema>/<table>')
 @login_required
 def get_table(schema, table):
     with DBConn.get_session() as db:
-        model, name, order = get_model(db, schema, table, AccessRight.VIEW)
+        entry, model, name, order = get_model(
+            db, schema, table, AccessRight.VIEW
+        )
+        info = TableRequestInfo(model)
+        if not scripts.process_logic(Activation.READ, entry, info):
+            return scripts.return_
+
         kwargs = get_filter_params(request.args, name, default_order=order)
         builder = QueryBuilder(db)
         data = builder.fetch_data(model, **kwargs)
-        result = {"data": data, "total": builder.count_data(model)}
+        result = {
+            "data": data,
+            "total": builder.count_data(model),
+            **scripts.append_
+        }
     return jsonify(result)
 
 
@@ -82,8 +98,12 @@ def get_table(schema, table):
 @login_required
 def get_entry(schema, table):
     with DBConn.get_session() as db:
-        model, name, _ = get_model(db, schema, table, AccessRight.VIEW)
+        entry, model, name, _ = get_model(db, schema, table, AccessRight.VIEW)
+        info = TableRequestInfo(model)
+        if not scripts.process_logic(Activation.READ, entry, info):
+            return scripts.return_
+
         kwargs = get_filter_params(request.args, name, pagination=False)
         builder = QueryBuilder(db)
         result = builder.fetch_one(model, **kwargs)
-    return jsonify(result)
+    return jsonify({**result, **scripts.append_})
