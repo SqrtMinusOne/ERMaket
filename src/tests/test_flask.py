@@ -126,7 +126,7 @@ def test_sql(client, test_db):
 def test_call_script(client, test_db):
     login(client, test_db.admin_user)
     response = client.post(
-        f"/scripts/execute/${CHAIN_ID}",
+        f"/scripts/execute/{CHAIN_ID}",
         data=json.dumps({'activation': 'call'}),
         content_type='application/json'
     )
@@ -135,7 +135,7 @@ def test_call_script(client, test_db):
     assert response.json['business_logic']['done'] == 'step_1'
 
     response = client.post(
-        f"/scripts/execute/${CHAIN_ID}",
+        f"/scripts/execute/{CHAIN_ID}",
         data=json.dumps({'activation': 'call'}),
         content_type='application/json'
     )
@@ -144,7 +144,7 @@ def test_call_script(client, test_db):
     assert response.json['business_logic']['done'] == 'step_2'
 
     response = client.post(
-        f"/scripts/execute/${CHAIN_ID}",
+        f"/scripts/execute/{CHAIN_ID}",
         data=json.dumps({'activation': 'call'}),
         content_type='application/json'
     )
@@ -191,6 +191,7 @@ def test_abort_request(client, test_db):
         }
     )
     assert response.status_code == 418
+    mgr.h.triggers = Triggers([])
 
 
 @pytest.mark.usefixtures("client", "test_db")
@@ -217,3 +218,4 @@ def test_add_info(client, test_db):
     assert response.status_code == 200
     assert response.json['business_logic']['data'] == "EXAMPLE_DATA"
     assert response.json['business_logic']['data2'] == "EXAMPLE_DATA2"
+    mgr.h.triggers = Triggers([])
