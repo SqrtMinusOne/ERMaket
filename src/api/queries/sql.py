@@ -3,11 +3,12 @@ from sqlalchemy.exc import ResourceClosedError
 from api import Config
 from api.database import DatabaseUserManager, DBConn
 from api.models import Models
+from utils import Singleton
 
 __all__ = ['SqlExecutor']
 
 
-class SqlExecutor:
+class SqlExecutor(metaclass=Singleton):
     def __init__(self):
         self._config = Config()
         self._models = Models()

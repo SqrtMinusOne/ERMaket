@@ -19,6 +19,12 @@ from utils import Singleton
 SAMPLE_ERD = '../xml/examples/task_management.xml'
 
 
+class DummySession(dict):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.modified = False
+
+
 @pytest.fixture()
 def sample_xml():
     with open(SAMPLE_ERD, 'r') as f:
@@ -117,6 +123,11 @@ def empty_db():
     seeder.drop_models()
     seeder.create_models()
     return alg, models
+
+
+@pytest.fixture()
+def dummy_session():
+    return DummySession()
 
 
 @pytest.fixture(scope='module')

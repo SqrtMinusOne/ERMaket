@@ -1,3 +1,6 @@
+__all__ = ['UserScript']
+
+
 class UserScript:
     def __init__(self, id=None):
         self.functions = []
@@ -6,6 +9,9 @@ class UserScript:
 
     def __len__(self):
         return len(self.functions)
+
+    def __getitem__(self, index):
+        return self.functions[index]
 
     def register(self, func):
         self.functions.append(func)

@@ -13,14 +13,13 @@ from api import Config
 from api.database import DBConn
 from api.models import Models
 from api.queries import SqlExecutor
+from api.scripts import ScriptManager
 
 __all__ = ['create_app']
 
 
 def create_app():
     app = Flask(__name__)
-    # TODO Remove for production!
-    CORS(app, resources={r'/*': {'origins': '*'}}, supports_credentials=True)
     config = Config()
     Path(
         os.path.dirname(
@@ -28,6 +27,13 @@ def create_app():
         )
     ).mkdir(parents=True, exist_ok=True)
     logging.config.dictConfig(config.Logging)
+
+    if not (not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == "true"):
+        logging.info('Skipping reloader')
+        return app
+
+    # TODO Remove for production!
+    CORS(app, resources={r'/*': {'origins': '*'}}, supports_credentials=True)
 
     login_manager = LoginManager()
     sess = Session()
@@ -69,23 +75,24 @@ def create_app():
             response['traceback'] = traceback.format_exc()
         return jsonify(response), 500
 
-    if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == "true":
-        logging.info('Starting app')
+    logging.info('Starting app')
 
-        app.config.update(config.Flask)
-        app.config['SESSION_FILE_DIR'] = mkdtemp()
+    app.config.update(config.Flask)
+    app.config['SESSION_FILE_DIR'] = mkdtemp()
 
-        login_manager.init_app(app)
-        sess.init_app(app)
+    login_manager.init_app(app)
+    sess.init_app(app)
 
-        DBConn()
-        SqlExecutor()
+    DBConn()
+    SqlExecutor()
+    script_manager = ScriptManager()
 
-        from blueprints import tables, auth, transaction, sql
-        app.register_blueprint(tables)
-        app.register_blueprint(auth)
-        app.register_blueprint(transaction)
-        app.register_blueprint(sql)
-    else:
-        logging.info('Skipping reloader')
+    from flask import session
+    script_manager.set_session(session)
+
+    from blueprints import tables, auth, transaction, sql
+    app.register_blueprint(tables)
+    app.register_blueprint(auth)
+    app.register_blueprint(transaction)
+    app.register_blueprint(sql)
     return app

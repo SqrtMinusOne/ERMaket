@@ -1,19 +1,12 @@
-from utils.xml import xmlenum, xmllist, xmltuple
+from utils.xml import xmlenum, xmltuple
 
 from .access import AccessRights
+from .scripts import Buttons, Triggers
 
 __all__ = [
-    'Button', 'Trigger', 'Buttons', 'Triggers', 'Page', 'PrebuiltPageType',
+    'Page', 'PrebuiltPageType',
     'PrebuiltPage'
 ]
-
-# Buttons
-Button = xmltuple('Button', 'button', ['text', 'location'])
-Buttons = xmllist('Buttons', 'buttonList', Button)
-
-# Triggers
-Trigger = xmltuple('Trigger', 'trigger', ['activation', 'scriptId'])
-Triggers = xmllist('Triggers', 'triggerList', Trigger)
 
 # Abstract hierarchy element params
 _element_attrs = ['accessRights', 'buttonList', 'triggerList', 'name']
