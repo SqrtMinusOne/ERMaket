@@ -3,6 +3,13 @@ import json
 import pytest
 
 from api.database import DBConn
+from api.system import HierachyManager
+from api.system.hierarchy import Activation, Trigger, Triggers
+
+CHAIN_ID = 1
+TEAPOT_ID = 2
+ADD_ID = 3
+ADD2_ID = 4
 
 
 def login(client, user):
@@ -119,7 +126,7 @@ def test_sql(client, test_db):
 def test_call_script(client, test_db):
     login(client, test_db.admin_user)
     response = client.post(
-        "/scripts/execute/1",
+        f"/scripts/execute/${CHAIN_ID}",
         data=json.dumps({'activation': 'call'}),
         content_type='application/json'
     )
@@ -128,7 +135,7 @@ def test_call_script(client, test_db):
     assert response.json['business_logic']['done'] == 'step_1'
 
     response = client.post(
-        "/scripts/execute/1",
+        f"/scripts/execute/${CHAIN_ID}",
         data=json.dumps({'activation': 'call'}),
         content_type='application/json'
     )
@@ -137,10 +144,76 @@ def test_call_script(client, test_db):
     assert response.json['business_logic']['done'] == 'step_2'
 
     response = client.post(
-        "/scripts/execute/1",
+        f"/scripts/execute/${CHAIN_ID}",
         data=json.dumps({'activation': 'call'}),
         content_type='application/json'
     )
 
     assert response.status_code == 200
     assert response.json['business_logic']['done'] == 'step_1'
+
+
+@pytest.mark.usefixtures("client", "test_db")
+def test_abort_request(client, test_db):
+    test_db.entry.triggerList = Triggers([Trigger(Activation.READ, TEAPOT_ID)])
+    login(client, test_db.admin_user)
+
+    schema, name = test_db.entry.schema, test_db.entry.tableName
+    table_url = f'/tables/table/{schema}/{name}'
+    entry_url = f'/tables/entry/{schema}/{name}'
+    assert client.get(table_url).status_code == 418
+    assert client.get(entry_url).status_code == 418
+
+    mgr = HierachyManager()
+    mgr.h.triggers.append(Trigger(Activation.TRANSACTION, TEAPOT_ID))
+    model = test_db.model
+    entry = test_db.entry
+
+    with DBConn.get_session() as db:
+        item = db.query(model).first()
+        data = model.__marshmallow__().dump(item)
+        key = data[entry.pk.rowName]
+
+        transaction = {entry.id: {'delete': {key: True}}}
+    response = client.post(
+        '/transaction/execute',
+        data=json.dumps({'transaction': transaction}),
+        content_type='application/json'
+    )
+    assert response.status_code == 418
+    client.post('/auth/logout')
+
+    mgr.h.triggers.append(Trigger(Activation.LOGIN, TEAPOT_ID))
+    response = client.post(
+        '/auth/login', data={
+            "login": test_db.admin_user.login,
+            "password": test_db.admin_user.password
+        }
+    )
+    assert response.status_code == 418
+
+
+@pytest.mark.usefixtures("client", "test_db")
+def test_add_info(client, test_db):
+    mgr = HierachyManager()
+    mgr.h.triggers.append(Trigger(Activation.LOGIN, ADD_ID))
+    response = client.post(
+        '/auth/login', data={
+            "login": test_db.admin_user.login,
+            "password": test_db.admin_user.password
+        }
+    )
+    assert response.status_code == 200
+    assert response.json['business_logic']['data'] == "EXAMPLE_DATA"
+    client.post('/auth/logout')
+
+    mgr.h.triggers.append(Trigger(Activation.LOGIN, ADD2_ID))
+    response = client.post(
+        '/auth/login', data={
+            "login": test_db.admin_user.login,
+            "password": test_db.admin_user.password
+        }
+    )
+    assert response.status_code == 200
+    assert response.json['business_logic']['data'] == "EXAMPLE_DATA"
+    assert response.json['business_logic']['data2'] == "EXAMPLE_DATA2"

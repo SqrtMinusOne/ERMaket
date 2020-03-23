@@ -31,15 +31,19 @@ _Triggers = xmllist('Triggers', 'triggerList', Trigger)
 class Triggers(_Triggers):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._scripts = {}
+        self._triggers = {}
         self._sort_scripts()
 
     def _sort_scripts(self):
-        for script in self:
+        for trigger in self:
             try:
-                self._scripts[script.activation].append(script.id)
+                self._triggers[trigger.activation].append(trigger.scriptId)
             except KeyError:
-                self._scripts[script.activation] = [script.id]
+                self._triggers[trigger.activation] = [trigger.scriptId]
 
     def get_scripts(self, activation):
-        return self._scripts.get(activation, [])
+        return self._triggers.get(activation, [])
+
+    def append(self, *args, **kwargs):
+        super().append(*args, **kwargs)
+        self._sort_scripts()

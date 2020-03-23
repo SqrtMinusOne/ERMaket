@@ -1,3 +1,4 @@
+from deepmerge import always_merger
 from flask import jsonify, request, session
 from flask_login import current_user
 
@@ -54,6 +55,7 @@ class ServerScriptExecutor(metaclass=Singleton):
         )
         if len(script_ids) == 1:
             return self._dispatch_one(ctx, script_ids[0])
+        return self._dispatch_many(ctx, script_ids)
 
     def _dispatch_one(self, ctx: Context, id):
         ret = self._mgr.execute(id, ctx)
@@ -70,3 +72,12 @@ class ServerScriptExecutor(metaclass=Singleton):
             return False
         self.append_ = {"business_logic": ret.append_request}
         return True
+
+    def _dispatch_many(self, ctx: Context, ids):
+        ret = {}
+        status = True
+        for id in ids:
+            status = status and self._dispatch_one(ctx, id)
+            ret = always_merger.merge(ret, self.append_)
+        self.append_ = ret
+        return status
