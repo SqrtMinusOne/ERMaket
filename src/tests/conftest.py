@@ -88,12 +88,12 @@ def alg_test_options():
     }
 
 
-@pytest.fixture(autouse=True)
-def reset_singletons():
+@pytest.fixture(autouse=True, scope='module')
+def module_reset_singletons():
     Singleton.reset()
 
 
-@pytest.fixture()
+@pytest.fixture(scope='module')
 def block_singletons():
     with Singleton.block():
         yield

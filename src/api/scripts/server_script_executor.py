@@ -35,7 +35,7 @@ class ServerScriptExecutor(metaclass=Singleton):
         self._reset()
         return self._process(
             activation, None, request_info,
-            self._hmgr.h.triggers.get_scripts(activation)
+            self._mgr.global_triggers.get_scripts(activation)
         )
 
     def process_call(self, id, activation, request_info=None):
@@ -65,12 +65,12 @@ class ServerScriptExecutor(metaclass=Singleton):
                     {
                         "ok": False,
                         "message": ret.abort_msg,
-                        "business_logic": ret.append_request
+                        "businessLogic": ret.append_request
                     }
                 ), ret.abort
             )
             return False
-        self.append_ = {"business_logic": ret.append_request}
+        self.append_ = {"businessLogic": ret.append_request}
         return True
 
     def _dispatch_many(self, ctx: Context, ids):

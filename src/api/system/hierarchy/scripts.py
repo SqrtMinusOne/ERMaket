@@ -37,12 +37,14 @@ class Triggers(_Triggers):
     def _sort_scripts(self):
         for trigger in self:
             try:
-                self._triggers[trigger.activation].append(trigger.scriptId)
+                self._triggers[str(trigger.activation)].append(
+                    trigger.scriptId
+                )
             except KeyError:
-                self._triggers[trigger.activation] = [trigger.scriptId]
+                self._triggers[str(trigger.activation)] = [trigger.scriptId]
 
     def get_scripts(self, activation):
-        return self._triggers.get(activation, [])
+        return self._triggers.get(str(activation), [])
 
     def append(self, *args, **kwargs):
         super().append(*args, **kwargs)

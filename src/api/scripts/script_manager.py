@@ -4,10 +4,10 @@ import logging
 import os
 
 from api.config import Config
-from api.system.hierarchy import Activation
+from api.system.hierarchy import Activation, Trigger, Triggers
 from utils import Singleton
 
-from .script_config import ScriptList
+from .script_config import Activations, ScriptList
 
 __all__ = ['ScriptManager', 'Context', 'ReturnContext']
 
@@ -36,6 +36,13 @@ class ReturnContext:
         self.abort = abort
         self.abort_msg = abort_msg
 
+    def add_message(self, message, variant="primary"):
+        msg = {'message': message, 'variant': variant}
+        try:
+            self.append_request['messages'].append(msg)
+        except KeyError:
+            self.append_request['messages'] = [msg]
+
 
 class ScriptManager(metaclass=Singleton):
     def __init__(self, save=True, discover=False):
@@ -44,6 +51,7 @@ class ScriptManager(metaclass=Singleton):
         self._force_discover = discover
 
         self._imported = {}
+        self.global_triggers = None
         self._session = None
 
         self.read()
@@ -77,18 +85,19 @@ class ScriptManager(metaclass=Singleton):
     def read(self):
         if os.path.exists(
             self._config.XML['scriptsPath']
-        ) or self._force_discover:
+        ) and not self._force_discover:
             with open(self._config.XML['scriptsPath']) as f:
                 self._list = ScriptList(xml=f.read())
-            logging.info('Read script data: {len(self._list)} scripts')
+            logging.info(f'Read script data: {len(self._list)} scripts')
         else:
             self._force_discover = True
             self._discover()
         self._import()
+        self._set_global()
 
     def _discover(self):
         self._list = ScriptList.discover()
-        logging.info('Discovered scripts: {len(self._list)}')
+        logging.info(f'Discovered scripts: {len(self._list)}')
 
     def _import(self):
         for script in self._list:
@@ -127,6 +136,26 @@ class ScriptManager(metaclass=Singleton):
         for script in self._list:
             script.id = id_map[script.id]
         self._imported = new_imported
+
+        for script in self._list:
+            script.activations = Activations(
+                [
+                    Activation(act)
+                    for act in self._imported[script.id].activations
+                ]
+            )
+
+    def _set_global(self):
+        triggers = []
+        [
+            triggers.extend(
+                [
+                    Trigger(activation, script.id)
+                    for activation in script.activations
+                ]
+            ) for script in self._list if script.activations is not None
+        ]
+        self.global_triggers = Triggers(triggers)
 
     def save(self):
         with open(self._config.XML['scriptsPath'], 'w') as f:

@@ -12,5 +12,4 @@ def scripts():
 
 @scripts.command(help='Automatically generate the script config file')
 def discover():
-    mgr = ScriptManager()
-    mgr.discover()
+    ScriptManager(discover=True)

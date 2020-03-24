@@ -1,2 +1,9 @@
 <?xml version="1.0" ?>
-<scripts/>
+<scripts>
+    <script id="0">
+        <path>scripts/script_message_example.py</path>
+        <activations>
+            <activation>login</activation>
+        </activations>
+    </script>
+</scripts>

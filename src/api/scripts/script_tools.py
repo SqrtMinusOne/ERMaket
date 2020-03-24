@@ -2,10 +2,11 @@ __all__ = ['UserScript']
 
 
 class UserScript:
-    def __init__(self, id=None):
+    def __init__(self, id=None, activations=None):
         self.functions = []
         self._function_by_name = {}
         self.id = id
+        self.activations = [] if activations is None else activations
 
     def __len__(self):
         return len(self.functions)

@@ -27,6 +27,7 @@ def test_create():
 
 def test_reset():
     global _created
+    Singleton.reset()
     _created = 0
     a = Dummy()
     b = Dummy()

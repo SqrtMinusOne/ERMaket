@@ -3,7 +3,7 @@ import json
 import pytest
 
 from api.database import DBConn
-from api.system import HierachyManager
+from api.scripts import ScriptManager
 from api.system.hierarchy import Activation, Trigger, Triggers
 
 CHAIN_ID = 1
@@ -132,7 +132,7 @@ def test_call_script(client, test_db):
     )
 
     assert response.status_code == 200
-    assert response.json['business_logic']['done'] == 'step_1'
+    assert response.json['businessLogic']['done'] == 'step_1'
 
     response = client.post(
         f"/scripts/execute/{CHAIN_ID}",
@@ -141,7 +141,7 @@ def test_call_script(client, test_db):
     )
 
     assert response.status_code == 200
-    assert response.json['business_logic']['done'] == 'step_2'
+    assert response.json['businessLogic']['done'] == 'step_2'
 
     response = client.post(
         f"/scripts/execute/{CHAIN_ID}",
@@ -150,7 +150,7 @@ def test_call_script(client, test_db):
     )
 
     assert response.status_code == 200
-    assert response.json['business_logic']['done'] == 'step_1'
+    assert response.json['businessLogic']['done'] == 'step_1'
 
 
 @pytest.mark.usefixtures("client", "test_db")
@@ -164,8 +164,8 @@ def test_abort_request(client, test_db):
     assert client.get(table_url).status_code == 418
     assert client.get(entry_url).status_code == 418
 
-    mgr = HierachyManager()
-    mgr.h.triggers.append(Trigger(Activation.TRANSACTION, TEAPOT_ID))
+    mgr = ScriptManager()
+    mgr.global_triggers.append(Trigger(Activation.TRANSACTION, TEAPOT_ID))
     model = test_db.model
     entry = test_db.entry
 
@@ -183,7 +183,7 @@ def test_abort_request(client, test_db):
     assert response.status_code == 418
     client.post('/auth/logout')
 
-    mgr.h.triggers.append(Trigger(Activation.LOGIN, TEAPOT_ID))
+    mgr.global_triggers.append(Trigger(Activation.LOGIN, TEAPOT_ID))
     response = client.post(
         '/auth/login', data={
             "login": test_db.admin_user.login,
@@ -191,13 +191,13 @@ def test_abort_request(client, test_db):
         }
     )
     assert response.status_code == 418
-    mgr.h.triggers = Triggers([])
+    mgr.global_triggers = Triggers([])
 
 
 @pytest.mark.usefixtures("client", "test_db")
 def test_add_info(client, test_db):
-    mgr = HierachyManager()
-    mgr.h.triggers.append(Trigger(Activation.LOGIN, ADD_ID))
+    mgr = ScriptManager()
+    mgr.global_triggers.append(Trigger(Activation.LOGIN, ADD_ID))
     response = client.post(
         '/auth/login', data={
             "login": test_db.admin_user.login,
@@ -205,10 +205,10 @@ def test_add_info(client, test_db):
         }
     )
     assert response.status_code == 200
-    assert response.json['business_logic']['data'] == "EXAMPLE_DATA"
+    assert response.json['businessLogic']['data'] == "EXAMPLE_DATA"
     client.post('/auth/logout')
 
-    mgr.h.triggers.append(Trigger(Activation.LOGIN, ADD2_ID))
+    mgr.global_triggers.append(Trigger(Activation.LOGIN, ADD2_ID))
     response = client.post(
         '/auth/login', data={
             "login": test_db.admin_user.login,
@@ -216,6 +216,6 @@ def test_add_info(client, test_db):
         }
     )
     assert response.status_code == 200
-    assert response.json['business_logic']['data'] == "EXAMPLE_DATA"
-    assert response.json['business_logic']['data2'] == "EXAMPLE_DATA2"
-    mgr.h.triggers = Triggers([])
+    assert response.json['businessLogic']['data'] == "EXAMPLE_DATA"
+    assert response.json['businessLogic']['data2'] == "EXAMPLE_DATA2"
+    mgr.global_triggers = Triggers([])

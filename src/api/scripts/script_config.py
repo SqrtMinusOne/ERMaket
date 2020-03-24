@@ -3,11 +3,19 @@ import os
 from fnmatch import fnmatch
 
 from api.config import Config
+from api.system.hierarchy import Activation
 from utils.xml import RootMixin, xmllist, xmltuple
 
-__all__ = ['Script', 'ScriptList']
+__all__ = ['Script', 'ScriptList', 'Activations']
 
-Script = xmltuple('Script', 'script', ['path'], kws=['id'], types={'id': int})
+Activations = xmllist('Activations', 'activations', Activation)
+
+Script = xmltuple(
+    'Script',
+    'script', ['path', 'activations'], [Activations],
+    kws=['id'],
+    types={'id': int}
+)
 
 _ScriptList = xmllist('ScriptList', 'scripts', Script)
 
