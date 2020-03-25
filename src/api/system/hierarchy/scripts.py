@@ -3,7 +3,13 @@ from utils.xml import xmlenum, xmllist, xmltuple
 __all__ = ['Button', 'Buttons', 'Trigger', 'Triggers', 'Activation']
 
 # Buttons
-Button = xmltuple('Button', 'button', ['text', 'location'])
+Location = xmlenum('Location', 'location', TOP='top', CARDHEADER='cardHeader')
+
+Button = xmltuple(
+    'Button',
+    'button', ['text', 'location', 'variant', 'scriptId'], [Location],
+    types={'scriptId': int}
+)
 Buttons = xmllist('Buttons', 'buttonList', Button)
 
 # Script activation

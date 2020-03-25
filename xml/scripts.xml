@@ -1,5 +1,9 @@
 <?xml version="1.0" ?>
 <scripts>
+    <script id="1">
+        <path>scripts/script_abort_example.py</path>
+        <activations/>
+    </script>
     <script id="0">
         <path>scripts/script_message_example.py</path>
         <activations>

@@ -18,7 +18,10 @@ CORS(business_logic, supports_credentials=True)
 @login_required
 def process(id):
     data = request.form or request.json
-    activation = Activation(data['activation'])
+    try:
+        activation = Activation(data['activation'])
+    except (KeyError, TypeError):
+        activation = Activation(Activation.CALL)
     if not scripts.process_call(int(id), activation):
         return scripts.return_
     return jsonify({"ok": True, **scripts.append_})

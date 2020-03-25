@@ -378,6 +378,62 @@
                 <sort>asc</sort>
             </sortColumn>
         </defaultSort>
+        <triggerList>
+            <trigger>
+                <activation>afterOpen</activation>
+                <scriptId>0</scriptId>
+            </trigger>
+        </triggerList>
+        <buttonList>
+            <button>
+                <location>top</location>
+                <variant>primary</variant>
+                <text>Button 1</text>
+                <scriptId>0</scriptId>
+            </button>
+            <button>
+                <location>top</location>
+                <variant>secondary</variant>
+                <text>Button 2</text>
+                <scriptId>0</scriptId>
+            </button>
+            <button>
+                <location>top</location>
+                <variant>info</variant>
+                <text>Button 3</text>
+                <scriptId>0</scriptId>
+            </button>
+            <button>
+                <location>top</location>
+                <variant>danger</variant>
+                <text>Button 4</text>
+                <scriptId>0</scriptId>
+            </button>
+            <button>
+                <location>cardHeader</location>
+                <variant>outline-primary</variant>
+                <text>Button 1</text>
+                <scriptId>0</scriptId>
+            </button>
+            <button>
+                <location>cardHeader</location>
+                <variant>outline-secondary</variant>
+                <text>Button 2</text>
+                <scriptId>0</scriptId>
+            </button>
+            <button>
+                <location>cardHeader</location>
+                <variant>outline-info</variant>
+                <text>Button 3</text>
+                <scriptId>0</scriptId>
+            </button>
+            <button>
+                <location>cardHeader</location>
+                <variant>outline-danger</variant>
+                <text>Button 4</text>
+                <scriptId>0</scriptId>
+            </button>
+        </buttonList>
     </tableEntry>
     <tableEntry id="3">
         <accessRights inherit="True"/>
@@ -485,6 +541,12 @@
                 <sort>asc</sort>
             </sortColumn>
         </defaultSort>
+        <triggerList>
+            <trigger>
+                <activation>open</activation>
+                <scriptId>1</scriptId>
+            </trigger>
+        </triggerList>
     </tableEntry>
     <tableEntry id="4">
         <accessRights inherit="True"/>
