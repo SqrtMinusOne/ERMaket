@@ -1,3 +1,5 @@
+import difflib
+import sys
 from collections import namedtuple
 
 import click
@@ -68,3 +70,26 @@ def drop(schema):
         manager.hierarchy.drop_schema(schema)
     else:
         manager.drop()
+
+
+@hierarchy.command(help='Check if the hierarchy is correct')
+@click.option(
+    "--xml", help="Path to the hierarchy file", type=click.Path()
+)
+def check(xml):
+    with open(xml, 'r') as f:
+        xml = f.read()
+    xml1 = Hierachy.from_xml(xml).pretty_xml()
+    xml2 = Hierachy.from_xml(xml1).pretty_xml()
+
+    check = xml1 == xml2
+    if check:
+        print('Everyting seems to be correct')
+    else:
+        print('Something is wrong. Perhaps this can help:')
+        sys.stdout.writelines(
+            difflib.unified_diff(
+                xml1.splitlines(),
+                xml2.splitlines()
+            )
+        )

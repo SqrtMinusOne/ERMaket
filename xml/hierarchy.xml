@@ -1032,4 +1032,31 @@
         <name>SQL Console</name>
         <type>sql</type>
     </prebuiltPageEntry>
+    <section id="11">
+        <accessRights inherit="False">
+            <roleAccess>
+                <roleName>admin</roleName>
+                <access>view</access>
+                <access>change</access>
+                <access>delete</access>
+            </roleAccess>
+        </accessRights>
+        <name>Example pages</name>
+        <children>
+            <childId>12</childId>
+        </children>
+    </section>
+    <pageEntry id="12">
+        <accessRights inherit="False">
+            <roleAccess>
+                <roleName>admin</roleName>
+                <access>view</access>
+                <access>change</access>
+                <access>delete</access>
+            </roleAccess>
+        </accessRights>
+        <name>Example Page</name>
+        <pageName>ExamplePage</pageName>
+        <addCard>true</addCard>
+    </pageEntry>
 </hierarchy>
