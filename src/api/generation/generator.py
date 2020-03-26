@@ -77,8 +77,8 @@ class Generator:
             files[name] = self._generate_model(name)
         return files
 
-    def clear_folder(self, schema=None):
-        prefix = self._prefix
+    def clear_folder(self, schema=None, prefix=None):
+        prefix = self._prefix if prefix is None else prefix
         if schema:
             prefix += schema
         for subdir, dirs, files in os.walk(self._folder):
@@ -88,6 +88,7 @@ class Generator:
                     logging.info(f'Removed file: {os.path.join(subdir, f)}')
 
     def generate_system_models(self):
+        self.clear_folder('system', '')
         for system_template in self._config.Generation['system_templates']:
             filename = system_template[:-8] + '.py'
             render = self._env.get_template(system_template).render(

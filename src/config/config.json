@@ -48,6 +48,7 @@
             "system_role.tmpl.py",
             "system_user.tmpl.py",
             "system_user_has_role.tmpl.py",
+            "system_token.tmpl.py",
             "__init__.tmpl.py"
         ],
         "base": "models.base",
@@ -57,6 +58,11 @@
             "# with next generation. Make changes with caution",
             ""
         ]
+    },
+    "Faker": {
+        "ignore": {
+            "system": ["Token"]
+        }
     },
     "Models": {
         "models_dir": "models",

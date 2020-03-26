@@ -27,6 +27,9 @@ class TestSeeder(unittest.TestCase):
         seeder.drop_models()
         seeder.create_models()
         faker.fake_all(10)
+        assertions = []
         with DBConn.get_session() as db:
-            for table in iter(models):
-                self.assertTrue(db.query(table).first())
+            for model in faker.faked_models():
+                ok = db.query(model).first() is not None
+                assertions.append(ok)
+        [self.assertTrue(ok) for ok in assertions]

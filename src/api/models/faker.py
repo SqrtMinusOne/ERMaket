@@ -5,6 +5,7 @@ import tqdm
 from mixer.backend.sqlalchemy import Mixer
 from sqlalchemy.inspection import inspect
 
+from api.config import Config
 from api.database import DBConn
 
 from .models import Models
@@ -24,6 +25,7 @@ class Faker:
 
     def __init__(self, models: Models, verbose=False, fake=False, db=None):
         self._models = models
+        self._config = Config()
         self._verbose = verbose
         self._mixer = None
         self._fake = fake
@@ -67,6 +69,10 @@ class Faker:
             )
         generated = {name: 0 for name in self._models[schema].keys()}
         not_resolved = {name: 0 for name in self._models[schema].keys()}
+        if schema in self._config.Faker['ignore']:
+            for key in self._config.Faker['ignore'][schema]:
+                del generated[key]
+                del not_resolved[key]
 
         total = sum(
             [
@@ -167,3 +173,14 @@ class Faker:
                 for c in r.local_columns
             ]):
                 return r
+
+    def faked_models(self):
+        models = []
+        for schema in self._models.schemas.keys():
+            if schema not in self._config.Faker['ignore']:
+                models.extend(self._models[schema].values())
+            else:
+                for key, model in self._models[schema].items():
+                    if key not in self._config.Faker['ignore'][schema]:
+                        models.append(model)
+        return models

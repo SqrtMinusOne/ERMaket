@@ -36,7 +36,7 @@ def test_integration(config, sample_xml, models, alg_test_options):
     faker.fake_all(10)
     firsts = []
     with DBConn.get_session() as db:
-        for table in iter(models):
+        for table in faker.faked_models():
             firsts.append(db.query(table).first())
     for first in firsts:
         assert first

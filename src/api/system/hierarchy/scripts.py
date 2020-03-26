@@ -5,14 +5,19 @@ __all__ = ['Button', 'Buttons', 'Trigger', 'Triggers', 'Activation']
 # Buttons
 Location = xmlenum('Location', 'location', TOP='top', CARDHEADER='cardHeader')
 
+SystemAction = xmlenum(
+    'SystemAction', 'action', REGTOKEN='regToken', PASSTOKEN='passToken'
+)
+
 Button = xmltuple(
     'Button',
-    'button', ['text', 'location', 'variant', 'scriptId'], [Location],
+    'button', ['text', 'location', 'variant', 'scriptId', 'action'],
+    [Location, SystemAction],
     types={'scriptId': int}
 )
 Buttons = xmllist('Buttons', 'buttonList', Button)
 
-# Script activation
+# Triggers
 Activation = xmlenum(
     'Activation',
     'activation',
@@ -25,7 +30,6 @@ Activation = xmlenum(
     CALL='call'  # For internal use
 )
 
-# Triggers
 Trigger = xmltuple(
     'Trigger',
     'trigger', ['activation', 'scriptId'], [Activation],
