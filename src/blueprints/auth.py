@@ -3,8 +3,8 @@ from flask_cors import CORS
 from flask_login import current_user, login_required, login_user, logout_user
 
 from api.database import DBConn
-from api.system import UserManager
 from api.scripts import ServerScriptExecutor
+from api.system import UserManager
 from api.system.hierarchy import Activation
 
 __all__ = ['auth']
@@ -47,9 +47,24 @@ def current():
                 "ok": True,
                 "user": user,
                 "hierarchy": session.get('hierarchy'),
-                "rights": session.get('rights')
+                "rights": session.get('rights'),
+                "profile_forms": session.get('profile_forms')
             }
         )
+
+
+@auth.route('/password', methods=['POST'])
+@login_required
+def password():
+    data = request.form or request.json
+    with DBConn.get_session() as sess:
+        sess.add(current_user)
+        success = current_user.change_password(
+            data['old_pass'], data['new_pass']
+        )
+        if success:
+            sess.commit()
+    return jsonify({"ok": success})
 
 
 @auth.route("/logout", methods=['POST'])

@@ -39,10 +39,54 @@ def test_login(test_db, client):
     rights = response.json['rights']
     assert rights
 
+    profile_forms = response.json['profile_forms']
+    assert len(profile_forms) > 0
+
     response = client.post('/auth/logout')
     assert response.json['ok']
     assert not client.get('/auth/current').json['ok']
     assert not client.post('/auth/logout').json['ok']
+
+
+@pytest.mark.usefixtures("client", "test_db")
+def test_password(test_db, client):
+    assert login(client, test_db.admin_user).json["ok"]
+
+    assert not client.post(
+        '/auth/password',
+        data={
+            "old_pass": "Surely wrong password, noone would ever set this",
+            "new_pass": "1234567890"
+        }
+    ).json['ok']
+
+    client.post('/auth/logout')
+    assert login(client, test_db.admin_user).json["ok"]
+
+    assert client.post(
+        '/auth/password',
+        data={
+            "old_pass": test_db.admin_user.password,
+            "new_pass": "1234567890"
+        }
+    ).json["ok"]
+    client.post('/auth/logout')
+    assert not login(client, test_db.admin_user).json["ok"]
+    assert client.post(
+        '/auth/login',
+        data={
+            "login": test_db.admin_user.login,
+            "password": "1234567890"
+        }
+    ).json["ok"]
+    assert client.post(
+        '/auth/password',
+        data={
+            "old_pass": "1234567890",
+            "new_pass": test_db.admin_user.password
+        }
+    ).json["ok"]
+    client.post('/auth/logout')
 
 
 def print_roles(test_db):
@@ -185,7 +229,8 @@ def test_abort_request(client, test_db):
 
     mgr.global_triggers.append(Trigger(Activation.LOGIN, TEAPOT_ID))
     response = client.post(
-        '/auth/login', data={
+        '/auth/login',
+        data={
             "login": test_db.admin_user.login,
             "password": test_db.admin_user.password
         }
@@ -199,7 +244,8 @@ def test_add_info(client, test_db):
     mgr = ScriptManager()
     mgr.global_triggers.append(Trigger(Activation.LOGIN, ADD_ID))
     response = client.post(
-        '/auth/login', data={
+        '/auth/login',
+        data={
             "login": test_db.admin_user.login,
             "password": test_db.admin_user.password
         }
@@ -210,7 +256,8 @@ def test_add_info(client, test_db):
 
     mgr.global_triggers.append(Trigger(Activation.LOGIN, ADD2_ID))
     response = client.post(
-        '/auth/login', data={
+        '/auth/login',
+        data={
             "login": test_db.admin_user.login,
             "password": test_db.admin_user.password
         }

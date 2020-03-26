@@ -1,12 +1,12 @@
 from utils import caster, defaultify_init
+from utils.xml import xmlall, xmlenum, xmllist, xmltuple
 
 from .elements import (_element_attrs, _element_children_classes, _element_kws,
                        _element_types)
-from utils.xml import xmlenum, xmllist, xmltuple, xmlall
 
 __all__ = [
     'LinkType', 'SimpleField', 'LinkedField', 'FormFields', 'FormDescription',
-    'Form', 'FormGroups', 'FormGroup'
+    'Form', 'FormGroups', 'FormGroup', 'RowNames'
 ]
 
 LinkType = xmlenum(
@@ -19,9 +19,7 @@ LinkType = xmlenum(
     # GROUPEDFORM='groupedForm'
 )
 
-_field_attrs = [
-    'rowName', 'text', 'isEditable', 'isVisible', 'hint', 'help'
-]
+_field_attrs = ['rowName', 'text', 'isEditable', 'isVisible', 'hint', 'help']
 
 _field_types = {'isEditable': caster.bool_cast, 'isVisible': caster.bool_cast}
 
@@ -65,7 +63,29 @@ FormDescription = defaultify_init(
     groups=lambda s: FormGroups()
 )
 
-Form = xmltuple(
+_Form = xmltuple(
     'Form', 'formEntry', [*_element_attrs, 'formDescription'],
     [*_element_children_classes, FormDescription], _element_kws, _element_types
 )
+
+
+class Form(_Form):
+    pass
+
+    # def group_ungrouped(self, name):
+    #     grouped_rows = set()
+    #     [
+    #         [grouped_rows.add(row_name) for row_name in group.rowNames]
+    #         for group in self.groups
+    #     ]
+    #     rows = set([field.rowName for field in self.fields])
+    #     ungrouped_rows = rows.difference(grouped_rows)
+    #     if len(grouped_rows) > 0:
+    #         self.groups.append(
+    #             FormGroup(legend=name, rows=RowNames(list(ungrouped_rows)))
+    #         )
+
+    # def fix_legend_names(self):
+    #     names = fix_repeats([group.legend for group in self.groups])
+    #     for group, name in zip(self.groups, names):
+    #         group.legend = name

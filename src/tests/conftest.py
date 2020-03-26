@@ -140,7 +140,8 @@ def test_db(empty_db):
         admin_user = manager.add_user('admin', 'password', db)
         normal_user = manager.add_user('user', 'password', db)
         admin_role = manager.add_role(
-            db=db, name='admin', can_reset_password=True, has_sql_access=True
+            db=db, name='admin', can_reset_password=True, has_sql_access=True,
+            linked_entity_schema='er1', linked_entity_name='user'
         )
         db.add(admin_role)
         admin_user.roles = [admin_role]

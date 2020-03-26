@@ -3,8 +3,8 @@ import logging
 from sqlalchemy.orm.exc import NoResultFound
 
 from api.database import DBConn
-from api.models import Models
-from api.system.hierarchy import PrebuiltPageType, AccessRight
+from api.models import Models, NamesConverter
+from api.system.hierarchy import AccessRight, PrebuiltPageType
 from utils import Singleton
 
 from .hierarchy_manager import HierachyManager
@@ -76,8 +76,21 @@ class UserManager(metaclass=Singleton):
         extracted = self._hierarchy_mgr.hierarchy.extract(roles)
         session['hierarchy'] = extracted.to_object()
         session['rights'] = extracted.extract_rights(roles)
+        session['profile_forms'] = self._extract_profile_forms(user)
         self._set_sql(user, session, extracted)
         session.modified = True
+
+    def _extract_profile_forms(self, user):
+        models = [
+            self.models[role.linked_entity_schema][NamesConverter.class_name(
+                role.linked_entity_schema, role.linked_entity_name
+            )] for role in user.roles if role.linked_entity_name is not None
+        ]
+        return [
+            self._hierarchy_mgr.hierarchy.get_table_entry(
+                model.__table__.schema, model.__tablename__
+            ).formDescription.to_object() for model in models
+        ]
 
     def _set_sql(self, user, session, extracted):
         roles = [role.name for role in user.roles]

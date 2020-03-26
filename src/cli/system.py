@@ -26,7 +26,7 @@ def roleadd(name, default, reset_pass, sql, link_schema, link_entity):
         can_reset_password=reset_pass,
         has_sql_access=sql,
         linked_entity_schema=link_schema,
-        linked_entity_id=link_entity,
+        linked_entity_name=link_entity,
     )
 
 
