@@ -4,7 +4,6 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from .base import Base
 
-
 __all__ = ['User']
 
 
@@ -15,9 +14,9 @@ class User(Base, UserMixin):
     login = sa.Column(sa.String(256), primary_key=True)
     password_hash = sa.Column(sa.String(256), nullable=False)
 
-    roles = sa.orm.relationship('Role',
-                                secondary='system.user_has_roles',
-                                backref='users')
+    roles = sa.orm.relationship(
+        'Role', secondary='system.user_has_roles', backref='users'
+    )
 
     def change_password(self, old, new) -> bool:
         if self.check_password(old):
@@ -30,6 +29,20 @@ class User(Base, UserMixin):
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
+
+    def can_register(self, role_names):
+        if any([role.can_register_all for role in self.roles]):
+            return True
+        target = set(role_names)
+        authority = set()
+        [
+            authority.update(role.can_register)
+            for role in self.roles if role.can_register is not None
+        ]
+        return len(target.difference(authority)) == 0
+
+    def can_reset_password(self):
+        return any([role.can_reset_password for role in self.roles])
 
     @property
     def role_names(self):

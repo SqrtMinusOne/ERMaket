@@ -58,9 +58,7 @@ def set_temp_paths(config):
     config.Dump['folder'] = '_temp/dump'
     config.Scripts['folder'] = '_temp/scripts'
 
-    shutil.copytree(
-        'tests/dummy_scripts', '_temp/scripts', dirs_exist_ok=True
-    )
+    shutil.copytree('tests/dummy_scripts', '_temp/scripts', dirs_exist_ok=True)
 
 
 @pytest.fixture()
@@ -140,8 +138,13 @@ def test_db(empty_db):
         admin_user = manager.add_user('admin', 'password', db)
         normal_user = manager.add_user('user', 'password', db)
         admin_role = manager.add_role(
-            db=db, name='admin', can_reset_password=True, has_sql_access=True,
-            linked_entity_schema='er1', linked_entity_name='user'
+            db=db,
+            name='admin',
+            can_reset_password=True,
+            has_sql_access=True,
+            linked_entity_schema='er1',
+            linked_entity_name='user',
+            can_register_all=True
         )
         db.add(admin_role)
         admin_user.roles = [admin_role]

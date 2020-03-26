@@ -65,11 +65,11 @@ class UserManager(metaclass=Singleton):
             db.commit()
         return user
 
-    def add_register_token(self, *args, roles=None, **kwargs):
+    def add_register_token(self, name, roles=None, **kwargs):
         if roles is None:
             roles = []
         description = {'purpose': 'registration', 'roles': roles}
-        return self._add_token(*args, description, **kwargs)
+        return self._add_token(name, description, **kwargs)
 
     def add_reset_password_token(self, name, login, **kwargs):
         description = {'purpose': 'password', 'login': login}

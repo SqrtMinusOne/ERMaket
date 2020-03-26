@@ -13,5 +13,9 @@ class Role(Base):
     is_default = sa.Column(sa.Boolean(), default=False)
     can_reset_password = sa.Column(sa.Boolean(), default=False)
     has_sql_access = sa.Column(sa.Boolean(), default=False)
+
+    can_register_all = sa.Column(sa.Boolean(), default=False)
+    can_register = sa.Column(sa.ARRAY(sa.String), nullable=True)
+
     linked_entity_schema = sa.Column(sa.String(256), nullable=True)
     linked_entity_name = sa.Column(sa.String(256), nullable=True)

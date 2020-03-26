@@ -17,14 +17,18 @@ def system():
 )
 @click.option('--reset-pass', is_flag=True, help='Can reset passwords')
 @click.option('--sql', is_flag=True, help='SQL Access')
+@click.option('--register-all', is_flag=True, help='Can register all roles')
 @click.option('--link-schema', help='Linked schema name', default=None)
 @click.option('--link-entity', help='Linked entity id', default=None)
-def roleadd(name, default, reset_pass, sql, link_schema, link_entity):
+def roleadd(
+    name, default, reset_pass, sql, register_all, link_schema, link_entity
+):
     UserManager().add_role(
         name=name,
         is_default=default,
         can_reset_password=reset_pass,
         has_sql_access=sql,
+        can_register_all=register_all,
         linked_entity_schema=link_schema,
         linked_entity_name=link_entity,
     )

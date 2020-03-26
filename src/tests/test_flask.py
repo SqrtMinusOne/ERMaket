@@ -52,7 +52,7 @@ def test_login(test_db, client):
 def test_password(test_db, client):
     assert login(client, test_db.admin_user).json["ok"]
 
-    assert not client.post(
+    assert not client.put(
         '/auth/password',
         data={
             "old_pass": "Surely wrong password, noone would ever set this",
@@ -63,7 +63,7 @@ def test_password(test_db, client):
     client.post('/auth/logout')
     assert login(client, test_db.admin_user).json["ok"]
 
-    assert client.post(
+    assert client.put(
         '/auth/password',
         data={
             "old_pass": test_db.admin_user.password,
@@ -79,7 +79,7 @@ def test_password(test_db, client):
             "password": "1234567890"
         }
     ).json["ok"]
-    assert client.post(
+    assert client.put(
         '/auth/password',
         data={
             "old_pass": "1234567890",
@@ -266,3 +266,100 @@ def test_add_info(client, test_db):
     assert response.json['businessLogic']['data'] == "EXAMPLE_DATA"
     assert response.json['businessLogic']['data2'] == "EXAMPLE_DATA2"
     mgr.global_triggers = Triggers([])
+
+
+@pytest.mark.usefixtures("client", "test_db")
+def test_register(client, test_db):
+    login(client, test_db.admin_user)
+    token_simple = client.post(
+        '/auth/register_token', data={
+            'name': 'test',
+        }
+    ).json['token']
+    token_admin = client.post(
+        '/auth/register_token',
+        data=json.dumps({
+            'name': 'test',
+            'roles': ['admin']
+        }),
+        content_type='application/json'
+    ).json['token']
+    assert token_admin is not None
+    assert token_simple is not None
+    client.post('/auth/logout')
+
+    assert client.post(
+        '/auth/register',
+        data={
+            'token': token_simple,
+            'login': 'manager_1',
+            'password': '12345'
+        }
+    ).json['ok']
+    assert client.get('/auth/current').json['ok']
+    client.post('/auth/logout')
+    assert client.post(
+        '/auth/login', data={
+            'login': 'manager_1',
+            'password': '12345'
+        }
+    ).json['ok']
+    client.post('/auth/logout')
+
+    assert client.post(
+        '/auth/register',
+        data={
+            'token': token_admin,
+            'login': 'manager_2',
+            'password': '12345'
+        }
+    ).json['ok']
+    assert 'admin' in client.get('/auth/current').json['user']['roles']
+    client.post('/auth/logout')
+
+
+@pytest.mark.usefixtures("client", "test_db")
+def test_reset_password(client, test_db):
+    login(client, test_db.admin_user)
+    token_simple = client.post(
+        '/auth/register_token', data={
+            'name': 'test',
+        }
+    ).json['token']
+    assert client.post(
+        '/auth/register',
+        data={
+            'token': token_simple,
+            'login': 'manager_10',
+            'password': '12345'
+        }
+    ).json['ok']
+    assert client.get('/auth/current').json['ok']
+    client.post('/auth/logout')
+
+    login(client, test_db.admin_user)
+    token_reset = client.post(
+        '/auth/reset_password_token',
+        data={
+            'name': 'test',
+            'login': 'manager_10'
+        }
+    ).json['token']
+    assert token_reset is not None
+    client.post('/auth/logout')
+
+    assert client.put(
+        '/auth/reset_password',
+        data={
+            'token': token_reset,
+            'login': 'manager_10',
+            'password': '54321'
+        }
+    ).json['ok']
+    assert client.post(
+        '/auth/login', data={
+            'login': 'manager_10',
+            'password': '54321'
+        }
+    )
+    client.post('/auth/logout')
