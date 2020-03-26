@@ -111,7 +111,6 @@ def empty_db():
     alg.run_algorithm()
 
     set_temp_paths(config)
-    alg.inject_role_ref(0)
 
     gen = Generator(alg.tables, 'er1', add_check=True)
     gen.generate_folder()

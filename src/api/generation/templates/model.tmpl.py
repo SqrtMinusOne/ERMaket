@@ -69,7 +69,7 @@ class {{ Names.class_name(schema, table.name) }}(Base):
     {%- for rel in table.secondary_rels %}
     {{ Names.referrer_rel_name(rel.ref_table.name, rel.name) }} = sa.orm.relationship('{{ Names.class_name(schema, rel.ref_table.name) }}', secondary='{{ schema }}.{{ rel.secondary_table.name }}'{{ back_populates(rel) }}{{ secondary_recursive(rel) }})
     {% endfor -%}
-    {% if table._system_ref == '__user' %}
+    {% if table._system_ref == 'user' %}
     {{ roles_ref() }}
     {% endif %}
     {% if add_check %}

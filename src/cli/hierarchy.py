@@ -18,7 +18,7 @@ def hierarchy():
     pass
 
 
-@hierarchy.command(help='Generate hierarchy by xml schema')
+@hierarchy.command(help='Generate the hierarchy by xml schema')
 @click.option(
     "--xml", prompt=True, help="XML file with schema", type=click.Path()
 )
@@ -73,9 +73,7 @@ def drop(schema):
 
 
 @hierarchy.command(help='Check if the hierarchy is correct')
-@click.option(
-    "--xml", help="Path to the hierarchy file", type=click.Path()
-)
+@click.option("--xml", help="Path to the hierarchy file", type=click.Path())
 def check(xml):
     with open(xml, 'r') as f:
         xml = f.read()
@@ -84,12 +82,11 @@ def check(xml):
 
     check = xml1 == xml2
     if check:
-        print('Everyting seems to be correct')
+        click.echo('Everyting seems to be correct')
     else:
-        print('Something is wrong. Perhaps this can help:')
+        click.echo(
+            'Something is wrong. Perhaps the following can help', err=True
+        )
         sys.stdout.writelines(
-            difflib.unified_diff(
-                xml1.splitlines(),
-                xml2.splitlines()
-            )
+            difflib.unified_diff(xml1.splitlines(), xml2.splitlines())
         )

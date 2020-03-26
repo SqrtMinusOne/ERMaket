@@ -16,7 +16,6 @@ def test_integration(config, sample_xml, models, alg_test_options):
     erd = ERD(sample_xml)
     alg = Algorithm(erd, options=alg_test_options)
     alg.run_algorithm()
-    alg.inject_role_ref(0)
     tables = alg.tables
 
     gen = Generator(tables, 'er1', add_check=True)

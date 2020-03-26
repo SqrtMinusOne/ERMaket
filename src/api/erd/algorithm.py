@@ -29,6 +29,7 @@ class Algorithm:
     def run_algorithm(self):
         self._make_tables()
         self._merge_tables()
+        self._inject_system_refs()
 
         self._make_one_table()
         self._make_with_secondary()
@@ -43,10 +44,6 @@ class Algorithm:
             f' and {len(self.erd.relations)}'
             f' relations to {len(self._tables)} tables'
         )
-
-    def inject_role_ref(self, entity_id):
-        table = self._get_table(entity_id)
-        table._system_ref = '__user'
 
     @property
     def tables(self):
@@ -81,6 +78,16 @@ class Algorithm:
                 Factory.add_columns(table, columns, ignore_pk=ignore_pk)
                 del self._tables[self._entities_to_tables[side.id_ref]]
                 self._entities_to_tables[side.id_ref] = table.name
+
+    def _inject_system_refs(self):
+        """
+        Inject references to system tables
+
+        """
+        for entity in self.erd.entities.values():
+            if entity.system_table is not None:
+                table = self._tables[self._entities_to_tables[entity._id]]
+                table._system_ref = entity.system_table
 
     def _make_one_table(self):
         """

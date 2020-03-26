@@ -68,9 +68,7 @@ def create():
     default=False
 )
 @click.option(
-    "--prefix",
-    help="Prefix for the generated files",
-    default="model_"
+    "--prefix", help="Prefix for the generated files", default="model_"
 )
 @click.option(
     "--base-module",
@@ -84,14 +82,8 @@ def create():
     default="models"
 )
 def generate(
-    xml,
-    schema,
-    no_system,
-    folder,
-    check,
-    prefix,
-    base_module,
-    base_folder
+    xml, schema, no_system, folder, check, prefix,
+    base_module, base_folder
 ):
     with open(xml, 'r') as f:
         xml = f.read()
