@@ -18,7 +18,7 @@ class User(Base, UserMixin):
     password_hash = sa.Column(sa.String(256), nullable=False)
 
     roles = sa.orm.relationship(
-        'Role', secondary='system.user_has_roles', backref='users'
+        'Role', secondary='system.user_has_roles', back_populates='users'
     )
 
     def change_password(self, old, new) -> bool:

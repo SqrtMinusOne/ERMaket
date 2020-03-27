@@ -4,6 +4,7 @@
     <!-- Простые типы полей в БД -->
     <xs:simpleType name="staticTypes">
         <xs:restriction base="xs:string">
+            <xs:enumeration value="array" />
             <xs:enumeration value="boolean" />
             <xs:enumeration value="float8" />
             <xs:enumeration value="float4" />

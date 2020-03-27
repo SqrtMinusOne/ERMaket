@@ -960,9 +960,12 @@
                 <access>delete</access>
             </roleAccess>
         </accessRights>
-        <name>System</name>
+        <name>System tables</name>
         <children>
             <childId>10</childId>
+            <childId>11</childId>
+            <childId>12</childId>
+            <childId>13</childId>
         </children>
     </section>
     <prebuiltPageEntry id="10">
@@ -970,4 +973,244 @@
         <name>SQL Console</name>
         <type>sql</type>
     </prebuiltPageEntry>
+    <tableEntry id="11">
+        <accessRights inherit="True"/>
+        <name>Users</name>
+        <tableName>user</tableName>
+        <schema>system</schema>
+        <linesOnPage>50</linesOnPage>
+        <columns>
+            <column>
+                <rowName>login</rowName>
+                <text>Login</text>
+                <isSort>True</isSort>
+                <isFilter>True</isFilter>
+                <isEditable>False</isEditable>
+                <isPk>True</isPk>
+                <isRequired>True</isRequired>
+                <type>varchar(256)</type>
+                <isVisible>True</isVisible>
+                <isUnique>True</isUnique>
+                <isAuto>False</isAuto>
+            </column>
+            <linkedColumn>
+                <rowName>roles</rowName>
+                <text>Roles</text>
+                <isSort>True</isSort>
+                <isFilter>True</isFilter>
+                <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <isRequired>False</isRequired>
+                <type>link</type>
+                <isVisible>True</isVisible>
+                <isUnique>False</isUnique>
+                <isAuto>False</isAuto>
+                <linkTableName>roles</linkTableName>
+                <linkSchema>system</linkSchema>
+                <linkType>combined</linkType>
+                <isMultiple>True</isMultiple>
+                <linkRequired>False</linkRequired>
+                <linkMultiple>True</linkMultiple>
+            </linkedColumn>
+        </columns>
+        <pagination>True</pagination>
+        <hidden>False</hidden>
+    </tableEntry>
+    <tableEntry id="12">
+        <accessRights inherit="True"/>
+        <name>Roles</name>
+        <tableName>role</tableName>
+        <schema>system</schema>
+        <linesOnPage>50</linesOnPage>
+        <columns>
+            <column>
+                <rowName>name</rowName>
+                <text>Name</text>
+                <isSort>True</isSort>
+                <isFilter>True</isFilter>
+                <isEditable>True</isEditable>
+                <isPk>True</isPk>
+                <isRequired>True</isRequired>
+                <type>varchar(256)</type>
+                <isVisible>True</isVisible>
+                <isUnique>True</isUnique>
+                <isAuto>False</isAuto>
+            </column>
+            <column>
+                <rowName>is_default</rowName>
+                <text>Is default</text>
+                <isSort>True</isSort>
+                <isFilter>True</isFilter>
+                <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <isRequired>True</isRequired>
+                <type>boolean</type>
+                <isVisible>True</isVisible>
+                <isUnique>False</isUnique>
+                <isAuto>False</isAuto>
+            </column>
+            <column>
+                <rowName>can_reset_password</rowName>
+                <text>Can reset password</text>
+                <isSort>True</isSort>
+                <isFilter>True</isFilter>
+                <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <isRequired>True</isRequired>
+                <type>boolean</type>
+                <isVisible>True</isVisible>
+                <isUnique>False</isUnique>
+                <isAuto>False</isAuto>
+            </column>
+            <column>
+                <rowName>has_sql_access</rowName>
+                <text>Has sql access</text>
+                <isSort>True</isSort>
+                <isFilter>True</isFilter>
+                <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <isRequired>True</isRequired>
+                <type>boolean</type>
+                <isVisible>True</isVisible>
+                <isUnique>False</isUnique>
+                <isAuto>False</isAuto>
+            </column>
+            <column>
+                <rowName>can_register_all</rowName>
+                <text>Can register all</text>
+                <isSort>True</isSort>
+                <isFilter>True</isFilter>
+                <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <isRequired>True</isRequired>
+                <type>boolean</type>
+                <isVisible>True</isVisible>
+                <isUnique>False</isUnique>
+                <isAuto>False</isAuto>
+            </column>
+            <column>
+                <rowName>can_register</rowName>
+                <text>Can register</text>
+                <isSort>True</isSort>
+                <isFilter>True</isFilter>
+                <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <isRequired>True</isRequired>
+                <type>array</type>
+                <isVisible>True</isVisible>
+                <isUnique>False</isUnique>
+                <isAuto>False</isAuto>
+            </column>
+            <linkedColumn>
+                <rowName>users</rowName>
+                <text>Users</text>
+                <isSort>True</isSort>
+                <isFilter>True</isFilter>
+                <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <isRequired>False</isRequired>
+                <type>link</type>
+                <isVisible>True</isVisible>
+                <isUnique>False</isUnique>
+                <isAuto>False</isAuto>
+                <linkTableName>user</linkTableName>
+                <linkSchema>system</linkSchema>
+                <linkType>combined</linkType>
+                <isMultiple>True</isMultiple>
+                <linkRequired>False</linkRequired>
+                <linkMultiple>True</linkMultiple>
+            </linkedColumn>
+        </columns>
+        <pagination>True</pagination>
+        <hidden>False</hidden>
+    </tableEntry>
+    <tableEntry id="13">
+        <accessRights inherit="True"/>
+        <name>Tokens</name>
+        <tableName>token</tableName>
+        <schema>system</schema>
+        <linesOnPage>50</linesOnPage>
+        <columns>
+            <column>
+                <rowName>name</rowName>
+                <text>Name</text>
+                <isSort>True</isSort>
+                <isFilter>True</isFilter>
+                <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <isRequired>False</isRequired>
+                <type>varchar(256)</type>
+                <isVisible>True</isVisible>
+                <isUnique>False</isUnique>
+                <isAuto>False</isAuto>
+            </column>
+            <column>
+                <rowName>token_hash</rowName>
+                <text>Token hash</text>
+                <isSort>True</isSort>
+                <isFilter>True</isFilter>
+                <isEditable>False</isEditable>
+                <isPk>True</isPk>
+                <isRequired>True</isRequired>
+                <type>varchar(256)</type>
+                <isVisible>False</isVisible>
+                <isUnique>True</isUnique>
+                <isAuto>False</isAuto>
+            </column>
+            <column>
+                <rowName>infinite</rowName>
+                <text>Infinite</text>
+                <isSort>True</isSort>
+                <isFilter>True</isFilter>
+                <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <isRequired>True</isRequired>
+                <type>boolean</type>
+                <isVisible>True</isVisible>
+                <isUnique>False</isUnique>
+                <isAuto>False</isAuto>
+            </column>
+            <column>
+                <rowName>uses</rowName>
+                <text>Uses</text>
+                <isSort>True</isSort>
+                <isFilter>True</isFilter>
+                <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <isRequired>True</isRequired>
+                <type>int4</type>
+                <isVisible>True</isVisible>
+                <isUnique>False</isUnique>
+                <isAuto>False</isAuto>
+            </column>
+            <column>
+                <rowName>time_limit</rowName>
+                <text>Time limit</text>
+                <isSort>True</isSort>
+                <isFilter>True</isFilter>
+                <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <isRequired>True</isRequired>
+                <type>time_limit</type>
+                <isVisible>True</isVisible>
+                <isUnique>False</isUnique>
+                <isAuto>False</isAuto>
+            </column>
+            <column>
+                <rowName>description</rowName>
+                <text>Description</text>
+                <isSort>True</isSort>
+                <isFilter>True</isFilter>
+                <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <isRequired>True</isRequired>
+                <type>json</type>
+                <isVisible>True</isVisible>
+                <isUnique>False</isUnique>
+                <isAuto>False</isAuto>
+            </column>
+        </columns>
+        <pagination>True</pagination>
+        <hidden>False</hidden>
+    </tableEntry>
 </hierarchy>

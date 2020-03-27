@@ -19,3 +19,7 @@ class Role(Base):
 
     linked_entity_schema = sa.Column(sa.String(256), nullable=True)
     linked_entity_name = sa.Column(sa.String(256), nullable=True)
+
+    users = sa.orm.relationship(
+        'User', secondary='system.user_has_roles', back_populates='roles'
+    )

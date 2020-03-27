@@ -4,9 +4,10 @@ import stringcase
 
 from api.models import NamesConverter as Names
 from api.system.hierarchy import (AccessRight, AccessRights, Hierachy,
-                                  LinkedTableColumn, PrebuiltPage,
-                                  PrebuiltPageType, RoleAccess, Section, Table,
-                                  TableColumn, TableLinkType)
+                                  LinkedTableColumn, RoleAccess, Section,
+                                  Table, TableColumn, TableLinkType)
+
+from .system_tables_hierarchy import make_system_tables_hierarchy
 
 __all__ = ['HierachyConstructor']
 
@@ -38,17 +39,7 @@ class HierachyConstructor:
         if parent:
             logging.info('Section with system pages already exists')
             return
-        parent = Section(
-            accessRights=self._global_rights(), name=SYSTEM_SECTION
-        )
-        h.append(parent)
-        sql = PrebuiltPage(
-            accessRights=AccessRights(),
-            name='SQL Console',
-            type=PrebuiltPageType.SQL
-        )
-        h.append(sql)
-        parent.children.append(sql.id)
+        make_system_tables_hierarchy(self._admin_role.name, h)
         h.set_tree()
 
     def _global_rights(self):

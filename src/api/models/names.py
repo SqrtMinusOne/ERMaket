@@ -3,6 +3,9 @@ import stringcase
 __all__ = ['NamesConverter']
 
 
+SYSTEM = 'system'
+
+
 class NamesConverter:
     @staticmethod
     def db_table_to_class(table_name):
@@ -14,7 +17,10 @@ class NamesConverter:
 
     @staticmethod
     def class_name(schema, entity_name):
-        return stringcase.pascalcase(schema + '_' + entity_name)
+        if schema == SYSTEM:
+            return stringcase.pascalcase(entity_name)
+        return stringcase.pascalcase(schema + '_' +
+                                     entity_name).replace('_', '')
 
     @staticmethod
     def table_name(entity_name):

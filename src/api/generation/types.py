@@ -7,6 +7,7 @@ __all__ = ['erd_to_sqla_type']
 
 def erd_to_sqla_type(type_, *args, **kwargs):
     conv = {
+        'array': 'ARRAY(sa.String())',  # TODO
         'boolean': 'Boolean()',
         'float8': 'Float()',  # TODO
         'float4': 'Float()',

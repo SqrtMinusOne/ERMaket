@@ -172,7 +172,7 @@ class UserManager(metaclass=Singleton):
             ), None
         )
         if sql_page is None:
-            logging.warn(
+            logging.warning(
                 f'User {user} is set to have sql access, but has no sql'
                 'console page in the hirerarchy'
             )
