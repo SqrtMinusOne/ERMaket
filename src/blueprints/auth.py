@@ -82,10 +82,18 @@ def register():
     user = manager.register_user(
         data['token'], data['login'], data['password']
     )
-    ctx = ReturnContext()
     if user is None:
-        ctx.add_message('Registration error', variant="danger")
-        return jsonify({"ok": False, "businessLogic": ctx.append_request})
+        return jsonify(
+            {
+                "ok":
+                    False,
+                "message":
+                    (
+                        "Registration error. Perhaps the token is incorrect or"
+                        " the user is already registered"
+                    )
+            }
+        ), 401
     if not scripts.process_global(Activation.LOGIN):
         return scripts.return_
     with DBConn.get_session() as db:
