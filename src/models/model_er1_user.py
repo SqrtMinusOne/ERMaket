@@ -28,11 +28,3 @@ class Er1User(Base):
         secondary='er1.user_is_assigned_to_task',
         back_populates='is_assigned_to_user'
     )
-
-    user_login = sa.Column(
-        sa.String(256), sa.ForeignKey('system.user.login'), unique=True
-    )
-
-    linked_user = sa.orm.relationship(
-        'User', foreign_keys=[user_login], backref='linked_user'
-    )

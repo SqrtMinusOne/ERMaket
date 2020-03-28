@@ -1,7 +1,8 @@
-from api.system.hierarchy import (AccessRight, AccessRights, Hierachy,
-                                  LinkedTableColumn, PrebuiltPage,
-                                  PrebuiltPageType, RoleAccess, Section, Table,
-                                  TableColumn, TableLinkType)
+from api.system.hierarchy import (AccessRight, AccessRights, Button, Buttons,
+                                  Hierachy, LinkedTableColumn, Location,
+                                  PrebuiltPage, PrebuiltPageType, RoleAccess,
+                                  Section, SystemAction, Table, TableColumn,
+                                  TableLinkType)
 
 __all__ = ['make_system_tables_hierarchy']
 
@@ -97,7 +98,7 @@ def _user_table():
         LinkedTableColumn(
             name=NAMES['userTable']['roles'],
             rowName='roles',
-            linkTableName='roles',
+            linkTableName='role',
             linkSchema='system',
             isMultiple=True,
             isRequired=False,
@@ -107,6 +108,21 @@ def _user_table():
             isUnique=False,
         )
     )
+    t.buttonList = Buttons([
+        Button(
+            text='Make registration token',
+            location=Location.CARDHEADER,
+            variant='outline-light',
+            icon='["fas", "key"]',
+            action=SystemAction.REGTOKEN,
+        ),
+        Button(
+            location=Location.ACTION,
+            icon='["fas", "unlock"]',
+            action=SystemAction.PASSTOKEN,
+            tooltip="Reset password"
+        )
+    ])
     return t
 
 
@@ -163,7 +179,6 @@ def _roles_table():
         TableColumn(
             name=NAMES['rolesTable']['can_register'],
             rowName='can_register',
-            isRequired=True,
             type='array',
         )
     )
@@ -229,7 +244,6 @@ def _token_table():
         TableColumn(
             name=NAMES['tokenTable']['time_limit'],
             rowName='time_limit',
-            isRequired=True,
             type='time_limit'
         )
     )

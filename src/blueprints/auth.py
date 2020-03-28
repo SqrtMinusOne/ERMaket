@@ -112,7 +112,7 @@ def register_token():
     ctx = ReturnContext()
     ctx.add_message(
         f"""
-        Registration token: <pre>{token}</pre><br>
+        Registration token: <pre>{token}</pre>
         The token won't be shown anywhere except this message.
         """
     )
@@ -142,7 +142,7 @@ def reset_password_token():
     ctx = ReturnContext()
     ctx.add_message(
         f"""
-        Reset password token: <pre>{token}</pre><br>
+        Reset password token: <pre>{token}</pre>
         The token won't be shown anywhere except this message.
         """
     )

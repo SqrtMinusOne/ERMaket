@@ -116,7 +116,9 @@ class HierachyConstructor:
             linkName=relation.name,
             linkType=TableLinkType(TableLinkType.COMBINED),
             isRequired=relation.other_side.is_mandatory,
-            isUnique=False
+            isUnique=False,
+            isFilter=False,
+            isSort=False
         )
 
     def _make_hidden_pk_column(self, relation):

@@ -44,8 +44,8 @@
             <linkedColumn>
                 <rowName>comment_is_authored_by</rowName>
                 <text>Comment is authored by</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
+                <isSort>False</isSort>
+                <isFilter>False</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>False</isRequired>
@@ -64,8 +64,8 @@
             <linkedColumn>
                 <rowName>is_assigned_to_task</rowName>
                 <text>Is assigned to task</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
+                <isSort>False</isSort>
+                <isFilter>False</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>False</isRequired>
@@ -190,8 +190,8 @@
             <linkedColumn>
                 <rowName>comment_is_written_to</rowName>
                 <text>Comment is written to</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
+                <isSort>False</isSort>
+                <isFilter>False</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>False</isRequired>
@@ -231,8 +231,8 @@
             <linkedColumn>
                 <rowName>attachment_is_attached</rowName>
                 <text>Attachment is attached</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
+                <isSort>False</isSort>
+                <isFilter>False</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>False</isRequired>
@@ -251,8 +251,8 @@
             <linkedColumn>
                 <rowName>subtask_contains</rowName>
                 <text>Subtask contains</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
+                <isSort>False</isSort>
+                <isFilter>False</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>False</isRequired>
@@ -271,8 +271,8 @@
             <linkedColumn>
                 <rowName>is_assigned_to_user</rowName>
                 <text>Is assigned to user</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
+                <isSort>False</isSort>
+                <isFilter>False</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>False</isRequired>
@@ -423,8 +423,8 @@
             <linkedColumn>
                 <rowName>item_contains</rowName>
                 <text>Item contains</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
+                <isSort>False</isSort>
+                <isFilter>False</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>False</isRequired>
@@ -650,8 +650,8 @@
             <linkedColumn>
                 <rowName>task_belongs_to</rowName>
                 <text>Task belongs to</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
+                <isSort>False</isSort>
+                <isFilter>False</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>False</isRequired>
@@ -975,6 +975,21 @@
     </prebuiltPageEntry>
     <tableEntry id="11">
         <accessRights inherit="True"/>
+        <buttonList>
+            <button>
+                <text>Make registration token</text>
+                <location>cardHeader</location>
+                <icon>[&quot;fas&quot;, &quot;key&quot;]</icon>
+                <variant>outline-light</variant>
+                <action>regToken</action>
+            </button>
+            <button>
+                <location>action</location>
+                <icon>[&quot;fas&quot;, &quot;unlock&quot;]</icon>
+                <tooltip>Reset password</tooltip>
+                <action>passToken</action>
+            </button>
+        </buttonList>
         <name>Users</name>
         <tableName>user</tableName>
         <schema>system</schema>
@@ -1005,7 +1020,7 @@
                 <isVisible>True</isVisible>
                 <isUnique>False</isUnique>
                 <isAuto>False</isAuto>
-                <linkTableName>roles</linkTableName>
+                <linkTableName>role</linkTableName>
                 <linkSchema>system</linkSchema>
                 <linkType>combined</linkType>
                 <isMultiple>True</isMultiple>
@@ -1095,7 +1110,7 @@
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
-                <isRequired>True</isRequired>
+                <isRequired>False</isRequired>
                 <type>array</type>
                 <isVisible>True</isVisible>
                 <isUnique>False</isUnique>
@@ -1190,7 +1205,7 @@
                 <isFilter>True</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
-                <isRequired>True</isRequired>
+                <isRequired>False</isRequired>
                 <type>time_limit</type>
                 <isVisible>True</isVisible>
                 <isUnique>False</isUnique>

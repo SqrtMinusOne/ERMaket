@@ -1,9 +1,19 @@
 from utils.xml import xmlenum, xmllist, xmltuple
 
-__all__ = ['Button', 'Buttons', 'Trigger', 'Triggers', 'Activation']
+__all__ = [
+    'Button', 'Buttons', 'Trigger', 'Triggers', 'Activation', 'Location',
+    'SystemAction'
+]
 
 # Buttons
-Location = xmlenum('Location', 'location', TOP='top', CARDHEADER='cardHeader')
+Location = xmlenum(
+    'Location',
+    'location',
+    TOP='top',
+    CARDHEADER='cardHeader',
+    COLUMN='column',  # In table column
+    ACTION='action'  # In actions column
+)
 
 SystemAction = xmlenum(
     'SystemAction', 'action', REGTOKEN='regToken', PASSTOKEN='passToken'
@@ -11,9 +21,14 @@ SystemAction = xmlenum(
 
 Button = xmltuple(
     'Button',
-    'button', ['text', 'location', 'variant', 'scriptId', 'action'],
-    [Location, SystemAction],
-    types={'scriptId': int}
+    'button', [
+        'text', 'location', 'icon', 'column', 'tooltip', 'variant', 'scriptId',
+        'action'
+    ], [Location, SystemAction],
+    types={
+        'scriptId': lambda v: int(v) if v is not None else None,
+        'column': lambda v: int(v) if v is not None else None,
+    }
 )
 Buttons = xmllist('Buttons', 'buttonList', Button)
 
