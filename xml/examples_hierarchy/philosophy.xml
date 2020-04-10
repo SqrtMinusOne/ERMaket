@@ -77,8 +77,7 @@
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>False</isRequired>
-                <type>date</type>
-                <dateFormat>DD-MM-YYYY</dateFormat>
+                <type>varchar(256)</type>
                 <isVisible>True</isVisible>
                 <isUnique>False</isUnique>
                 <isAuto>False</isAuto>
@@ -91,8 +90,7 @@
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>False</isRequired>
-                <type>date</type>
-                <dateFormat>DD-MM-YYYY</dateFormat>
+                <type>varchar(256)</type>
                 <isVisible>True</isVisible>
                 <isUnique>False</isUnique>
                 <isAuto>False</isAuto>
@@ -134,8 +132,8 @@
             <linkedColumn>
                 <rowName>name_has</rowName>
                 <text>Name has</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
+                <isSort>False</isSort>
+                <isFilter>False</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>True</isRequired>
@@ -154,8 +152,8 @@
             <linkedColumn>
                 <rowName>died_at_place</rowName>
                 <text>Died at place</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
+                <isSort>False</isSort>
+                <isFilter>False</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>False</isRequired>
@@ -174,8 +172,8 @@
             <linkedColumn>
                 <rowName>was_born_at_place</rowName>
                 <text>Was born at place</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
+                <isSort>False</isSort>
+                <isFilter>False</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>False</isRequired>
@@ -194,8 +192,8 @@
             <linkedColumn>
                 <rowName>has_nationality</rowName>
                 <text>Has nationality</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
+                <isSort>False</isSort>
+                <isFilter>False</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>False</isRequired>
@@ -214,8 +212,8 @@
             <linkedColumn>
                 <rowName>has_main_interest</rowName>
                 <text>Has main interest</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
+                <isSort>False</isSort>
+                <isFilter>False</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>False</isRequired>
@@ -234,8 +232,8 @@
             <linkedColumn>
                 <rowName>has_notable_idea</rowName>
                 <text>Has notable idea</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
+                <isSort>False</isSort>
+                <isFilter>False</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>False</isRequired>
@@ -254,8 +252,8 @@
             <linkedColumn>
                 <rowName>lived_in_era</rowName>
                 <text>Lived in era</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
+                <isSort>False</isSort>
+                <isFilter>False</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>False</isRequired>
@@ -274,8 +272,8 @@
             <linkedColumn>
                 <rowName>belongs_to_philosophical_school</rowName>
                 <text>Belongs to philosophical school</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
+                <isSort>False</isSort>
+                <isFilter>False</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>False</isRequired>
@@ -294,8 +292,8 @@
             <linkedColumn>
                 <rowName>is_author_of_work</rowName>
                 <text>Is author of work</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
+                <isSort>False</isSort>
+                <isFilter>False</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>False</isRequired>
@@ -528,8 +526,8 @@
             <linkedColumn>
                 <rowName>lived_in_philosopher</rowName>
                 <text>Lived in philosopher</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
+                <isSort>False</isSort>
+                <isFilter>False</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>True</isRequired>
@@ -548,8 +546,8 @@
             <linkedColumn>
                 <rowName>has_page_wiki_page</rowName>
                 <text>Has page wiki page</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
+                <isSort>False</isSort>
+                <isFilter>False</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>False</isRequired>
@@ -662,8 +660,8 @@
             <linkedColumn>
                 <rowName>died_at_philosopher</rowName>
                 <text>Died at philosopher</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
+                <isSort>False</isSort>
+                <isFilter>False</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>True</isRequired>
@@ -682,8 +680,8 @@
             <linkedColumn>
                 <rowName>was_born_at_philosopher</rowName>
                 <text>Was born at philosopher</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
+                <isSort>False</isSort>
+                <isFilter>False</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>True</isRequired>
@@ -789,8 +787,8 @@
             <linkedColumn>
                 <rowName>philosopher_has_page</rowName>
                 <text>Philosopher has page</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
+                <isSort>False</isSort>
+                <isFilter>False</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>False</isRequired>
@@ -809,8 +807,8 @@
             <linkedColumn>
                 <rowName>place_has_page</rowName>
                 <text>Place has page</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
+                <isSort>False</isSort>
+                <isFilter>False</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>False</isRequired>
@@ -829,8 +827,8 @@
             <linkedColumn>
                 <rowName>work_has_page</rowName>
                 <text>Work has page</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
+                <isSort>False</isSort>
+                <isFilter>False</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>False</isRequired>
@@ -849,8 +847,8 @@
             <linkedColumn>
                 <rowName>has_page_main_interest</rowName>
                 <text>Has page main interest</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
+                <isSort>False</isSort>
+                <isFilter>False</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>False</isRequired>
@@ -869,8 +867,8 @@
             <linkedColumn>
                 <rowName>has_page_notable_idea</rowName>
                 <text>Has page notable idea</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
+                <isSort>False</isSort>
+                <isFilter>False</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>False</isRequired>
@@ -889,8 +887,8 @@
             <linkedColumn>
                 <rowName>has_page_era</rowName>
                 <text>Has page era</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
+                <isSort>False</isSort>
+                <isFilter>False</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>False</isRequired>
@@ -909,8 +907,8 @@
             <linkedColumn>
                 <rowName>has_page_philosophical_school</rowName>
                 <text>Has page philosophical school</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
+                <isSort>False</isSort>
+                <isFilter>False</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>False</isRequired>
@@ -1042,8 +1040,8 @@
             <linkedColumn>
                 <rowName>has_philosopher</rowName>
                 <text>Has philosopher</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
+                <isSort>False</isSort>
+                <isFilter>False</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>True</isRequired>
@@ -1232,8 +1230,8 @@
             <linkedColumn>
                 <rowName>has_philosopher</rowName>
                 <text>Has philosopher</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
+                <isSort>False</isSort>
+                <isFilter>False</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>True</isRequired>
@@ -1252,8 +1250,8 @@
             <linkedColumn>
                 <rowName>has_page_wiki_page</rowName>
                 <text>Has page wiki page</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
+                <isSort>False</isSort>
+                <isFilter>False</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>False</isRequired>
@@ -1358,8 +1356,8 @@
             <linkedColumn>
                 <rowName>has_philosopher</rowName>
                 <text>Has philosopher</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
+                <isSort>False</isSort>
+                <isFilter>False</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>True</isRequired>
@@ -1378,8 +1376,8 @@
             <linkedColumn>
                 <rowName>has_page_wiki_page</rowName>
                 <text>Has page wiki page</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
+                <isSort>False</isSort>
+                <isFilter>False</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>False</isRequired>
@@ -1484,8 +1482,8 @@
             <linkedColumn>
                 <rowName>belongs_to_philosopher</rowName>
                 <text>Belongs to philosopher</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
+                <isSort>False</isSort>
+                <isFilter>False</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>True</isRequired>
@@ -1504,8 +1502,8 @@
             <linkedColumn>
                 <rowName>has_page_wiki_page</rowName>
                 <text>Has page wiki page</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
+                <isSort>False</isSort>
+                <isFilter>False</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>False</isRequired>
@@ -1644,8 +1642,8 @@
             <linkedColumn>
                 <rowName>is_author_of_philosopher</rowName>
                 <text>Is author of philosopher</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
+                <isSort>False</isSort>
+                <isFilter>False</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>True</isRequired>

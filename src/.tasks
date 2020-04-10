@@ -1,0 +1,15 @@
+# vim: set fenc=utf-8 ft=dosini:
+
+[test]
+command=../scripts/test.sh
+cwd=<root>
+output=terminal
+errorformat=%f:%l:%m
+save=1
+
+[phil-test]
+command=../scripts/phil_test.sh
+cwd=<root>
+output=terminal
+errorformat=%f:%l:%m
+save=1

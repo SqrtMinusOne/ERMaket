@@ -2,6 +2,8 @@ import importlib
 import logging
 import os
 from fnmatch import fnmatch
+
+
 from marshmallow_sqlalchemy import ModelConversionError, SQLAlchemyAutoSchema
 
 from api import Config
@@ -43,11 +45,11 @@ class Models(metaclass=Singleton):
     def _import(self):
         loaded = 0
         found = []
-        for subdir, dirs, files in os.walk(self.config.Models['models_dir']):
+        for subdir, _, files in os.walk(self.config.Models['models_dir']):
             for f in files:
                 if (
-                    fnmatch(f, f"{self.config.Models['model_prefix']}*.py")
-                    and not self._system_only
+                    fnmatch(f, f"{self.config.Models['model_prefix']}*.py") and
+                    not self._system_only
                 ):
                     found.append(os.path.join(subdir, f))
                 elif fnmatch(f, f"{self.config.Models['system_prefix']}*.py"):

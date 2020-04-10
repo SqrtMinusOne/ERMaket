@@ -14,12 +14,12 @@
         </attribute>
         <attribute>
             <name>birthDate</name>
-            <type>date</type>
+            <type>varchar(256)</type>
             <isNull>true</isNull>
         </attribute>
         <attribute>
             <name>deathDate</name>
-            <type>date</type>
+            <type>varchar(256)</type>
             <isNull>true</isNull>
         </attribute>
     </entity>
