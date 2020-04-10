@@ -9,6 +9,7 @@ from api.config import Config
 from api.database import DBConn
 
 from .models import Models
+from .names import NamesConverter
 
 __all__ = ['Faker']
 
@@ -143,7 +144,11 @@ class Faker:
                 attributes[name] = entry[0][0]
                 rel = self._get_relationship(relationships, name)
                 if rel:
-                    target = self._models[rel.target.schema][rel.argument.arg]
+                    name = NamesConverter.class_name(
+                        rel.target.schema,
+                        rel.target.name
+                    )
+                    target = self._models[rel.target.schema][name]
                     search = {}
                     search[column] = entry[0][0]
                     obj = db.query(target).filter_by(**search).first()
