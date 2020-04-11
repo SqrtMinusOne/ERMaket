@@ -178,7 +178,8 @@ class Factory:
         column = Column(
             name=name,
             type_=attribute.type_,
-            not_null=not attribute.is_null
+            not_null=not attribute.is_null,
+            display=attribute.is_display
         )
         if attribute.is_pk and not ignore_pk:
             column.pk = True

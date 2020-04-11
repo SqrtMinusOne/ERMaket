@@ -12,6 +12,7 @@
         <name>Task</name>
         <attribute>
             <name>Name</name>
+            <isDisplay>true</isDisplay>
             <type>varchar(256)</type>
         </attribute>
         <attribute>

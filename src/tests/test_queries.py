@@ -35,6 +35,8 @@ def test_fetch_one(test_db):
         obj, criterion = _get_sample(db, test_db)
         builder = QueryBuilder(db)
         found_obj = builder.fetch_one(test_db.model, filter_by=[criterion])
+        assert found_obj['_display'] is not None
+        del found_obj['_display']
         assert obj == found_obj
 
 

@@ -39,6 +39,12 @@ class ORMRelationship:
     def other_side(self):
         return self.ref_rel.this_side
 
+    @property
+    def display_column(self):
+        return next(
+            (col for col in self.ref_table.columns if col.display), None
+        )
+
     def __repr__(self):
         ret = f'<ORMRelationship table.name={self.table.name}'
         ret += f', ref_table.name={self.ref_table.name}'

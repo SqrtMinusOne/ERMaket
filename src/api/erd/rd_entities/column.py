@@ -12,7 +12,8 @@ class Column:
         auto_inc=False,
         unique=False,
         pk=False,
-        fk=None
+        fk=None,
+        display=False
     ):
         self.name = name
         self.type_ = type_
@@ -21,6 +22,7 @@ class Column:
         self._unique = unique
         self.pk = pk
         self.fk = fk
+        self.display = display
 
     @property
     def not_null(self):

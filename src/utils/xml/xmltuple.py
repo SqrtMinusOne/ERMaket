@@ -86,6 +86,14 @@ def make_to_object(tag_name, attributes, kws=None, types={}):
     return to_object
 
 
+def make_iter(attributes):
+    def __iter__(self):
+        for attr in attributes:
+            yield getattr(self, attr)
+
+    return __iter__
+
+
 def xmltuple(
     classname, tag_name, attributes, children_classes=None, kws=[], types={}
 ):
@@ -98,6 +106,7 @@ def xmltuple(
             "_from_xml": make_from_xml(children_classes),
             "_tag_name": tag_name,
             "to_object": make_to_object(tag_name, attributes, kws, types),
+            "__iter__": make_iter(attributes),
             **{key: None
                for key in attributes}
         }

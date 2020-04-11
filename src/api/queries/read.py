@@ -30,10 +30,25 @@ class QueryBuilder:
         s = select([func.count()]).select_from(model.__table__)
         return self._session.execute(s).scalar()
 
-    def fetch_one(self, model, **kwargs):
+    def fetch_one(self, model, display_columns=None, **kwargs):
+        if display_columns is None:
+            display_columns = []
         q = self._build_query(model, offset=0, limit=1, **kwargs)
         obj = q.first()
         if obj:
-            return obj.__marshmallow__().dump(obj)
+            dump = obj.__marshmallow__().dump(obj)
+
+            _display = {}
+            for attr_name, target_field, is_multiple in display_columns:
+                attr = getattr(obj, attr_name)
+                if is_multiple:
+                    _display[attr_name] = [
+                        getattr(elem, target_field) for elem in attr
+                    ]
+                else:
+                    _display[attr_name] = getattr(attr, target_field)
+
+            dump["_display"] = _display
+            return dump
         else:
             return None

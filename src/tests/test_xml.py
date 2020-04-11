@@ -58,6 +58,11 @@ class TestXML(unittest.TestCase):
     def test_tuple(self):
         Tag = xmltuple('Tag', 'tag', ['a', 'b'])
         tag = Tag(1, 2)
+
+        a, b = tag
+        self.assertEqual(a, tag.a)
+        self.assertEqual(b, tag.b)
+
         tag2 = Tag(a=1, b=2)
         self.assertEqual(tag.a, 1)
         self.assertEqual(tag2.b, 2)

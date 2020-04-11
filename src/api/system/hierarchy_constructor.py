@@ -3,9 +3,10 @@ import logging
 import stringcase
 
 from api.models import NamesConverter as Names
-from api.system.hierarchy import (AccessRight, AccessRights, Hierachy,
-                                  LinkedTableColumn, RoleAccess, Section,
-                                  Table, TableColumn, TableLinkType)
+from api.system.hierarchy import (AccessRight, AccessRights, DisplayColumn,
+                                  Hierachy, LinkedTableColumn,
+                                  RoleAccess, Section, Table, TableColumn,
+                                  TableLinkType)
 
 from .system_tables_hierarchy import make_system_tables_hierarchy
 
@@ -70,13 +71,29 @@ class HierachyConstructor:
                 t.columns.append(self._make_linked_fk_column(relation))
                 if relation.fk_col.pk:
                     t.columns.append(self._make_hidden_pk_column(relation))
+                else:
+                    display_column = relation.display_column
+                    if display_column is not None:
+                        t.displayColumns.append(DisplayColumn(
+                            rowName=self._linked_name(relation),
+                            linkRowName=display_column.name,
+                            isMultiple=False
+                        ))
             else:
                 t.columns.append(self._make_linked_nofk_column(relation))
+                display_column = relation.display_column
+                if display_column is not None:
+                    t.displayColumns.append(DisplayColumn(
+                        rowName=self._linked_name(relation),
+                        linkRowName=display_column.name,
+                        isMultiple=relation.other_side.is_multiple
+                    ))
 
         t.formDescription = t.make_form()
         t.set_default_sort()
         if t.empty:
             t.hidden = True
+
         return t
 
     def _linked_name(self, relation):

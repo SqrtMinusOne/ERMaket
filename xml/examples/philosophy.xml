@@ -5,6 +5,7 @@
         <attribute>
             <name>name</name>
             <type>varchar(256)</type>
+            <isDisplay>true</isDisplay>
         </attribute>
         <attribute>
             <name>abstract</name>
@@ -54,6 +55,10 @@
             <name>id</name>
             <type>int4</type>
             <isPk>true</isPk>
+        </attribute>
+        <attribute>
+            <name>type</name>
+            <type>enum('Philosopher', 'Era', 'Main Interest', 'Notable Idea', 'Philosophical School', 'Place', 'Work')</type>
         </attribute>
     </entity>
     <entity id="4">

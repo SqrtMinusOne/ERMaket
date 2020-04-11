@@ -777,6 +777,19 @@
                 <isAuto>False</isAuto>
             </column>
             <column>
+                <rowName>type</rowName>
+                <text>Type</text>
+                <isSort>True</isSort>
+                <isFilter>True</isFilter>
+                <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <isRequired>True</isRequired>
+                <type>enum('Philosopher', 'Era', 'Main Interest', 'Notable Idea', 'Philosophical School', 'Place', 'Work')</type>
+                <isVisible>True</isVisible>
+                <isUnique>False</isUnique>
+                <isAuto>False</isAuto>
+            </column>
+            <column>
                 <rowName>total_visits</rowName>
                 <text>Total visits</text>
                 <isSort>True</isSort>
@@ -941,6 +954,12 @@
                     <isVisible>True</isVisible>
                 </simpleField>
                 <simpleField>
+                    <rowName>type</rowName>
+                    <text>Type</text>
+                    <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
+                </simpleField>
+                <simpleField>
                     <rowName>total_visits</rowName>
                     <text>Total visits</text>
                     <isEditable>True</isEditable>
@@ -1001,6 +1020,7 @@
                     <legend>Wiki page</legend>
                     <rows>
                         <rowName>id</rowName>
+                        <rowName>type</rowName>
                         <rowName>total_visits</rowName>
                         <rowName>philosopher_has_page</rowName>
                         <rowName>place_has_page</rowName>

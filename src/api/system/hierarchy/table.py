@@ -10,7 +10,7 @@ from .form import (FormDescription, FormGroup, LinkedField, LinkType,
 
 __all__ = [
     'Table', 'TableColumn', 'TableColumns', 'TableLinkType',
-    'LinkedTableColumn'
+    'LinkedTableColumn', 'DisplayColumn', 'DisplayColumns'
 ]
 
 _table_column_attrs = [
@@ -110,12 +110,25 @@ TableColumns = xmlall(
     'TableColumns', 'columns', normal=TableColumn, linked=LinkedTableColumn
 )
 
+DisplayColumn = xmltuple(
+    'DisplayColumn', 'displayColumn', ['rowName', 'linkRowName', 'isMultiple'],
+    types={
+        'isMultiple': caster.bool_cast
+    }
+)
+
+DisplayColumns = xmllist(
+    'DisplayColumns', 'displayColumns', DisplayColumn
+)
+
 __Table = xmltuple(
     '__Table', 'tableEntry', [
         *_element_attrs, 'tableName', 'schema', 'linesOnPage', 'columns',
-        'formDescription', 'pagination', 'hidden', 'defaultSort'
+        'formDescription', 'pagination', 'hidden', 'defaultSort',
+        'displayColumns'
     ],
-    [*_element_children_classes, TableColumns, FormDescription, DefaultSort],
+    [*_element_children_classes, TableColumns, FormDescription, DefaultSort,
+     DisplayColumns],
     _element_kws, {
         **_element_types,
         'linesOnPage': int,
@@ -130,6 +143,7 @@ _Table = defaultify_init(
     linesOnPage=50,
     columns=lambda self: TableColumns(),
     tableName=lambda self: self.name,
+    displayColumns=lambda self: DisplayColumns(),
     pagination=True,
     hidden=False
 )
