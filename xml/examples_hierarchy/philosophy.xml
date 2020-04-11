@@ -494,6 +494,18 @@
                 <sort>asc</sort>
             </sortColumn>
         </defaultSort>
+        <displayColumns>
+            <displayColumn>
+                <rowName>name_has</rowName>
+                <linkRowName>name</linkRowName>
+                <isMultiple>True</isMultiple>
+            </displayColumn>
+            <displayColumn>
+                <rowName>influenced_philosopher</rowName>
+                <linkRowName>name</linkRowName>
+                <isMultiple>True</isMultiple>
+            </displayColumn>
+        </displayColumns>
     </tableEntry>
     <tableEntry id="2">
         <accessRights inherit="True"/>
@@ -620,6 +632,13 @@
                 <sort>asc</sort>
             </sortColumn>
         </defaultSort>
+        <displayColumns>
+            <displayColumn>
+                <rowName>lived_in_philosopher</rowName>
+                <linkRowName>name</linkRowName>
+                <isMultiple>True</isMultiple>
+            </displayColumn>
+        </displayColumns>
     </tableEntry>
     <tableEntry id="3">
         <accessRights inherit="True"/>
@@ -755,6 +774,18 @@
                 <sort>asc</sort>
             </sortColumn>
         </defaultSort>
+        <displayColumns>
+            <displayColumn>
+                <rowName>died_at_philosopher</rowName>
+                <linkRowName>name</linkRowName>
+                <isMultiple>True</isMultiple>
+            </displayColumn>
+            <displayColumn>
+                <rowName>was_born_at_philosopher</rowName>
+                <linkRowName>name</linkRowName>
+                <isMultiple>True</isMultiple>
+            </displayColumn>
+        </displayColumns>
     </tableEntry>
     <tableEntry id="4">
         <accessRights inherit="True"/>
@@ -1041,6 +1072,13 @@
                 <sort>asc</sort>
             </sortColumn>
         </defaultSort>
+        <displayColumns>
+            <displayColumn>
+                <rowName>philosopher_has_page</rowName>
+                <linkRowName>name</linkRowName>
+                <isMultiple>False</isMultiple>
+            </displayColumn>
+        </displayColumns>
     </tableEntry>
     <tableEntry id="5">
         <accessRights inherit="True"/>
@@ -1119,6 +1157,13 @@
                 <sort>asc</sort>
             </sortColumn>
         </defaultSort>
+        <displayColumns>
+            <displayColumn>
+                <rowName>has_philosopher</rowName>
+                <linkRowName>name</linkRowName>
+                <isMultiple>True</isMultiple>
+            </displayColumn>
+        </displayColumns>
     </tableEntry>
     <tableEntry id="6">
         <accessRights inherit="True"/>
@@ -1218,6 +1263,13 @@
                 <sort>asc</sort>
             </sortColumn>
         </defaultSort>
+        <displayColumns>
+            <displayColumn>
+                <rowName>has_philosopher</rowName>
+                <linkRowName>name</linkRowName>
+                <isMultiple>False</isMultiple>
+            </displayColumn>
+        </displayColumns>
     </tableEntry>
     <tableEntry id="7">
         <accessRights inherit="True"/>
@@ -1344,6 +1396,13 @@
                 <sort>asc</sort>
             </sortColumn>
         </defaultSort>
+        <displayColumns>
+            <displayColumn>
+                <rowName>has_philosopher</rowName>
+                <linkRowName>name</linkRowName>
+                <isMultiple>True</isMultiple>
+            </displayColumn>
+        </displayColumns>
     </tableEntry>
     <tableEntry id="8">
         <accessRights inherit="True"/>
@@ -1470,6 +1529,13 @@
                 <sort>asc</sort>
             </sortColumn>
         </defaultSort>
+        <displayColumns>
+            <displayColumn>
+                <rowName>has_philosopher</rowName>
+                <linkRowName>name</linkRowName>
+                <isMultiple>True</isMultiple>
+            </displayColumn>
+        </displayColumns>
     </tableEntry>
     <tableEntry id="9">
         <accessRights inherit="True"/>
@@ -1596,6 +1662,13 @@
                 <sort>asc</sort>
             </sortColumn>
         </defaultSort>
+        <displayColumns>
+            <displayColumn>
+                <rowName>belongs_to_philosopher</rowName>
+                <linkRowName>name</linkRowName>
+                <isMultiple>True</isMultiple>
+            </displayColumn>
+        </displayColumns>
     </tableEntry>
     <tableEntry id="10">
         <accessRights inherit="True"/>
@@ -1743,6 +1816,13 @@
                 <sort>asc</sort>
             </sortColumn>
         </defaultSort>
+        <displayColumns>
+            <displayColumn>
+                <rowName>is_author_of_philosopher</rowName>
+                <linkRowName>name</linkRowName>
+                <isMultiple>True</isMultiple>
+            </displayColumn>
+        </displayColumns>
     </tableEntry>
     <tableEntry id="11">
         <accessRights inherit="True"/>
@@ -1764,6 +1844,7 @@
         </formDescription>
         <pagination>True</pagination>
         <hidden>True</hidden>
+        <displayColumns/>
     </tableEntry>
     <tableEntry id="12">
         <accessRights inherit="True"/>
@@ -1785,6 +1866,7 @@
         </formDescription>
         <pagination>True</pagination>
         <hidden>True</hidden>
+        <displayColumns/>
     </tableEntry>
     <tableEntry id="13">
         <accessRights inherit="True"/>
@@ -1806,6 +1888,7 @@
         </formDescription>
         <pagination>True</pagination>
         <hidden>True</hidden>
+        <displayColumns/>
     </tableEntry>
     <tableEntry id="14">
         <accessRights inherit="True"/>
@@ -1827,6 +1910,7 @@
         </formDescription>
         <pagination>True</pagination>
         <hidden>True</hidden>
+        <displayColumns/>
     </tableEntry>
     <tableEntry id="15">
         <accessRights inherit="True"/>
@@ -1848,6 +1932,7 @@
         </formDescription>
         <pagination>True</pagination>
         <hidden>True</hidden>
+        <displayColumns/>
     </tableEntry>
     <tableEntry id="16">
         <accessRights inherit="True"/>
@@ -1869,6 +1954,7 @@
         </formDescription>
         <pagination>True</pagination>
         <hidden>True</hidden>
+        <displayColumns/>
     </tableEntry>
     <tableEntry id="17">
         <accessRights inherit="True"/>
@@ -1890,6 +1976,7 @@
         </formDescription>
         <pagination>True</pagination>
         <hidden>True</hidden>
+        <displayColumns/>
     </tableEntry>
     <tableEntry id="18">
         <accessRights inherit="True"/>
@@ -1911,6 +1998,7 @@
         </formDescription>
         <pagination>True</pagination>
         <hidden>True</hidden>
+        <displayColumns/>
     </tableEntry>
     <tableEntry id="19">
         <accessRights inherit="True"/>
@@ -1932,6 +2020,7 @@
         </formDescription>
         <pagination>True</pagination>
         <hidden>True</hidden>
+        <displayColumns/>
     </tableEntry>
     <tableEntry id="20">
         <accessRights inherit="True"/>
@@ -1953,6 +2042,7 @@
         </formDescription>
         <pagination>True</pagination>
         <hidden>True</hidden>
+        <displayColumns/>
     </tableEntry>
     <tableEntry id="21">
         <accessRights inherit="True"/>
@@ -1974,6 +2064,7 @@
         </formDescription>
         <pagination>True</pagination>
         <hidden>True</hidden>
+        <displayColumns/>
     </tableEntry>
     <tableEntry id="22">
         <accessRights inherit="True"/>
@@ -1995,6 +2086,7 @@
         </formDescription>
         <pagination>True</pagination>
         <hidden>True</hidden>
+        <displayColumns/>
     </tableEntry>
     <tableEntry id="23">
         <accessRights inherit="True"/>
@@ -2016,5 +2108,6 @@
         </formDescription>
         <pagination>True</pagination>
         <hidden>True</hidden>
+        <displayColumns/>
     </tableEntry>
 </hierarchy>

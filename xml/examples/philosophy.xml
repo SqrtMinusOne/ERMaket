@@ -74,6 +74,7 @@
         <attribute>
             <name>name</name>
             <type>text</type>
+            <isDisplay>true</isDisplay>
         </attribute>
     </entity>
    <entity id="6">

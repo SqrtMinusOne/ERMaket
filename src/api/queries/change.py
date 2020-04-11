@@ -1,8 +1,9 @@
+from magic_repr import make_repr
+
 from api.config import Config
 from api.models import Models, NamesConverter
 from api.system import HierachyManager
 from api.system.hierarchy import AccessRight
-from magic_repr import make_repr
 
 __all__ = ['Transaction', 'InsufficientRightsError']
 
@@ -97,7 +98,9 @@ class Transaction:
                 except KeyError:
                     pass
 
-            obj = model.__marshmallow__().load(kwargs, session=self._db)
+            obj = model.__marshmallow__().load(
+                kwargs, session=self._db, unknown='EXCLUDE'
+            )
             self._db.add(obj)
             self._objects[_id][str(key)] = obj
 
@@ -130,7 +133,8 @@ class Transaction:
                     **update['newData']
                 },
                 session=self._db,
-                instance=item
+                instance=item,
+                unknown='EXCLUDE'
             )
             self._db.add(new_item)
             self._objects[_id][str(key)] = new_item
@@ -147,7 +151,9 @@ class Transaction:
                     obj = self._objects[link['id']][str(link['key'])]
                     if link['fkName']:
                         setattr(obj, link['fkName'], None)
-                        setattr(obj, link['rowName'], self._objects[_id][str(key)])
+                        setattr(
+                            obj, link['rowName'], self._objects[_id][str(key)]
+                        )
                     else:
                         key_field = self._tables[_id].pk.rowName
                         refs = getattr(obj, link['rowName'])

@@ -41,12 +41,12 @@ class QueryBuilder:
             _display = {}
             for attr_name, target_field, is_multiple in display_columns:
                 attr = getattr(obj, attr_name)
-                if is_multiple:
-                    _display[attr_name] = [
-                        getattr(elem, target_field) for elem in attr
-                    ]
-                else:
-                    _display[attr_name] = getattr(attr, target_field)
+                _display[attr_name] = [
+                    getattr(elem, target_field) for elem in attr
+                ]
+
+                if not is_multiple and len(_display[attr_name]) == 1:
+                    _display[attr_name] = _display[attr_name][0]
 
             dump["_display"] = _display
             return dump
