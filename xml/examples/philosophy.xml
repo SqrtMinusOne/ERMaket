@@ -2,10 +2,10 @@
 <erModel>
     <entity id="0">
         <name>Philosopher</name>
-        <!-- <attribute> -->
-        <!--     <name>name</name> -->
-        <!--     <type>varchar(256)</type> -->
-        <!-- </attribute> -->
+        <attribute>
+            <name>name</name>
+            <type>varchar(256)</type>
+        </attribute>
         <attribute>
             <name>abstract</name>
             <type>text</type>

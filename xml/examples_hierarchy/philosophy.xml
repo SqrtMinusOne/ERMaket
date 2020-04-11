@@ -44,6 +44,19 @@
         <linesOnPage>50</linesOnPage>
         <columns>
             <column>
+                <rowName>name</rowName>
+                <text>Name</text>
+                <isSort>True</isSort>
+                <isFilter>True</isFilter>
+                <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <isRequired>True</isRequired>
+                <type>varchar(256)</type>
+                <isVisible>True</isVisible>
+                <isUnique>False</isUnique>
+                <isAuto>False</isAuto>
+            </column>
+            <column>
                 <rowName>abstract</rowName>
                 <text>Abstract</text>
                 <isSort>True</isSort>
@@ -312,42 +325,34 @@
             <linkedColumn>
                 <rowName>influenced_philosopher</rowName>
                 <text>Influenced philosopher</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
+                <isSort>False</isSort>
+                <isFilter>False</isFilter>
                 <isEditable>True</isEditable>
                 <isPk>False</isPk>
                 <isRequired>False</isRequired>
-                <type>int4</type>
+                <type>link</type>
                 <isVisible>True</isVisible>
                 <isUnique>False</isUnique>
                 <isAuto>False</isAuto>
                 <linkTableName>philosopher</linkTableName>
                 <linkSchema>phil</linkSchema>
-                <linkType>dropdown</linkType>
-                <fkName>philosopher_wiki_page_id_0</fkName>
-                <isMultiple>False</isMultiple>
+                <linkType>combined</linkType>
+                <isMultiple>True</isMultiple>
                 <linkRequired>False</linkRequired>
                 <linkMultiple>True</linkMultiple>
                 <linkName>influenced</linkName>
             </linkedColumn>
-            <column>
-                <rowName>philosopher_wiki_page_id_0</rowName>
-                <text>Philosopher wiki page id 0</text>
-                <isSort>True</isSort>
-                <isFilter>True</isFilter>
-                <isEditable>True</isEditable>
-                <isPk>True</isPk>
-                <isRequired>True</isRequired>
-                <type>int4</type>
-                <isVisible>False</isVisible>
-                <isUnique>False</isUnique>
-                <isAuto>False</isAuto>
-            </column>
         </columns>
         <formDescription>
             <schema>phil</schema>
             <tableName>philosopher</tableName>
             <fields>
+                <simpleField>
+                    <rowName>name</rowName>
+                    <text>Name</text>
+                    <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
+                </simpleField>
                 <simpleField>
                     <rowName>abstract</rowName>
                     <text>Abstract</text>
@@ -453,19 +458,14 @@
                     <text>Influenced philosopher</text>
                     <isEditable>True</isEditable>
                     <isVisible>True</isVisible>
-                    <linkType>dropdown</linkType>
+                    <linkType>linkedTable</linkType>
                 </linkedField>
-                <simpleField>
-                    <rowName>philosopher_wiki_page_id_0</rowName>
-                    <text>Philosopher wiki page id 0</text>
-                    <isEditable>True</isEditable>
-                    <isVisible>True</isVisible>
-                </simpleField>
             </fields>
             <groups>
                 <formGroup>
                     <legend>Philosopher</legend>
                     <rows>
+                        <rowName>name</rowName>
                         <rowName>abstract</rowName>
                         <rowName>gender</rowName>
                         <rowName>birth_date</rowName>
@@ -482,13 +482,18 @@
                         <rowName>belongs_to_philosophical_school</rowName>
                         <rowName>is_author_of_work</rowName>
                         <rowName>influenced_philosopher</rowName>
-                        <rowName>philosopher_wiki_page_id_0</rowName>
                     </rows>
                 </formGroup>
             </groups>
         </formDescription>
         <pagination>True</pagination>
         <hidden>False</hidden>
+        <defaultSort>
+            <sortColumn>
+                <rowName>wiki_page_id</rowName>
+                <sort>asc</sort>
+            </sortColumn>
+        </defaultSort>
     </tableEntry>
     <tableEntry id="2">
         <accessRights inherit="True"/>
@@ -1738,7 +1743,7 @@
             </groups>
         </formDescription>
         <pagination>True</pagination>
-        <hidden>False</hidden>
+        <hidden>True</hidden>
     </tableEntry>
     <tableEntry id="12">
         <accessRights inherit="True"/>
@@ -1759,7 +1764,7 @@
             </groups>
         </formDescription>
         <pagination>True</pagination>
-        <hidden>False</hidden>
+        <hidden>True</hidden>
     </tableEntry>
     <tableEntry id="13">
         <accessRights inherit="True"/>
@@ -1780,7 +1785,7 @@
             </groups>
         </formDescription>
         <pagination>True</pagination>
-        <hidden>False</hidden>
+        <hidden>True</hidden>
     </tableEntry>
     <tableEntry id="14">
         <accessRights inherit="True"/>
@@ -1801,7 +1806,7 @@
             </groups>
         </formDescription>
         <pagination>True</pagination>
-        <hidden>False</hidden>
+        <hidden>True</hidden>
     </tableEntry>
     <tableEntry id="15">
         <accessRights inherit="True"/>
@@ -1822,7 +1827,7 @@
             </groups>
         </formDescription>
         <pagination>True</pagination>
-        <hidden>False</hidden>
+        <hidden>True</hidden>
     </tableEntry>
     <tableEntry id="16">
         <accessRights inherit="True"/>
@@ -1843,7 +1848,7 @@
             </groups>
         </formDescription>
         <pagination>True</pagination>
-        <hidden>False</hidden>
+        <hidden>True</hidden>
     </tableEntry>
     <tableEntry id="17">
         <accessRights inherit="True"/>
@@ -1864,7 +1869,7 @@
             </groups>
         </formDescription>
         <pagination>True</pagination>
-        <hidden>False</hidden>
+        <hidden>True</hidden>
     </tableEntry>
     <tableEntry id="18">
         <accessRights inherit="True"/>
@@ -1885,7 +1890,7 @@
             </groups>
         </formDescription>
         <pagination>True</pagination>
-        <hidden>False</hidden>
+        <hidden>True</hidden>
     </tableEntry>
     <tableEntry id="19">
         <accessRights inherit="True"/>
@@ -1906,7 +1911,7 @@
             </groups>
         </formDescription>
         <pagination>True</pagination>
-        <hidden>False</hidden>
+        <hidden>True</hidden>
     </tableEntry>
     <tableEntry id="20">
         <accessRights inherit="True"/>
@@ -1927,7 +1932,7 @@
             </groups>
         </formDescription>
         <pagination>True</pagination>
-        <hidden>False</hidden>
+        <hidden>True</hidden>
     </tableEntry>
     <tableEntry id="21">
         <accessRights inherit="True"/>
@@ -1948,7 +1953,7 @@
             </groups>
         </formDescription>
         <pagination>True</pagination>
-        <hidden>False</hidden>
+        <hidden>True</hidden>
     </tableEntry>
     <tableEntry id="22">
         <accessRights inherit="True"/>
@@ -1969,7 +1974,7 @@
             </groups>
         </formDescription>
         <pagination>True</pagination>
-        <hidden>False</hidden>
+        <hidden>True</hidden>
     </tableEntry>
     <tableEntry id="23">
         <accessRights inherit="True"/>
@@ -1990,6 +1995,6 @@
             </groups>
         </formDescription>
         <pagination>True</pagination>
-        <hidden>False</hidden>
+        <hidden>True</hidden>
     </tableEntry>
 </hierarchy>

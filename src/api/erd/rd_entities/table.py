@@ -52,11 +52,11 @@ class Table:
                 self.relationships.remove(rel)
                 continue
             if rel.secondary_table:
-                fk = next(
+                fks = [
                     col for col in rel.secondary_table.foreign_keys
                     if col.fk.relation_name == rel.name
-                )
-                rel.fk_col = fk
+                ]
+                rel.primary_join, rel.secondary_join = fks
             resolved.add(rel.name)
 
     @property

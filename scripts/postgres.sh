@@ -1,1 +1,1 @@
-docker run --rm --name ermaket-pg-docker -e POSTGRES_DB=ermaket -e POSTGRES_USER=ermaket -e POSTGRES_PASSWORD=ermaket777 -d -p 5432:5432 -v $HOME/docker/volumes/postgres:/var/lib/postgresql/data_ermaket postgres
+docker run --rm --name ermaket-pg-docker -e POSTGRES_DB=ermaket -e POSTGRES_USER=ermaket -e POSTGRES_PASSWORD=ermaket777 -d -p 5432:5432 -v $HOME/docker/volumes/postgres_ermaket:/var/lib/postgresql/data postgres

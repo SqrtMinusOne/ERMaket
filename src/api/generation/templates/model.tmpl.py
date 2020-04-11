@@ -3,6 +3,7 @@
 
     linked_user = sa.orm.relationship('User', foreign_keys=[user_login], backref='linked_{{ table.name }}')
 {% endmacro -%}
+
 {%- macro rel_name(rel) -%}
 {%- if rel.fk_col is not none -%}
 {{ Names.referrer_rel_name(rel.ref_table.name, rel.name) }}
@@ -10,6 +11,7 @@
 {{ Names.referral_rel_name(rel.ref_table.name, rel.name) }}
 {%- endif -%}
 {%- endmacro -%}
+
 {%- macro column_attrs(col) -%}
 {%- if col.pk -%}
 primary_key=True,
@@ -24,16 +26,20 @@ autoincrement=True,
 autoincrement=False,
 {%- endif -%}
 {% endmacro %}
+
 {%- macro back_populates(rel) -%}
 {%- if rel.table != rel.ref_table -%}
 , back_populates='{{ Names.referrer_rel_name(table.name, rel.name) }}'
 {%- endif -%}
+
 {%- endmacro -%}
 {%- macro secondary_recursive(rel) -%}
 {%- if rel.table == rel.ref_table -%}
-, foreign_keys='{{ Names.class_name(schema, rel.secondary_table.name) }}.{{ Names.attribute_name(rel.fk_col.name) }}'
+, primaryjoin='{{ Names.class_name(schema, table.name) }}.{{ Names.attribute_name(table.pk.name) }} == {{ schema }}.{{ rel.secondary_table.name }}.c.{{ Names.attribute_name(rel.primary_join.name) }}',
+  secondaryjoin='{{ Names.class_name(schema, table.name) }}.{{ Names.attribute_name(table.pk.name) }} == {{ schema }}.{{ rel.secondary_table.name }}.c.{{ Names.attribute_name(rel.secondary_join.name) }}'
 {%- endif -%}
 {%- endmacro -%}
+
 import sqlalchemy as sa
 
 from {{ base_module }} import Base

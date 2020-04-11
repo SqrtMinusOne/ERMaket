@@ -63,8 +63,10 @@ class HierachyConstructor:
         for column in table.columns:
             t.columns.append(self._make_column(column))
 
+        local_fks = set([fk_col.name for fk_col in table.foreign_keys])
+
         for relation in table.relationships:
-            if relation.fk_col:
+            if relation.fk_col and relation.fk_col.name in local_fks:
                 t.columns.append(self._make_linked_fk_column(relation))
                 if relation.fk_col.pk:
                     t.columns.append(self._make_hidden_pk_column(relation))
@@ -73,6 +75,8 @@ class HierachyConstructor:
 
         t.formDescription = t.make_form()
         t.set_default_sort()
+        if t.empty:
+            t.hidden = True
         return t
 
     def _linked_name(self, relation):

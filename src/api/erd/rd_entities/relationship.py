@@ -18,6 +18,8 @@ class ORMRelationship:
         self.ref_rel = ref_rel
         self.fk_col = fk_col
         self.secondary_table = secondary_table
+        self.primary_join = None
+        self.secondary_join = None
 
     @property
     def ref_rel(self):
