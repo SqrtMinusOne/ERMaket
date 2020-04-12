@@ -17,7 +17,7 @@ TransactionRequestInfo = namedtuple('TransactionRequestInfo', ['transaction'])
 
 __all__ = ['transaction']
 transaction = Blueprint(
-    'transaction', 'transaction', url_prefix='/transaction'
+    'transaction', 'transaction'
 )
 CORS(transaction, supports_credentials=True)
 

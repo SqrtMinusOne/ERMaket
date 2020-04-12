@@ -5,7 +5,7 @@ from api.queries import SqlExecutor
 
 
 __all__ = ['sql']
-sql = Blueprint('sql', 'sql', url_prefix='/sql')
+sql = Blueprint('sql', 'sql')
 
 executor = SqlExecutor()
 

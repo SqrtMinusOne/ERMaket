@@ -9,7 +9,7 @@ from api.system.hierarchy import Activation
 
 __all__ = ['auth']
 
-auth = Blueprint('auth', 'auth', url_prefix='/auth')
+auth = Blueprint('auth', 'auth')
 CORS(auth, supports_credentials=True)
 
 manager = UserManager()

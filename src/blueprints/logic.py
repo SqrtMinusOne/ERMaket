@@ -9,7 +9,7 @@ scripts = ServerScriptExecutor()
 
 __all__ = ['business_logic']
 business_logic = Blueprint(
-    'business_logic', 'business_logic', url_prefix='/scripts'
+    'business_logic', 'business_logic'
 )
 CORS(business_logic, supports_credentials=True)
 

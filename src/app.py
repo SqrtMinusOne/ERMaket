@@ -85,10 +85,13 @@ def create_app():
     DBConn()
     SqlExecutor()
 
+    prefix = config.Root.get(os.environ.get('FLASK_ENV'), '/')
+    logging.info(f"Base prefix: {prefix}")
+
     from blueprints import tables, auth, transaction, sql, business_logic
-    app.register_blueprint(tables)
-    app.register_blueprint(auth)
-    app.register_blueprint(transaction)
-    app.register_blueprint(sql)
-    app.register_blueprint(business_logic)
+    app.register_blueprint(tables, url_prefix=f"{prefix}/tables")
+    app.register_blueprint(auth, url_prefix=f"{prefix}/auth")
+    app.register_blueprint(transaction, url_prefix=f"{prefix}/transaction")
+    app.register_blueprint(sql, url_prefix=f"{prefix}/sql")
+    app.register_blueprint(business_logic, url_prefix=f"{prefix}/scripts")
     return app

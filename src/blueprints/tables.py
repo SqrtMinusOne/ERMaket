@@ -18,7 +18,7 @@ scripts = ServerScriptExecutor()
 TableRequestInfo = namedtuple('TableRequestInfo', ['model'])
 
 __all__ = ['tables']
-tables = Blueprint('tables', 'tables', url_prefix='/tables')
+tables = Blueprint('tables', 'tables')
 
 
 def bind_criterion(criterion, name):

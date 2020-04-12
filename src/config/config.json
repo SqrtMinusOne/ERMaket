@@ -69,6 +69,10 @@
         "model_prefix": "model_",
         "system_prefix": "system_"
     },
+    "Root": {
+        "development": "",
+        "production": "/api"
+    },
     "Flask": {
         "SECRET_KEY": "afa664c8cfac924818df7ee8cf8e1d94",
         "SESSION_TYPE": "filesystem"
