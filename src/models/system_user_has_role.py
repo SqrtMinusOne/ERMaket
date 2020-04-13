@@ -14,14 +14,22 @@ class UserHasRoles(Base):
     login = sa.Column(
         sa.String(256),
         sa.ForeignKey(
-            'system.user.login', deferrable=True, initially="DEFERRED"
+            'system.user.login',
+            deferrable=True,
+            initially="DEFERRED",
+            onupdate="cascade",
+            ondelete="cascade"
         ),
         primary_key=True,
     )
     role = sa.Column(
         sa.String(256),
         sa.ForeignKey(
-            'system.role.name', deferrable=True, initially="DEFERRED"
+            'system.role.name',
+            deferrable=True,
+            initially="DEFERRED",
+            onupdate="cascade",
+            ondelete="cascade"
         ),
         primary_key=True,
     )

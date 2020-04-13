@@ -13,7 +13,9 @@ class UserHasRoles(Base):
         sa.ForeignKey(
             'system.user.login',
             deferrable=True,
-            initially="DEFERRED"
+            initially="DEFERRED",
+            onupdate="cascade",
+            ondelete="cascade"
         ),
         primary_key=True,
     )
@@ -22,7 +24,9 @@ class UserHasRoles(Base):
         sa.ForeignKey(
             'system.role.name',
             deferrable=True,
-            initially="DEFERRED"
+            initially="DEFERRED",
+            onupdate="cascade",
+            ondelete="cascade"
         ),
         primary_key=True,
     )
