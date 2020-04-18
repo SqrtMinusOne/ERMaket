@@ -37,3 +37,4 @@ dependencies:
     - boltons
     - pytest-timeout
     - pytest-instafail
+    - pyqt5

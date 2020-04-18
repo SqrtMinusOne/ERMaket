@@ -115,3 +115,6 @@ dump
 
 # Generated stuff
 src/models/philosophy
+
+# Generated UI
+src/ui/ui_compiled/*

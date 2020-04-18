@@ -13,3 +13,8 @@ cwd=<root>
 output=terminal
 errorformat=%f:%l:%m
 save=1
+
+[gen-ui]
+command=../scripts/buildUI.sh
+cwd=<root>
+save=1
