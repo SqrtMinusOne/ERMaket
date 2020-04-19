@@ -15,6 +15,6 @@ errorformat=%f:%l:%m
 save=1
 
 [gen-ui]
-command=../scripts/buildUI.sh
+command=python ../scripts/buildUI.py
 cwd=<root>
 save=1

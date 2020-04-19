@@ -153,5 +153,11 @@
                 "filename": "../logs/test_error.log"
             }
         }
+    },
+    "GUILogging": {
+        "root": {
+            "handlers": ["console"],
+            "level": "DEBUG"
+        }
     }
 }
