@@ -84,6 +84,7 @@ def xmlenum(classname, tag_name, **enums):
             "_tag_name": tag_name,
             "__hash__": make_hash(enums),
             "to_object": to_object,
+            "items": enums,
             **enums
         }
     )

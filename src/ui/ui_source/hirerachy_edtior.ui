@@ -6,25 +6,339 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>569</width>
-    <height>540</height>
+    <width>959</width>
+    <height>700</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout" stretch="3">
+   <layout class="QHBoxLayout" name="horizontalLayout" stretch="0">
     <item>
      <widget class="QTabWidget" name="main_tab_widget">
-      <widget class="QWidget" name="tab">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="tab_settings">
        <attribute name="title">
-        <string>Tab 1</string>
+        <string>Settings</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="1,1">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_10">
+          <item>
+           <widget class="QGroupBox" name="common_group_box">
+            <property name="title">
+             <string>Common</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_3">
+             <item>
+              <widget class="QLabel" name="label_3">
+               <property name="text">
+                <string>Dsiplay name</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="display_name_edit"/>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,2">
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout">
+                 <item>
+                  <widget class="QLabel" name="label">
+                   <property name="text">
+                    <string>Id</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="id_spin_box">
+                   <property name="enabled">
+                    <bool>true</bool>
+                   </property>
+                   <property name="readOnly">
+                    <bool>true</bool>
+                   </property>
+                   <property name="buttonSymbols">
+                    <enum>QAbstractSpinBox::NoButtons</enum>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_2">
+                 <item>
+                  <widget class="QLabel" name="label_2">
+                   <property name="text">
+                    <string>Icon class</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="icon_edit">
+                   <property name="placeholderText">
+                    <string>Default icon</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="table_db_box">
+            <property name="title">
+             <string>Table database settings</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_6">
+             <item>
+              <widget class="QLabel" name="label_7">
+               <property name="text">
+                <string>Schema</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="schema_edit"/>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_8">
+               <property name="text">
+                <string>Table name</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="tablename_edit"/>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="hidden_checkbox">
+               <property name="text">
+                <string>Hidden</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_8">
+          <item>
+           <widget class="QGroupBox" name="nothing_box">
+            <property name="title">
+             <string>Information</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_11">
+             <item>
+              <widget class="QLabel" name="label_9">
+               <property name="text">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Select an element from the&lt;br/&gt;tree to start editing&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="page_group_box">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="title">
+             <string>User Page</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_4">
+             <item>
+              <widget class="QCheckBox" name="add_card_checkbox">
+               <property name="text">
+                <string>Add a card</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_4">
+               <property name="text">
+                <string>Component name</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="page_name_edit"/>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="prebuilt_page_box">
+            <property name="title">
+             <string>Prebuilt Page</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_5">
+             <item>
+              <widget class="QLabel" name="label_5">
+               <property name="text">
+                <string>Type</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="page_type_combobox"/>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="table_display_box">
+            <property name="title">
+             <string>Table display settings</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_7">
+             <item>
+              <widget class="QCheckBox" name="pagination_checkbox">
+               <property name="text">
+                <string>Pagination</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_6">
+               <property name="text">
+                <string>Lines on page</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QSpinBox" name="lines_on_page_spinbox">
+               <property name="minimum">
+                <number>1</number>
+               </property>
+               <property name="maximum">
+                <number>1000</number>
+               </property>
+               <property name="value">
+                <number>20</number>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="columns_button">
+               <property name="text">
+                <string>Edit columns...</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="edit_table_form_button">
+               <property name="text">
+                <string>Edit form...</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_3">
+               <item>
+                <widget class="QPushButton" name="display_button">
+                 <property name="text">
+                  <string>Display override...</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="default_sort_button">
+                 <property name="text">
+                  <string>Default sort...</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="form_box">
+            <property name="title">
+             <string>Form</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_9">
+             <item>
+              <widget class="QPushButton" name="edit_form_button">
+               <property name="text">
+                <string>Edit form...</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_access">
+       <attribute name="title">
+        <string>Access</string>
+       </attribute>
+       <widget class="QCheckBox" name="inherit_check_box">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>141</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Inherit rights</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="tab_scripts">
+       <attribute name="title">
+        <string>Triggers</string>
        </attribute>
       </widget>
-      <widget class="QWidget" name="tab_2">
+      <widget class="QWidget" name="tab_buttons">
        <attribute name="title">
-        <string>Tab 2</string>
+        <string>Buttons</string>
        </attribute>
       </widget>
      </widget>
@@ -36,7 +350,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>569</width>
+     <width>959</width>
      <height>21</height>
     </rect>
    </property>
@@ -85,5 +399,22 @@
  <resources>
   <include location="../../../resources/icons.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>pagination_checkbox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>lines_on_page_spinbox</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>416</x>
+     <y>338</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>431</x>
+     <y>390</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
