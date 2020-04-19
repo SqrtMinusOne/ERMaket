@@ -1,6 +1,8 @@
+import copy
+
 from magic_repr import make_repr
 
-from utils.xml import xmlenum, xmllist, ConvertableXML, XMLObject
+from utils.xml import ConvertableXML, XMLObject, xmlenum, xmllist
 
 __all__ = ['AccessRight', 'RoleAccess', 'AccessRights']
 
@@ -17,6 +19,9 @@ class RoleAccess(XMLObject, ConvertableXML):
     @property
     def _tag_name(self):
         return 'roleAccess'
+
+    def has(self, type):
+        return AccessRight(type) in self.access_types
 
     def to_xml(self):
         tag = self.soup.new_tag(self._tag_name)
@@ -59,7 +64,7 @@ class AccessRights(_AccessRights):
             self.inherit = self.inherit == 'True' or self.inherit is True
 
     def copy_rights(self, other):
-        self.values = list(other.values)
+        self.values = copy.deepcopy(other.values)
 
     def get(self, role_names):
         rights = []

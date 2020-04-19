@@ -34,6 +34,7 @@ class HierachyTreeItem(QTreeWidgetItem):
         self.setFlags(flags)
 
         self.update_ui()
+        self.is_root = False
 
     def update_ui(self):
         self.setText(0, self.elem.name)
@@ -55,6 +56,7 @@ class HierachyTreeItem(QTreeWidgetItem):
             for i in range(self.childCount()):
                 child = self.child(i)
                 ids.append(child.elem.id)
+                child.is_root = False
                 child.set_child_ids()
             self.elem.set_child_ids(ids)
 

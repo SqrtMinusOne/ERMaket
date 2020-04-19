@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QFileDialog, QMainWindow, QSplitter
 
 from api.system import HierachyManager
 from api.system.hierarchy import PrebuiltPageType
-from ui.hierarchy import HierachyTree
+from ui.hierarchy import AccessTable, HierachyTree
 from ui.ui_compiled.hirerachy_edtior import Ui_HierarchyEditor
 
 from .statusbar_handler import StatusBarHandler
@@ -49,6 +49,9 @@ class HierachyEditor(QMainWindow):
             0, PrebuiltPageType.items.values()
         )
 
+        self.ui.access = AccessTable(self)
+        self.ui.access_layout.addWidget(self.ui.access)
+
         self.ui.common_group_box.setEnabled(False)
         self._hide_boxes()
 
@@ -66,8 +69,21 @@ class HierachyEditor(QMainWindow):
         self.ui.tree.order_updated.connect(self._on_tree_order_updated)
         self.ui.tree.currentItemChanged.connect(self._on_element_selected)
 
+        self._connect_common()
+        self._connect_table()
+        self._connect_pages()
+
+    def _connect_common(self):
+        # Common
         self.ui.display_name_edit.textEdited.connect(self._on_name_edited)
         self.ui.icon_edit.textEdited.connect(self._on_icon_edited)
+        self.ui.add_access_button.clicked.connect(self.ui.access.on_add)
+        self.ui.inherit_check_box.stateChanged.connect(
+            self._on_inherit_changed
+        )
+
+    def _connect_table(self):
+        # Table
         self.ui.schema_edit.textEdited.connect(
             lambda schema: setattr(self._item.elem, 'schema', schema)
         )
@@ -78,6 +94,16 @@ class HierachyEditor(QMainWindow):
             lambda state:
             setattr(self._item.elem, 'hidden', from_check(state))
         )
+        self.ui.pagination_checkbox.stateChanged.connect(
+            lambda state:
+            setattr(self._item.elem, 'pagination', from_check(state))
+        )
+        self.ui.lines_on_page_spinbox.valueChanged.connect(
+            lambda value: setattr(self._item.elem, 'linesOnPage', int(value))
+        )
+
+    def _connect_pages(self):
+        # Prebuilt Page
         self.ui.add_card_checkbox.stateChanged.connect(
             lambda state:
             setattr(self._item.elem, 'addCard', from_check(state))
@@ -85,16 +111,11 @@ class HierachyEditor(QMainWindow):
         self.ui.page_name_edit.textEdited.connect(
             lambda name: setattr(self._item.elem, 'pageName', name)
         )
+
+        # Page
         self.ui.page_type_combobox.currentIndexChanged.connect(
             lambda type:
             setattr(self._item.elem, 'type', PrebuiltPageType(type))
-        )
-        self.ui.pagination_checkbox.stateChanged.connect(
-            lambda state:
-            setattr(self._item.elem, 'pagination', from_check(state))
-        )
-        self.ui.lines_on_page_spinbox.valueChanged.connect(
-            lambda value: setattr(self._item.elem, 'linesOnPage', int(value))
         )
 
     def _on_action_open(self):
@@ -109,7 +130,8 @@ class HierachyEditor(QMainWindow):
         self.ui.tree.set_hirearchy(self._mgr.h)
 
     def _on_tree_order_updated(self):
-        print(self._mgr.h.pretty_xml())
+        # print(self._mgr.h.pretty_xml())
+        pass
 
     def _on_element_selected(self, item):
         self._item = item
@@ -120,6 +142,13 @@ class HierachyEditor(QMainWindow):
         self.ui.id_spin_box.setValue(item.elem.id)
         self.ui.display_name_edit.setText(item.elem.name)
         self.ui.icon_edit.setText(item.elem.overrideIcon)
+        self.ui.inherit_check_box.blockSignals(True)
+        self.ui.inherit_check_box.setCheckState(
+            to_check(item.elem.accessRights.inherit)
+        )
+        self.ui.inherit_check_box.blockSignals(False)
+        self.ui.access.set_access(item.elem.accessRights)
+        self.ui.inherit_check_box.setDisabled(item.is_root)
 
         if item.elem._tag_name == 'tableEntry':
             self.ui.table_db_box.setVisible(True)
@@ -131,15 +160,19 @@ class HierachyEditor(QMainWindow):
                 to_check(item.elem.pagination)
             )
             self.ui.lines_on_page_spinbox.setValue(item.elem.linesOnPage)
+
         elif item.elem._tag_name == 'formEntry':
             self.ui.form_box.setVisible(True)
+
         elif item.elem._tag_name == 'page':
             self.ui.page_group_box.setVisible(True)
             self.ui.add_card_checkbox.setCheckState(to_check(item.addCard))
             self.ui.page_name_edit.setText(item.elem.pageName)
+
         elif item.elem._tag_name == 'prebuiltPageEntry':
             self.ui.prebuilt_page_box.setVisible(True)
             self.ui.page_type_combobox.setCurrentText(str(item.elem.type))
+
         else:
             self.ui.nothing_box.setVisible(True)
 
@@ -152,6 +185,14 @@ class HierachyEditor(QMainWindow):
             self._item.elem.overrideIcon = icon
         else:
             self._item.elem.overrideIcon = None
+
+    def _on_inherit_changed(self, state):
+        self._item.elem.accessRights.inherit = from_check(state)
+        self.ui.access.update_state()
+        if state:
+            self.ui.add_access_button.setEnabled(False)
+        else:
+            self.ui.add_access_button.setEnabled(True)
 
     def _on_action_save(self):
         self._mgr.save()

@@ -4,6 +4,7 @@ omit =
     *.tmpl.py
     tests/*
     cli/*
+    src/ui/*
     experiment/*
     wsgi.py
     manage.py

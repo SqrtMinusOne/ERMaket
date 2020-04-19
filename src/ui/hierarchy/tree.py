@@ -26,6 +26,7 @@ class HierachyTree(QTreeWidget):
         root = []
         for elem in h._root:
             item = HierachyTreeItem(elem, h, self)
+            item.is_root = True
             item.add_children()
             root.append(item)
         self.addTopLevelItems(root)
@@ -33,6 +34,8 @@ class HierachyTree(QTreeWidget):
     def update_order(self):
         for i in range(self.topLevelItemCount()):
             self.topLevelItem(i).set_child_ids()
+            self.topLevelItem(i).is_root = True
+            self.topLevelItem(i).elem.accessRights.inherit = False
         self._h.set_tree()
         self.order_updated.emit()
 
