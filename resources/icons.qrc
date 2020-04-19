@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/chart.png</file>
+        <file>icons/entry.png</file>
+        <file>icons/form.png</file>
+        <file>icons/page.png</file>
+        <file>icons/prebuiltPage.png</file>
+        <file>icons/table.png</file>
+        <file>icons/save.png</file>
+        <file>icons/save_as.png</file>
+    </qresource>
+</RCC>

@@ -26,8 +26,12 @@ class HierachyManager(metaclass=Singleton):
     def h(self):
         return self.hierarchy
 
+    def set_path(self, path):
+        self._path = path
+
     def read(self, reload):
         global _hierarchy
+
         if _hierarchy is None or reload:
             if os.path.exists(self._path):
                 with open(self._path) as f:
@@ -37,7 +41,7 @@ class HierachyManager(metaclass=Singleton):
                 )
             else:
                 _hierarchy = Hierachy()
-                logging.info(f'Created new hierarchy')
+                logging.info('Created new hierarchy')
         self.hierarchy = _hierarchy
 
     def save(self):

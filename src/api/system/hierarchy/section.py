@@ -28,6 +28,10 @@ class Section(_Section):
                 self._children.append(child)
         return self.children.values
 
+    def set_child_ids(self, ids):
+        self._children = None
+        self.children = Children([ChildId(id) for id in ids])
+
     def map_ids(self, mapper):
         self.children = Children(
             [ChildId(mapper(child.value)) for child in self.children]
