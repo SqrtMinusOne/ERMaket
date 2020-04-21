@@ -7,6 +7,8 @@ from api.system.hierarchy import TableLinkType
 from api.system.hierarchy.table import _link_type_multiple, _link_type_singular
 from ui.ui_compiled.hierarchy.table_columns import Ui_TableColumns
 
+from .column_dialog import ColumnDialog
+
 __all__ = ['TableColumns']
 
 
@@ -103,6 +105,10 @@ class TableColumns(QWidget):
         def on_down():
             self._swap_rows(row, row + 1)
 
+        def on_edit():
+            dialog = ColumnDialog(self.elem.columns, row, self)
+            dialog.show()
+
         actions = QWidget()
         layout = QHBoxLayout()
         actions.setLayout(layout)
@@ -121,6 +127,7 @@ class TableColumns(QWidget):
 
         edit = QPushButton()
         edit.setIcon(QIcon(':/icons/edit.png'))
+        edit.clicked.connect(on_edit)
         layout.addWidget(edit)
         layout.setContentsMargins(0, 0, 0, 0)
         self.ui.table.setCellWidget(row, self.ACTIONS, actions)
