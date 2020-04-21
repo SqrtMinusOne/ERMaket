@@ -106,7 +106,25 @@
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="schema_edit"/>
+              <layout class="QHBoxLayout" name="horizontalLayout_6">
+               <item>
+                <widget class="QLineEdit" name="schema_edit">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="unlock_schema_button">
+                 <property name="toolTip">
+                  <string>This property shouldn't be edited unless it is absolutely necessary</string>
+                 </property>
+                 <property name="text">
+                  <string>Unlock</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </item>
              <item>
               <widget class="QLabel" name="label_8">
@@ -116,7 +134,25 @@
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="tablename_edit"/>
+              <layout class="QHBoxLayout" name="horizontalLayout_7">
+               <item>
+                <widget class="QLineEdit" name="tablename_edit">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="unlock_tablename_button">
+                 <property name="toolTip">
+                  <string>This property shouldn't be edited unless it is absolutely necessary</string>
+                 </property>
+                 <property name="text">
+                  <string>Unlock</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </item>
              <item>
               <widget class="QCheckBox" name="hidden_checkbox">
@@ -248,14 +284,14 @@
              <item>
               <widget class="QPushButton" name="columns_button">
                <property name="text">
-                <string>Edit columns...</string>
+                <string>Edit columns</string>
                </property>
               </widget>
              </item>
              <item>
               <widget class="QPushButton" name="edit_table_form_button">
                <property name="text">
-                <string>Edit form...</string>
+                <string>Edit form</string>
                </property>
               </widget>
              </item>
@@ -312,6 +348,24 @@
          </layout>
         </item>
        </layout>
+      </widget>
+      <widget class="QWidget" name="tab_columns">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <attribute name="title">
+        <string>Table Columns</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_13">
+        <item>
+         <layout class="QVBoxLayout" name="table_columns_layout"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_form">
+       <attribute name="title">
+        <string>Form</string>
+       </attribute>
       </widget>
       <widget class="QWidget" name="tab_access">
        <attribute name="title">

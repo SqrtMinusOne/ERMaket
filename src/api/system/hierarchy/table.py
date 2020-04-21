@@ -60,6 +60,18 @@ TableLinkType = xmlenum(
     LINKED='linked'
 )
 
+_link_type_multiple = [
+    TableLinkType.COMBINED,
+    TableLinkType.LINKED
+]
+
+_link_type_singular = [
+    TableLinkType.SIMPLE,
+    TableLinkType.DROPDOWN,
+    TableLinkType.COMBINED,
+    TableLinkType.LINKED
+]
+
 _link_type_mappings = {}
 _link_type_mappings[TableLinkType.SIMPLE] = LinkType.SIMPLE
 _link_type_mappings[TableLinkType.DROPDOWN] = LinkType.DROPDOWN

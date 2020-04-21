@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QFileDialog, QMainWindow, QSplitter
 
 from api.system import HierachyManager
 from api.system.hierarchy import PrebuiltPageType
-from ui.hierarchy import AccessTable, HierachyTree
+from ui.hierarchy import AccessTable, HierachyTree, TableColumns
 from ui.ui_compiled.hirerachy_edtior import Ui_HierarchyEditor
 
 from .statusbar_handler import StatusBarHandler
@@ -51,6 +51,8 @@ class HierachyEditor(QMainWindow):
 
         self.ui.access = AccessTable(self)
         self.ui.access_layout.addWidget(self.ui.access)
+        self.ui.columns = TableColumns()
+        self.ui.table_columns_layout.addWidget(self.ui.columns)
 
         self.ui.common_group_box.setEnabled(False)
         self._hide_boxes()
@@ -61,6 +63,9 @@ class HierachyEditor(QMainWindow):
         self.ui.prebuilt_page_box.setVisible(False)
         self.ui.table_display_box.setVisible(False)
         self.ui.form_box.setVisible(False)
+        self.ui.main_tab_widget.setTabEnabled(1, False)
+        self.ui.main_tab_widget.setTabEnabled(2, False)
+        self.ui.main_tab_widget.setCurrentIndex(0)
 
     def _connect_ui(self):
         self.ui.action_open.triggered.connect(self._on_action_open)
@@ -84,6 +89,12 @@ class HierachyEditor(QMainWindow):
 
     def _connect_table(self):
         # Table
+        self.ui.unlock_schema_button.clicked.connect(
+            lambda: self.ui.schema_edit.setEnabled(True)
+        )
+        self.ui.unlock_tablename_button.clicked.connect(
+            lambda: self.ui.tablename_edit.setEnabled(True)
+        )
         self.ui.schema_edit.textEdited.connect(
             lambda schema: setattr(self._item.elem, 'schema', schema)
         )
@@ -154,15 +165,21 @@ class HierachyEditor(QMainWindow):
             self.ui.table_db_box.setVisible(True)
             self.ui.table_display_box.setVisible(True)
             self.ui.schema_edit.setText(item.elem.schema)
+            self.ui.schema_edit.setEnabled(False)
             self.ui.tablename_edit.setText(item.elem.tableName)
+            self.ui.tablename_edit.setEnabled(False)
             self.ui.hidden_checkbox.setCheckState(to_check(item.elem.hidden))
             self.ui.pagination_checkbox.setCheckState(
                 to_check(item.elem.pagination)
             )
             self.ui.lines_on_page_spinbox.setValue(item.elem.linesOnPage)
+            self.ui.columns.set_elem(item.elem)
+            self.ui.main_tab_widget.setTabEnabled(1, True)
+            self.ui.main_tab_widget.setTabEnabled(2, True)
 
         elif item.elem._tag_name == 'formEntry':
             self.ui.form_box.setVisible(True)
+            self.ui.main_tab_widget.setTabEnabled(2, True)
 
         elif item.elem._tag_name == 'page':
             self.ui.page_group_box.setVisible(True)
