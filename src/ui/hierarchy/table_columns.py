@@ -106,7 +106,7 @@ class TableColumns(QWidget):
             self._swap_rows(row, row + 1)
 
         def on_edit():
-            dialog = ColumnDialog(self.elem.columns, row, self)
+            dialog = ColumnDialog(self.elem, row, self)
             dialog.show()
 
         actions = QWidget()

@@ -64,7 +64,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="type_editor">
+             <widget class="QLineEdit" name="type_edit">
               <property name="enabled">
                <bool>false</bool>
               </property>
@@ -93,7 +93,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="default_editor_2"/>
+               <widget class="QLineEdit" name="text_edit"/>
               </item>
              </layout>
             </item>
@@ -125,7 +125,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="default_editor"/>
+               <widget class="QLineEdit" name="default_edit"/>
               </item>
              </layout>
             </item>
@@ -139,7 +139,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QComboBox" name="comboBox">
+               <widget class="QComboBox" name="default_sort_combobox">
                 <item>
                  <property name="text">
                   <string/>
@@ -204,7 +204,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QGroupBox" name="groupBox_2">
+          <widget class="QGroupBox" name="db_properties_box">
            <property name="enabled">
             <bool>false</bool>
            </property>
@@ -268,7 +268,7 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_4">
          <item>
-          <widget class="QGroupBox" name="groupBox_4">
+          <widget class="QGroupBox" name="link_db_mapping_box">
            <property name="enabled">
             <bool>false</bool>
            </property>
@@ -318,7 +318,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QGroupBox" name="groupBox_5">
+          <widget class="QGroupBox" name="link_properties_box">
            <property name="enabled">
             <bool>false</bool>
            </property>
@@ -334,39 +334,41 @@
              </widget>
             </item>
             <item>
-             <widget class="QComboBox" name="link_fk_combobox">
-              <property name="editable">
-               <bool>true</bool>
-              </property>
-             </widget>
+             <widget class="QLineEdit" name="fk_name_edit"/>
             </item>
             <item>
-             <widget class="QCheckBox" name="is_multiple_checkbox">
+             <widget class="QCheckBox" name="multiple_checkbox">
               <property name="text">
                <string>Multiple</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QCheckBox" name="is_required_checkbox">
-              <property name="text">
-               <string>Required</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="is_other_side_multiple_checkbox">
+             <widget class="QCheckBox" name="link_multiple_checkbox">
               <property name="text">
                <string>Other Side Multiple</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QCheckBox" name="is_other_side_required">
+             <widget class="QCheckBox" name="link_required_checkbox">
               <property name="text">
                <string>Other Side Required</string>
               </property>
              </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_3">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>10</height>
+               </size>
+              </property>
+             </spacer>
             </item>
            </layout>
           </widget>
@@ -387,16 +389,9 @@
            </widget>
           </item>
           <item>
-           <widget class="QComboBox" name="link_row_name">
+           <widget class="QComboBox" name="display_row_name">
             <property name="editable">
              <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="checkBox">
-            <property name="text">
-             <string>Link Row Name</string>
             </property>
            </widget>
           </item>
@@ -411,7 +406,7 @@
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>76</height>
+           <height>112</height>
           </size>
          </property>
         </spacer>
