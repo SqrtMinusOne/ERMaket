@@ -19,6 +19,18 @@ LinkType = xmlenum(
     # GROUPEDFORM='groupedForm'
 )
 
+_form_link_type_singular = [
+    LinkType.SIMPLE,
+    LinkType.DROPDOWN,
+    LinkType.LINKEDTABLE,
+]
+
+_form_link_type_multiple = [
+    LinkType.DROPDOWN,
+    LinkType.LINKEDTABLE,
+    LinkType.LINKEDFORM
+]
+
 _field_attrs = ['rowName', 'text', 'isEditable', 'isVisible', 'hint', 'help']
 
 _field_types = {'isEditable': caster.bool_cast, 'isVisible': caster.bool_cast}

@@ -134,10 +134,8 @@ class TableColumns(QWidget):
         def on_delete():
             self.ui.table.removeRow(row)
             del self.elem.columns[row]
-            if row == 0:
-                self._add_actions(0)
-            if row == len(self.elem.columns):
-                self._add_actions(row - 1)
+            for i in range(self.ui.table.rowCount()):
+                self._add_actions(row)
 
         actions = QWidget()
         layout = QHBoxLayout()

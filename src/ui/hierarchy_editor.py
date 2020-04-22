@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QFileDialog, QMainWindow, QSplitter
 
 from api.system import HierachyManager
 from api.system.hierarchy import PrebuiltPageType
-from ui.hierarchy import AccessTable, HierachyTree, TableColumns
+from ui.hierarchy import AccessTable, FormColumns, HierachyTree, TableColumns
 from ui.ui_compiled.hirerachy_edtior import Ui_HierarchyEditor
 
 from .statusbar_handler import StatusBarHandler
@@ -48,6 +48,9 @@ class HierachyEditor(QMainWindow):
         self.ui.page_type_combobox.insertItems(
             0, PrebuiltPageType.items.values()
         )
+
+        self.ui.form = FormColumns(self)
+        self.ui.form_layout.addWidget(self.ui.form)
 
         self.ui.access = AccessTable(self)
         self.ui.access_layout.addWidget(self.ui.access)
@@ -174,6 +177,7 @@ class HierachyEditor(QMainWindow):
             )
             self.ui.lines_on_page_spinbox.setValue(item.elem.linesOnPage)
             self.ui.columns.set_elem(item.elem)
+            self.ui.form.set_elem(item.elem)
             self.ui.main_tab_widget.setTabEnabled(1, True)
             self.ui.main_tab_widget.setTabEnabled(2, True)
 

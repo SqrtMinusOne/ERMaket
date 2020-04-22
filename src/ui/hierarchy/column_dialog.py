@@ -72,7 +72,7 @@ class ColumnDialog(QDialog, FormModel):
         self._elem = copy.deepcopy(elem)
         self.column = self._elem.columns[row]
         self._row = row
-        self._mgr = HierachyManager()
+        self._mgr = HierachyManager(save=False)
 
         self._setup_ui()
         self._connect_ui()

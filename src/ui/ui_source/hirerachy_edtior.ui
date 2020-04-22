@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="main_tab_widget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="tab_settings">
        <attribute name="title">
@@ -366,6 +366,11 @@
        <attribute name="title">
         <string>Form</string>
        </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_8">
+        <item>
+         <layout class="QVBoxLayout" name="form_layout"/>
+        </item>
+       </layout>
       </widget>
       <widget class="QWidget" name="tab_access">
        <attribute name="title">
