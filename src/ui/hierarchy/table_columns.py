@@ -3,7 +3,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QComboBox, QHBoxLayout, QHeaderView, QPushButton,
                              QTableWidgetItem, QWidget)
 
-from api.system.hierarchy import TableLinkType
+from api.system.hierarchy import TableLinkType, TableColumn, LinkedTableColumn
 from api.system.hierarchy.table import _link_type_multiple, _link_type_singular
 from ui.ui_compiled.hierarchy.table_columns import Ui_TableColumns
 
@@ -26,6 +26,10 @@ class TableColumns(QWidget):
             QHeaderView.ResizeToContents
         )
         self._connect_ui()
+        self.unlocked = False
+
+        self.ui.add_button.setVisible(False)
+        self.ui.add_linked_button.setVisible(False)
 
     def _block_signals(func):
         def decorate(self, *args, **kwargs):
@@ -38,6 +42,16 @@ class TableColumns(QWidget):
 
     def _connect_ui(self):
         self.ui.table.cellChanged.connect(self._on_cell_changed)
+        self.ui.unlock_button.clicked.connect(self._on_unlock)
+        self.ui.add_button.clicked.connect(self._on_add)
+        self.ui.add_linked_button.clicked.connect(self._on_add_linked)
+
+    def _on_unlock(self):
+        self.ui.add_button.setVisible(True)
+        self.ui.add_linked_button.setVisible(True)
+        self.ui.unlock_button.setVisible(False)
+        self.unlocked = True
+        self._set_columns()
 
     def set_elem(self, elem):
         self.elem = elem
@@ -117,6 +131,14 @@ class TableColumns(QWidget):
             dialog.saved.connect(on_save)
             dialog.show()
 
+        def on_delete():
+            self.ui.table.removeRow(row)
+            del self.elem.columns[row]
+            if row == 0:
+                self._add_actions(0)
+            if row == len(self.elem.columns):
+                self._add_actions(row - 1)
+
         actions = QWidget()
         layout = QHBoxLayout()
         actions.setLayout(layout)
@@ -133,10 +155,17 @@ class TableColumns(QWidget):
         down.clicked.connect(on_down)
         layout.addWidget(down)
 
-        edit = QPushButton()
-        edit.setIcon(QIcon(':/icons/edit.png'))
-        edit.clicked.connect(on_edit)
-        layout.addWidget(edit)
+        if self.unlocked:
+            edit = QPushButton()
+            edit.setIcon(QIcon(':/icons/edit.png'))
+            edit.clicked.connect(on_edit)
+            layout.addWidget(edit)
+
+            delete = QPushButton()
+            delete.setIcon(QIcon(':/icons/delete.png'))
+            delete.clicked.connect(on_delete)
+            layout.addWidget(delete)
+
         layout.setContentsMargins(0, 0, 0, 0)
         self.ui.table.setCellWidget(row, self.ACTIONS, actions)
 
@@ -171,3 +200,18 @@ class TableColumns(QWidget):
         if attr is not None:
             value = self.ui.table.item(row, col).text()
             setattr(self.elem.columns[row], attr, value)
+
+    def _on_add(self):
+        column = TableColumn(rowName='new_row')
+        self._on_add_column(column)
+
+    def _on_add_linked(self):
+        column = LinkedTableColumn(rowName='new_row')
+        self._on_add_column(column)
+
+    def _on_add_column(self, col):
+        self.elem.columns.append(col)
+        index = len(self.elem.columns) - 1
+        self.ui.table.setRowCount(index + 1)
+        self._set_row(index, col)
+        self._add_actions(index - 1)

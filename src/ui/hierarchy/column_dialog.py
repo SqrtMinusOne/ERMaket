@@ -1,18 +1,19 @@
 import copy
 
-from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QDialog
 
 from api.system import HierachyManager
 from api.system.hierarchy import (DefaultSort, DisplayColumn, DisplayColumns,
                                   SortColumn, SortOrder)
 from api.system.hierarchy.table import _link_type_multiple, _link_type_singular
+from ui.form_model import FormModel
 from ui.ui_compiled.hierarchy.column_dialog import Ui_ColumnDialog
 
 __all__ = ['ColumnDialog']
 
 
-class ColumnDialog(QDialog):
+class ColumnDialog(QDialog, FormModel):
     saved = pyqtSignal()
 
     LOCKED = [
@@ -75,6 +76,10 @@ class ColumnDialog(QDialog):
 
         self._setup_ui()
         self._connect_ui()
+
+    @property
+    def model(self):
+        return self.column
 
     def _setup_ui(self):
         if self.column._tag_name != 'linkedColumn':
@@ -190,49 +195,6 @@ class ColumnDialog(QDialog):
                 )
             )
         self._elem.displayColumns = DisplayColumns(values)
-
-    def _connect_model(self, model):
-        for attr, elem in model['line'].items():
-            self._line_edit_model(attr, elem)
-
-        for attr, elem in model['checkbox'].items():
-            self._checkbox_model(attr, elem)
-
-        for attr, elem in model['combobox'].items():
-            self._combobox_model(attr, elem)
-
-    def _line_edit_model(self, attr, elem):
-        def on_text_changed(text):
-            if text == '':
-                setattr(self.column, attr, None)
-            else:
-                setattr(self.column, attr, text)
-
-        elem = getattr(self.ui, elem)
-        elem.setText(getattr(self.column, attr))
-        elem.textEdited.connect(on_text_changed)
-
-    def _checkbox_model(self, attr, elem):
-        def on_state_changed(state):
-            setattr(self.column, attr, state != 0)
-
-        elem = getattr(self.ui, elem)
-        if getattr(self.column, attr):
-            elem.setCheckState(Qt.Checked)
-        else:
-            elem.setCheckState(Qt.Unchecked)
-
-        elem.stateChanged.connect(on_state_changed)
-
-    def _combobox_model(self, attr, elem):
-        cast = type(getattr(self.column, attr))
-
-        def on_current_text_changed(text):
-            setattr(self.column, attr, cast(text))
-
-        elem = getattr(self.ui, elem)
-        elem.setCurrentText(str(getattr(self.column, attr)))
-        elem.currentTextChanged.connect(on_current_text_changed)
 
     def _set_linked_schemas(self):
         self.ui.target_link_schema_combobox.blockSignals(True)

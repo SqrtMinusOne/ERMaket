@@ -32,7 +32,21 @@
      <item>
       <widget class="QPushButton" name="add_button">
        <property name="text">
-        <string>Add</string>
+        <string>Add column</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="add_linked_button">
+       <property name="text">
+        <string>Add linked column</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="unlock_button">
+       <property name="text">
+        <string>Unlock system edit</string>
        </property>
       </widget>
      </item>
