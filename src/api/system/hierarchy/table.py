@@ -10,7 +10,8 @@ from .form import (FormDescription, FormGroup, LinkedField, LinkType,
 
 __all__ = [
     'Table', 'TableColumn', 'TableColumns', 'TableLinkType',
-    'LinkedTableColumn', 'DisplayColumn', 'DisplayColumns'
+    'LinkedTableColumn', 'DisplayColumn', 'DisplayColumns', 'DefaultSort',
+    'SortColumn', 'SortOrder'
 ]
 
 _table_column_attrs = [
@@ -60,15 +61,10 @@ TableLinkType = xmlenum(
     LINKED='linked'
 )
 
-_link_type_multiple = [
-    TableLinkType.COMBINED,
-    TableLinkType.LINKED
-]
+_link_type_multiple = [TableLinkType.COMBINED, TableLinkType.LINKED]
 
 _link_type_singular = [
-    TableLinkType.SIMPLE,
-    TableLinkType.DROPDOWN,
-    TableLinkType.COMBINED,
+    TableLinkType.SIMPLE, TableLinkType.DROPDOWN, TableLinkType.COMBINED,
     TableLinkType.LINKED
 ]
 
@@ -123,25 +119,22 @@ TableColumns = xmlall(
 )
 
 DisplayColumn = xmltuple(
-    'DisplayColumn', 'displayColumn', ['rowName', 'linkRowName', 'isMultiple'],
-    types={
-        'isMultiple': caster.bool_cast
-    }
+    'DisplayColumn',
+    'displayColumn', ['rowName', 'linkRowName', 'isMultiple'],
+    types={'isMultiple': caster.bool_cast}
 )
 
-DisplayColumns = xmllist(
-    'DisplayColumns', 'displayColumns', DisplayColumn
-)
+DisplayColumns = xmllist('DisplayColumns', 'displayColumns', DisplayColumn)
 
 __Table = xmltuple(
     '__Table', 'tableEntry', [
         *_element_attrs, 'tableName', 'schema', 'linesOnPage', 'columns',
         'formDescription', 'pagination', 'hidden', 'defaultSort',
         'displayColumns'
-    ],
-    [*_element_children_classes, TableColumns, FormDescription, DefaultSort,
-     DisplayColumns],
-    _element_kws, {
+    ], [
+        *_element_children_classes, TableColumns, FormDescription, DefaultSort,
+        DisplayColumns
+    ], _element_kws, {
         **_element_types,
         'linesOnPage': int,
         'pagination': caster.bool_cast,

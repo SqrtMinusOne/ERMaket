@@ -384,7 +384,7 @@
           <item>
            <widget class="QLabel" name="label_11">
             <property name="text">
-             <string>Display Row Name</string>
+             <string>Display Column Name</string>
             </property>
            </widget>
           </item>

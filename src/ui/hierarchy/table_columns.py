@@ -14,7 +14,7 @@ __all__ = ['TableColumns']
 
 class TableColumns(QWidget):
     COLUMNS = {0: 'rowName', 1: 'type', 3: 'text'}
-    COLUMNS_CB = {4: 'isSort', 5: 'isFilter', 6: 'isFilter', 7: 'isVisible'}
+    COLUMNS_CB = {4: 'isSort', 5: 'isFilter', 6: 'isEditable', 7: 'isVisible'}
     LINK_TYPE = 2
     ACTIONS = 8
 
@@ -48,28 +48,32 @@ class TableColumns(QWidget):
         self.ui.table.setRowCount(0)
         self.ui.table.setRowCount(len(self.elem.columns))
         for row, column in enumerate(self.elem.columns):
-            for col, attr in self.COLUMNS.items():
-                item = QTableWidgetItem(getattr(column, attr))
-                self.ui.table.setItem(row, col, item)
-                if col < 2:
-                    item.setFlags(Qt.ItemIsEnabled)
-                else:
-                    item.setFlags(Qt.ItemIsEnabled | Qt.ItemIsEditable)
+            self._set_row(row, column)
 
-            for col, attr in self.COLUMNS_CB.items():
-                enabled = not (
-                    col != 7 and column._tag_name == 'linkedColumn' and
-                    column.isMultiple
-                )
-                self._add_checkbox(row, col, enabled, getattr(column, attr))
-
-            if column._tag_name == 'linkedColumn':
-                self._add_link_type(row, column)
+    @_block_signals
+    def _set_row(self, row, column):
+        for col, attr in self.COLUMNS.items():
+            item = QTableWidgetItem(getattr(column, attr))
+            self.ui.table.setItem(row, col, item)
+            if col < 2:
+                item.setFlags(Qt.ItemIsEnabled)
             else:
-                item = QTableWidgetItem()
-                item.setFlags(Qt.NoItemFlags)
-                self.ui.table.setItem(row, self.LINK_TYPE, item)
-            self._add_actions(row)
+                item.setFlags(Qt.ItemIsEnabled | Qt.ItemIsEditable)
+
+        for col, attr in self.COLUMNS_CB.items():
+            enabled = not (
+                col != 7 and col != 6 and
+                column._tag_name == 'linkedColumn' and column.isMultiple
+            )
+            self._add_checkbox(row, col, enabled, getattr(column, attr))
+
+        if column._tag_name == 'linkedColumn':
+            self._add_link_type(row, column)
+        else:
+            item = QTableWidgetItem()
+            item.setFlags(Qt.NoItemFlags)
+            self.ui.table.setItem(row, self.LINK_TYPE, item)
+        self._add_actions(row)
 
     def _add_link_type(self, row, column):
         def on_link_type_changed(value):
@@ -105,8 +109,12 @@ class TableColumns(QWidget):
         def on_down():
             self._swap_rows(row, row + 1)
 
+        def on_save():
+            self._set_row(row, self.elem.columns[row])
+
         def on_edit():
             dialog = ColumnDialog(self.elem, row, self)
+            dialog.saved.connect(on_save)
             dialog.show()
 
         actions = QWidget()

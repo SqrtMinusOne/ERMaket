@@ -1,9 +1,11 @@
 import copy
 
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtWidgets import QDialog
 
 from api.system import HierachyManager
+from api.system.hierarchy import (DefaultSort, DisplayColumn, DisplayColumns,
+                                  SortColumn, SortOrder)
 from api.system.hierarchy.table import _link_type_multiple, _link_type_singular
 from ui.ui_compiled.hierarchy.column_dialog import Ui_ColumnDialog
 
@@ -11,6 +13,8 @@ __all__ = ['ColumnDialog']
 
 
 class ColumnDialog(QDialog):
+    saved = pyqtSignal()
+
     LOCKED = [
         'name_edit', 'type_edit', 'db_properties_box', 'link_db_mapping_box',
         'link_properties_box'
@@ -63,6 +67,7 @@ class ColumnDialog(QDialog):
         super(ColumnDialog, self).__init__(parent)
         self.ui = Ui_ColumnDialog()
         self.ui.setupUi(self)
+        self._old_elem = elem
         self._elem = copy.deepcopy(elem)
         self.column = self._elem.columns[row]
         self._row = row
@@ -79,6 +84,27 @@ class ColumnDialog(QDialog):
             self.ui.default_sort_combobox.setEnabled(False)
             self._on_multiple_changed()
 
+        if self._elem.defaultSort is not None:
+            col = next(
+                (
+                    s for s in self._elem.defaultSort
+                    if s.rowName == self.column.rowName
+                ), None
+            )
+            if col is not None:
+                self.ui.default_sort_combobox.setCurrentText(str(col.sort))
+
+    def _set_display_column(self):
+        display_col = next(
+            (
+                s for s in self._elem.displayColumns
+                if s.rowName == self.column.rowName
+            ), None
+        )
+
+        if display_col is not None:
+            self.ui.display_row_name.setCurrentText(display_col.linkRowName)
+
     def _connect_ui(self):
         self.ui.unlock_button.clicked.connect(self._unlock_system)
         self._connect_model(self.MODEL)
@@ -90,9 +116,26 @@ class ColumnDialog(QDialog):
             )
             self._set_linked_schemas()
             self._set_linked_tables()
+            self._set_display_columns()
+            self._set_display_column()
             self.ui.target_link_schema_combobox.currentTextChanged.connect(
                 lambda text: self._set_linked_tables()
             )
+            self.ui.target_link_schema_combobox.currentTextChanged.connect(
+                lambda text: self._set_display_columns()
+            )
+            self.ui.link_table_name_combobox.currentTextChanged.connect(
+                lambda text: self._set_display_columns()
+            )
+
+        self.ui.default_sort_combobox.currentTextChanged.connect(
+            self._on_default_sort_changed
+        )
+        self.ui.display_row_name.currentTextChanged.connect(
+            self._on_display_column_changed
+        )
+        self.ui.cancel_button.clicked.connect(self._on_cancel)
+        self.ui.ok_button.clicked.connect(self._on_ok)
 
     def _on_multiple_changed(self):
         self.ui.link_combo_box.clear()
@@ -100,10 +143,53 @@ class ColumnDialog(QDialog):
             self.ui.link_combo_box.addItems(
                 [str(val) for val in _link_type_multiple]
             )
+            self.ui.sort_checkbox.setCheckState(False)
+            self.ui.sort_checkbox.setEnabled(False)
+            self.ui.filter_checkbox.setCheckState(False)
+            self.ui.filter_checkbox.setEnabled(False)
         else:
             self.ui.link_combo_box.addItems(
                 [str(val) for val in _link_type_singular]
             )
+            self.ui.sort_checkbox.setEnabled(True)
+            self.ui.filter_checkbox.setEnabled(True)
+
+    def _on_default_sort_changed(self, sort):
+        if self._elem.defaultSort is None:
+            values = []
+        else:
+            values = [
+                sort for sort in self._elem.defaultSort
+                if sort.rowName != self.column.rowName
+            ]
+
+        if sort == 'asc':
+            values.append(
+                SortColumn(rowName=self.column.rowName, sort=SortOrder.ASC)
+            )
+        elif sort == 'desc':
+            values.append(
+                SortColumn(rowName=self.column.rowName, sort=SortOrder.DESC)
+            )
+        if len(values) > 0:
+            self._elem.defaultSort = DefaultSort(values)
+        else:
+            self._elem.defaultSort = None
+
+    def _on_display_column_changed(self, column):
+        values = [
+            col for col in self._elem.displayColumns
+            if col.rowName != self.column.rowName
+        ]
+        if len(column) > 0:
+            values.append(
+                DisplayColumn(
+                    rowName=self.column.rowName,
+                    linkRowName=column,
+                    isMultiple=self.column.isMultiple
+                )
+            )
+        self._elem.displayColumns = DisplayColumns(values)
 
     def _connect_model(self, model):
         for attr, elem in model['line'].items():
@@ -149,9 +235,12 @@ class ColumnDialog(QDialog):
         elem.currentTextChanged.connect(on_current_text_changed)
 
     def _set_linked_schemas(self):
+        self.ui.target_link_schema_combobox.blockSignals(True)
         schemas = set([table.schema for table in self._mgr.h.tables])
         self.ui.target_link_schema_combobox.clear()
         self.ui.target_link_schema_combobox.addItems(schemas)
+        self.ui.target_link_schema_combobox.setCurrentText(self._elem.schema)
+        self.ui.target_link_schema_combobox.blockSignals(False)
 
     def _set_linked_tables(self):
         schema = self.ui.target_link_schema_combobox.currentText()
@@ -166,6 +255,37 @@ class ColumnDialog(QDialog):
         self.ui.link_table_name_combobox.addItems(tables)
         self.ui.link_table_name_combobox.setCurrentText(text)
 
+    def _set_display_columns(self):
+        self.ui.display_row_name.clear()
+        schema = self.ui.target_link_schema_combobox.currentText()
+        table_name = self.ui.link_table_name_combobox.currentText()
+        table = next(
+            (
+                t for t in self._mgr.h.tables
+                if t.schema == schema and t.tableName == table_name
+            ), None
+        )
+        if table is None:
+            return
+        self.ui.display_row_name.addItems(
+            [
+                "", *[
+                    column.rowName for column in table.columns
+                    if column._tag_name != 'linkedColumn'
+                ]
+            ]
+        )
+
     def _unlock_system(self):
         [getattr(self.ui, elem).setEnabled(True) for elem in self.LOCKED]
         self.ui.unlock_button.setEnabled(False)
+
+    def _on_cancel(self):
+        self.close()
+
+    def _on_ok(self):
+        self._old_elem.columns[self._row] = self._elem.columns[self._row]
+        self._old_elem.displayColumns = self._elem.displayColumns
+        self._old_elem.defaultSort = self._elem.defaultSort
+        self.saved.emit()
+        self.close()
