@@ -1,11 +1,12 @@
 from bs4 import BeautifulSoup
+from boltons.setutils import IndexedSet
 
 from api import Config
 from utils.xml import RootMixin, XMLObject, xmlall
 
 from .elements import Page, PrebuiltPage
 from .form import Form
-from .section import Section
+from .section import Section, ChildId, Children
 from .table import Table
 
 __all__ = ['Hierachy']
@@ -30,7 +31,7 @@ class Hierachy(_Hierarchy, RootMixin):
         super().__init__(*args, **kwargs)
         self.set_tree()
 
-    def set_tree(self):
+    def set_tree(self, remove_inherit=False):
         self._set_ids()
         resolved = set()
         [
@@ -43,7 +44,7 @@ class Hierachy(_Hierarchy, RootMixin):
         self._root = [
             elem for elem in self.values if elem.id not in self._resolved
         ]
-        self._resolve_rights()
+        self._resolve_rights(remove_inherit)
         self._set_tables()
 
     def _set_ids(self):
@@ -51,12 +52,14 @@ class Hierachy(_Hierarchy, RootMixin):
         self._last_id = 0
         self._new_id()
 
-    def _resolve_rights(self):
+    def _resolve_rights(self, remove_inherit=False):
         for elem in self._root:
-            if elem.accessRights.inherit:
+            if elem.accessRights.inherit and not remove_inherit:
                 raise ValueError(
                     f'Element {elem} is root and cannot inherit accessRights'
                 )
+            elif elem.accessRights.inherit:
+                elem.accessRights.inherit = False
             if isinstance(elem, Section):
                 elem.resolve_rights()
 
@@ -132,10 +135,6 @@ class Hierachy(_Hierarchy, RootMixin):
                     rights[right.value] = [elem.id]
         return rights
 
-    def drop_by_id(self, id):
-        self.values.remove(self._ids[id])
-        del self._ids[id]
-
     def drop_schema(self, schema_name):
         self.values = [
             elem for elem in self.values if not any(
@@ -146,7 +145,23 @@ class Hierachy(_Hierarchy, RootMixin):
                 ]
             )
         ]
+        self._update_children()
         self.set_tree()
+
+    def _update_children(self):
+        ids = IndexedSet([elem.id for elem in self])
+        for section in self.sections:
+            children = IndexedSet([id.value for id in section.children])
+            children = children.intersection(ids)
+            section.children = Children(
+                [ChildId(id) for id in children]
+            )
+
+    def drop_by_id(self, id):
+        self.values.remove(self._ids[id])
+        del self._ids[id]
+        self._update_children()
+        self.set_tree(remove_inherit=True)
 
     @property
     def elements(self):

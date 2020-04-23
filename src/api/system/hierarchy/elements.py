@@ -1,4 +1,5 @@
 from utils.xml import xmlenum, xmltuple
+from utils import defaultify_init
 
 from .access import AccessRights
 from .scripts import Buttons, Triggers
@@ -14,12 +15,14 @@ _element_kws = ['id']
 _element_types = {'id': int}
 
 # User page entry
-Page = xmltuple(
+_Page = xmltuple(
     'Page', 'pageEntry', [*_element_attrs, 'pageName', 'addCard'],
     _element_children_classes, _element_kws, {
         **_element_types, 'addCard': bool
     }
 )
+
+Page = defaultify_init(_Page, 'Page', addCard=True)
 
 # Prebuilt pages
 PrebuiltPageType = xmlenum(

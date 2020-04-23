@@ -1,12 +1,15 @@
 import logging
 import os
 
-from PyQt5.QtWidgets import QFileDialog, QMainWindow, QSplitter
+from PyQt5.QtWidgets import (QFileDialog, QInputDialog, QMainWindow,
+                             QMessageBox, QSplitter)
 
 from api.system import HierachyManager
-from api.system.hierarchy import PrebuiltPageType
-from ui.hierarchy import (AccessTable, FormColumns, HierachyTree, TableColumns,
-                          TriggersTable, ButtonTable)
+from api.system.hierarchy import (AccessRights, FormDescription, Hierachy,
+                                  Page, PrebuiltPage, PrebuiltPageType,
+                                  Section, Table)
+from ui.hierarchy import (AccessTable, ButtonTable, FormColumns, HierachyTree,
+                          TableColumns, TriggersTable)
 from ui.ui_compiled.hirerachy_edtior import Ui_HierarchyEditor
 
 from .statusbar_handler import StatusBarHandler
@@ -82,6 +85,23 @@ class HierachyEditor(QMainWindow):
         self.ui.action_open.triggered.connect(self._on_action_open)
         self.ui.action_save.triggered.connect(self._on_action_save)
         self.ui.action_exit.triggered.connect(self._on_action_exit)
+        self.ui.action_drop_schema.triggered.connect(self._on_action_drop)
+        self.ui.action_merge.triggered.connect(self._on_action_merge)
+        self.ui.action_save_as.triggered.connect(self._on_action_save_as)
+        self.ui.action_exit.triggered.connect(self._on_action_exit)
+        self.ui.action_clear.triggered.connect(self._on_action_clear)
+        self.ui.action_delete_current.triggered.connect(
+            self._on_action_delete_current
+        )
+        self.ui.action_new_page.triggered.connect(self._on_action_new_page)
+        self.ui.action_new_table.triggered.connect(self._on_action_new_table)
+        self.ui.action_new_section.triggered.connect(
+            self._on_action_new_section
+        )
+        self.ui.action_new_prebuilt_page.triggered.connect(
+            self._on_action_new_prebuilt_page
+        )
+
         self.ui.tree.order_updated.connect(self._on_tree_order_updated)
         self.ui.tree.currentItemChanged.connect(self._on_element_selected)
 
@@ -135,18 +155,10 @@ class HierachyEditor(QMainWindow):
         )
 
         # Page
-        self.ui.page_type_combobox.currentIndexChanged.connect(
+        self.ui.page_type_combobox.currentTextChanged.connect(
             lambda type:
             setattr(self._item.elem, 'type', PrebuiltPageType(type))
         )
-
-    def _on_action_open(self):
-        filename, _ = QFileDialog.getOpenFileName(
-            self, "Open file", os.getcwd(), "XML files (*.xml)"
-        )
-        self._mgr.set_path(filename)
-        self._mgr.read(reload=True)
-        self._update_tree()
 
     def _update_tree(self):
         self.ui.tree.set_hirearchy(self._mgr.h)
@@ -157,12 +169,16 @@ class HierachyEditor(QMainWindow):
 
     def _on_element_selected(self, item):
         self._item = item
+        self._hide_boxes()
+        if item is None:
+            self.ui.nothing_box.setVisible(True)
+            return
         self._set_global(item)
         if item.elem._tag_name == 'tableEntry':
             self._set_table(item)
         elif item.elem._tag_name == 'formEntry':
             self._set_form(item)
-        elif item.elem._tag_name == 'page':
+        elif item.elem._tag_name == 'pageEntry':
             self._set_page(item)
         elif item.elem._tag_name == 'prebuiltPageEntry':
             self._set_prebuilt_page(item)
@@ -172,7 +188,6 @@ class HierachyEditor(QMainWindow):
     def _set_global(self, item):
         self.ui.common_group_box.setEnabled(True)
         self.ui.nothing_box.setVisible(False)
-        self._hide_boxes()
 
         self.ui.id_spin_box.setValue(item.elem.id)
         self.ui.display_name_edit.setText(item.elem.name)
@@ -210,7 +225,7 @@ class HierachyEditor(QMainWindow):
 
     def _set_page(self, item):
         self.ui.page_group_box.setVisible(True)
-        self.ui.add_card_checkbox.setCheckState(to_check(item.addCard))
+        self.ui.add_card_checkbox.setCheckState(to_check(item.elem.addCard))
         self.ui.page_name_edit.setText(item.elem.pageName)
 
     def _set_prebuilt_page(self, item):
@@ -237,6 +252,75 @@ class HierachyEditor(QMainWindow):
 
     def _on_action_save(self):
         self._mgr.save()
+
+    def _on_action_open(self):
+        filename, _ = QFileDialog.getOpenFileName(
+            self, "Open file", os.getcwd(), "XML files (*.xml)"
+        )
+        self._mgr.set_path(filename)
+        self._mgr.read(reload=True)
+        self._update_tree()
+
+    def _on_action_save_as(self):
+        filename, _ = QFileDialog.getSaveFileName(
+            self, "Save file", os.getcwd(), "XML files (*.xml)"
+        )
+        self._mgr.set_path(filename)
+        self._mgr.save()
+
+    def _on_action_merge(self):
+        filename, _ = QFileDialog.getOpenFileName(
+            self, "Open file", os.getcwd(), "XML files (*.xml)"
+        )
+        with open(filename, 'r') as f:
+            xml = f.read()
+        hierarchy = Hierachy.from_xml(xml)
+        self._mgr.h.merge(hierarchy)
+        self._update_tree()
+
+    def _on_action_drop(self):
+        schema, ok = QInputDialog.getText(
+            self, "Drop schema", "Enter schema name"
+        )
+        if ok:
+            self._mgr.h.drop_schema(schema)
+            self._update_tree()
+
+    def _on_action_clear(self):
+        button = QMessageBox.warning(
+            self, "Clear", "Delete all items from the hierarchy?",
+            QMessageBox.Cancel | QMessageBox.Ok
+        )
+        if button == QMessageBox.Ok:
+            self._mgr.drop()
+            self._update_tree()
+
+    def _on_action_delete_current(self):
+        if self._item is not None:
+            self._mgr.h.drop_by_id(self._item.elem.id)
+            self._update_tree()
+
+    def _on_action_new_section(self):
+        section = Section(name="New Section")
+        self._add_elem(section)
+
+    def _on_action_new_table(self):
+        table = Table(name="New Table", formDescription=FormDescription())
+        self._add_elem(table)
+
+    def _on_action_new_page(self):
+        page = Page(name="New User Page")
+        self._add_elem(page)
+
+    def _on_action_new_prebuilt_page(self):
+        prebuilt_page = PrebuiltPage(name="New Prebuilt Page")
+        self._add_elem(prebuilt_page)
+
+    def _add_elem(self, elem):
+        elem.accessRights = AccessRights(inherit=False)
+        self._mgr.h.append(elem)
+        self._mgr.h.set_tree()
+        self._update_tree()
 
     def _on_action_exit(self):
         pass  # TODO

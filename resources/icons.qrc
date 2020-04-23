@@ -11,8 +11,11 @@
         <file>icons/add.png</file>
         <file>icons/delete.png</file>
         <file>icons/down.png</file>
-        <file>icons/merge.png</file>
         <file>icons/up.png</file>
         <file>icons/edit.png</file>
+        <file>icons/open.png</file>
+        <file>icons/merge.png</file>
+        <file>icons/clear.png</file>
+        <file>icons/drop_schema.png</file>
     </qresource>
 </RCC>

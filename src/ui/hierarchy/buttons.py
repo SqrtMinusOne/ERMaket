@@ -1,7 +1,7 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QComboBox, QHBoxLayout, QHeaderView, QPushButton,
-                             QTableWidget, QTableWidgetItem, QWidget)
+                             QTableWidgetItem, QWidget)
 
 from api.system.hierarchy import Button, Buttons, Location, SystemAction
 from api.system.hierarchy.scripts import _locations
@@ -126,7 +126,7 @@ class ButtonTable(QWidget):
         button = self.elem.buttonList[row]
         if button.action:
             action_combobox.setCurrentText(str(button.action))
-            item = QTableWidget()
+            item = QTableWidgetItem()
             item.setFlags(Qt.NoItemFlags)
         else:
             if button.scriptId is None:

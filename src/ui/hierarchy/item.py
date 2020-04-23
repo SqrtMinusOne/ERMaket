@@ -10,7 +10,7 @@ class HierachyTreeItem(QTreeWidgetItem):
         'section': 'Section',
         'formEntry': 'Form',
         'tableEntry': 'Table',
-        'page': 'User Page',
+        'pageEntry': 'User Page',
         'prebuiltPageEntry': 'Prebuilt page'
     }
 
@@ -18,7 +18,7 @@ class HierachyTreeItem(QTreeWidgetItem):
         'section': ':/icons/entry.png',
         "formEntry": ':/icons/form.png',
         'tableEntry': ':/icons/table.png',
-        'page': ':/icons/page.png',
+        'pageEntry': ':/icons/page.png',
         'prebuiltPageEntry': ':/icons/prebuiltPage.png'
     }
 

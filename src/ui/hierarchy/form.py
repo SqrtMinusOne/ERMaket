@@ -59,7 +59,11 @@ class FormColumns(QWidget):
 
     def set_elem(self, elem):
         self.elem = elem
-        self._set_fields()
+        if self.form is not None:
+            self._set_fields()
+            self.setEnabled(True)
+        else:
+            self.setEnabled(False)
 
     @property
     def form(self):
