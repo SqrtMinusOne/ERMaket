@@ -45,6 +45,12 @@ Activation = xmlenum(
     CALL='call'  # For internal use
 )
 
+_activations = {
+    "all": [Activation.OPEN, Activation.AFTEROPEN],
+    "tableEntry": [Activation.READ, Activation.TRANSACTION],
+    "global": [Activation.LOGIN, Activation.LOGOUT]
+}
+
 Trigger = xmltuple(
     'Trigger',
     'trigger', ['activation', 'scriptId'], [Activation],

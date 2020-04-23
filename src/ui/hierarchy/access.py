@@ -1,5 +1,7 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QPushButton, QTableWidget, QTableWidgetItem
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import (QHeaderView, QPushButton, QTableWidget,
+                             QTableWidgetItem)
 
 from api.system.hierarchy import AccessRight, RoleAccess
 
@@ -21,6 +23,9 @@ class AccessTable(QTableWidget):
         )
         self.cellChanged.connect(self._on_cell_changed)
         self._setting_data = False
+        self.horizontalHeader().setSectionResizeMode(
+            QHeaderView.ResizeToContents
+        )
 
     def set_access(self, access):
         self.access = access
@@ -50,7 +55,8 @@ class AccessTable(QTableWidget):
         self.setItem(i, 0, QTableWidgetItem(role_access.role_name))
         for k in range(1, 4):
             self._add_checkbox(i, k, role_access.has(self.TYPES[k]))
-        delete_button = QPushButton("Delete")
+        delete_button = QPushButton()
+        delete_button.setIcon(QIcon(':/icons/delete.png'))
         delete_button.clicked.connect(on_delete)
         self.setCellWidget(i, 4, delete_button)
 

@@ -5,7 +5,8 @@ from PyQt5.QtWidgets import QFileDialog, QMainWindow, QSplitter
 
 from api.system import HierachyManager
 from api.system.hierarchy import PrebuiltPageType
-from ui.hierarchy import AccessTable, FormColumns, HierachyTree, TableColumns
+from ui.hierarchy import (AccessTable, FormColumns, HierachyTree, TableColumns,
+                          TriggersTable)
 from ui.ui_compiled.hirerachy_edtior import Ui_HierarchyEditor
 
 from .statusbar_handler import StatusBarHandler
@@ -54,8 +55,12 @@ class HierachyEditor(QMainWindow):
 
         self.ui.access = AccessTable(self)
         self.ui.access_layout.addWidget(self.ui.access)
+
         self.ui.columns = TableColumns()
         self.ui.table_columns_layout.addWidget(self.ui.columns)
+
+        self.ui.triggers = TriggersTable(self)
+        self.ui.triggers_layout.addWidget(self.ui.triggers)
 
         self.ui.common_group_box.setEnabled(False)
         self._hide_boxes()
@@ -149,6 +154,19 @@ class HierachyEditor(QMainWindow):
 
     def _on_element_selected(self, item):
         self._item = item
+        self._set_global(item)
+        if item.elem._tag_name == 'tableEntry':
+            self._set_table(item)
+        elif item.elem._tag_name == 'formEntry':
+            self._set_form(item)
+        elif item.elem._tag_name == 'page':
+            self._set_page(item)
+        elif item.elem._tag_name == 'prebuiltPageEntry':
+            self._set_prebuilt_page(item)
+        else:
+            self.ui.nothing_box.setVisible(True)
+
+    def _set_global(self, item):
         self.ui.common_group_box.setEnabled(True)
         self.ui.nothing_box.setVisible(False)
         self._hide_boxes()
@@ -163,39 +181,37 @@ class HierachyEditor(QMainWindow):
         self.ui.inherit_check_box.blockSignals(False)
         self.ui.access.set_access(item.elem.accessRights)
         self.ui.inherit_check_box.setDisabled(item.is_root)
+        self.ui.triggers.set_elem(item.elem)
 
-        if item.elem._tag_name == 'tableEntry':
-            self.ui.table_db_box.setVisible(True)
-            self.ui.table_display_box.setVisible(True)
-            self.ui.schema_edit.setText(item.elem.schema)
-            self.ui.schema_edit.setEnabled(False)
-            self.ui.tablename_edit.setText(item.elem.tableName)
-            self.ui.tablename_edit.setEnabled(False)
-            self.ui.hidden_checkbox.setCheckState(to_check(item.elem.hidden))
-            self.ui.pagination_checkbox.setCheckState(
-                to_check(item.elem.pagination)
-            )
-            self.ui.lines_on_page_spinbox.setValue(item.elem.linesOnPage)
-            self.ui.columns.set_elem(item.elem)
-            self.ui.form.set_elem(item.elem)
-            self.ui.main_tab_widget.setTabEnabled(1, True)
-            self.ui.main_tab_widget.setTabEnabled(2, True)
+    def _set_table(self, item):
+        self.ui.table_db_box.setVisible(True)
+        self.ui.table_display_box.setVisible(True)
+        self.ui.schema_edit.setText(item.elem.schema)
+        self.ui.schema_edit.setEnabled(False)
+        self.ui.tablename_edit.setText(item.elem.tableName)
+        self.ui.tablename_edit.setEnabled(False)
+        self.ui.hidden_checkbox.setCheckState(to_check(item.elem.hidden))
+        self.ui.pagination_checkbox.setCheckState(
+            to_check(item.elem.pagination)
+        )
+        self.ui.lines_on_page_spinbox.setValue(item.elem.linesOnPage)
+        self.ui.columns.set_elem(item.elem)
+        self.ui.form.set_elem(item.elem)
+        self.ui.main_tab_widget.setTabEnabled(1, True)
+        self.ui.main_tab_widget.setTabEnabled(2, True)
 
-        elif item.elem._tag_name == 'formEntry':
-            self.ui.form_box.setVisible(True)
-            self.ui.main_tab_widget.setTabEnabled(2, True)
+    def _set_form(self, item):
+        self.ui.form_box.setVisible(True)
+        self.ui.main_tab_widget.setTabEnabled(2, True)
 
-        elif item.elem._tag_name == 'page':
-            self.ui.page_group_box.setVisible(True)
-            self.ui.add_card_checkbox.setCheckState(to_check(item.addCard))
-            self.ui.page_name_edit.setText(item.elem.pageName)
+    def _set_page(self, item):
+        self.ui.page_group_box.setVisible(True)
+        self.ui.add_card_checkbox.setCheckState(to_check(item.addCard))
+        self.ui.page_name_edit.setText(item.elem.pageName)
 
-        elif item.elem._tag_name == 'prebuiltPageEntry':
-            self.ui.prebuilt_page_box.setVisible(True)
-            self.ui.page_type_combobox.setCurrentText(str(item.elem.type))
-
-        else:
-            self.ui.nothing_box.setVisible(True)
+    def _set_prebuilt_page(self, item):
+        self.ui.prebuilt_page_box.setVisible(True)
+        self.ui.page_type_combobox.setCurrentText(str(item.elem.type))
 
     def _on_name_edited(self, name):
         self._item.elem.name = name

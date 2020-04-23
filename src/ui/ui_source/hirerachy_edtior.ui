@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="main_tab_widget">
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_settings">
        <attribute name="title">
@@ -417,11 +417,21 @@
        <attribute name="title">
         <string>Triggers</string>
        </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_14">
+        <item>
+         <layout class="QVBoxLayout" name="triggers_layout"/>
+        </item>
+       </layout>
       </widget>
       <widget class="QWidget" name="tab_buttons">
        <attribute name="title">
         <string>Buttons</string>
        </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_15">
+        <item>
+         <layout class="QVBoxLayout" name="button_layout"/>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>
