@@ -11,9 +11,14 @@ Location = xmlenum(
     'location',
     TOP='top',
     CARDHEADER='cardHeader',
-    COLUMN='column',  # In table column
+    # COLUMN='column',  # In table column
     ACTION='action'  # In actions column
 )
+
+_locations = {
+    "all": [Location.TOP, Location.CARDHEADER],
+    "tableEntry": [Location.ACTION]
+}
 
 SystemAction = xmlenum(
     'SystemAction', 'action', REGTOKEN='regToken', PASSTOKEN='passToken'

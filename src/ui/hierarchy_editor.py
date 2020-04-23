@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import QFileDialog, QMainWindow, QSplitter
 from api.system import HierachyManager
 from api.system.hierarchy import PrebuiltPageType
 from ui.hierarchy import (AccessTable, FormColumns, HierachyTree, TableColumns,
-                          TriggersTable)
+                          TriggersTable, ButtonTable)
 from ui.ui_compiled.hirerachy_edtior import Ui_HierarchyEditor
 
 from .statusbar_handler import StatusBarHandler
@@ -61,6 +61,9 @@ class HierachyEditor(QMainWindow):
 
         self.ui.triggers = TriggersTable(self)
         self.ui.triggers_layout.addWidget(self.ui.triggers)
+
+        self.ui.buttons = ButtonTable(self)
+        self.ui.button_layout.addWidget(self.ui.buttons)
 
         self.ui.common_group_box.setEnabled(False)
         self._hide_boxes()
@@ -182,6 +185,7 @@ class HierachyEditor(QMainWindow):
         self.ui.access.set_access(item.elem.accessRights)
         self.ui.inherit_check_box.setDisabled(item.is_root)
         self.ui.triggers.set_elem(item.elem)
+        self.ui.buttons.set_elem(item.elem)
 
     def _set_table(self, item):
         self.ui.table_db_box.setVisible(True)
