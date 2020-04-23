@@ -7,7 +7,7 @@ TARGET_DIR = 'src/ui/ui_compiled'
 
 RES_DIR = 'resources'
 RES_TARGET_DIR = 'src/ui/res_compiled'
-RES_IMPORT = 'ui.res_compiled'
+RES_IMPORT = 'ermaket.ui.res_compiled'
 
 while not os.path.isdir(os.path.join(os.getcwd(), '.git')):
     os.chdir('..')

@@ -114,8 +114,8 @@ obj.json
 dump
 
 # Generated stuff
-src/models/philosophy
+ermaket/models/philosophy
 
 # Generated UI
-src/ui/ui_compiled/*
-src/ui/res_compiled/*
+ermaket/ui/ui_compiled/*
+ermaket/ui/res_compiled/*
