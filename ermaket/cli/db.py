@@ -73,13 +73,12 @@ def create():
 @click.option(
     "--base-module",
     help="Base module import path. There has to be only one base.",
-    default="models.base"
+    default="ermaket.models.base"
 )
 @click.option(
     "--base-folder",
     help="Base module location folder",
-    type=click.Path(),
-    default="models"
+    type=click.Path()
 )
 def generate(
     xml, schema, no_system, folder, check, prefix, base_module, base_folder

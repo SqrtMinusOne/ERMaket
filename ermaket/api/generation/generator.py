@@ -1,12 +1,13 @@
-from fnmatch import fnmatch
 import logging
 import os
+from fnmatch import fnmatch
 
 from jinja2 import Environment, FileSystemLoader
 from yapf.yapflib.yapf_api import FormatCode
 
 from ermaket.api.config import Config
 from ermaket.api.models import NamesConverter
+from ermaket.utils import get_project_root
 
 from .types import erd_to_sqla_type
 
@@ -39,7 +40,10 @@ class Generator:
         self._add_check = add_check
         self._tables = tables
         self._schema = schema
-        self._folder = folder or self._config.Models['models_dir']
+        models_dir = os.path.normpath(
+            os.path.join(get_project_root(), self._config.Models['models_dir'])
+        )
+        self._folder = folder or models_dir
         self._set('_prefix', prefix, self._config.Models['model_prefix'])
         self._set('_base_module', base_module, self._config.Generation['base'])
         self._set(

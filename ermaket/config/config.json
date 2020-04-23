@@ -4,6 +4,7 @@
         "XML.scriptsPath",
         "Dump.folder",
         "Generation.templates_folder",
+        "Generation.base_folder",
         "Scripts.folder",
         "Logging.handlers.file_handler.filename",
         "Logging.handlers.error_file_handler.filename",
