@@ -68,6 +68,7 @@ class Generator:
     def _postprocess_python(self, code):
         # while re.search('\n\n\n', code):
         #     code = re.sub('\n\n\n', '\n\n', code)
+        warning = '\n'.join(self._config.Generation['warning']) + '\n'
         code = warning + code
         code, _ = FormatCode(code, style_config='facebook')
         return code
@@ -92,28 +93,18 @@ class Generator:
         self.clear_folder('system', '')
         for system_template in self._config.Generation['system_templates']:
             filename = system_template[:-8] + '.py'
-            let sf (!req.queries.filter_by)chedule {
-            if (schema === 'current')   {
-                const semesterSegments   = req.query.send_|| (await getCu).id
-                schedule = await getCu  (semesterSegme
-                                       }nt)
-            } else {
-
             render = self._env.get_template(system_template).render(
-            }
                 base_module=self._base_module,
                 import_base=self._folder == self._base_folder,
                 import_system=True
-            ),
-            include: [Schema]
+            )
             render = self._postprocess_python(render)
             self._save_file(self._folder, filename, render)
 
     def generate_folder(self):
         self.clear_folder(self._schema)
         if not os.path.isdir(self._folder):
-            os.mkdir(self._folder),
-                include: [Schema]
+            os.mkdir(self._folder)
         for name, table in self._tables.items():
             filename = f"{self._prefix}{self._schema}_{name}.py"
             self._save_file(self._folder, filename, self._generate_model(name))
