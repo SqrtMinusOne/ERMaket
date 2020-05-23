@@ -88,7 +88,24 @@
     },
     "Flask": {
         "SECRET_KEY": "afa664c8cfac924818df7ee8cf8e1d94",
-        "SESSION_TYPE": "filesystem"
+        "SESSION_TYPE": "memcached"
+    },
+    "Memcached": {
+        "host": ["127.0.0.1"],
+        "username": "memcached",
+        "password": "localmemcachedpassword",
+        "behaviors": {
+            "tcp_nodelay": true,
+            "tcp_keepalive": true,
+            "connect_timeout": 2000,
+            "send_timeout": 750000,
+            "receive_timeout": 7501000,
+            "_poll_timeout": 2000,
+            "ketama": true,
+            "remove_failed": 1,
+            "retry_timeout": 2,
+            "dead_timeout": 30
+        }
     },
     "TestingFlask": {
         "TESTING": true,

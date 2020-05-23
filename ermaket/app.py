@@ -4,6 +4,7 @@ import traceback
 from pathlib import Path
 from tempfile import mkdtemp
 
+import pylibmc
 from flask import Flask, abort, jsonify
 from flask_cors import CORS
 from flask_login import LoginManager
@@ -75,9 +76,17 @@ def create_app():
         return jsonify(response), 500
 
     logging.info('Starting app')
-
+    if config.Flask['SESSION_TYPE'] == 'memcached':
+        config.Flask['SESSION_MEMCACHED'] = pylibmc.Client(
+            config.Memcached['host'],
+            binary=True,
+            # username=config.Memcached['username'],
+            # password=config.Memcached['password'],
+            behaviors=config.Memcached['behaviors']
+        )
+    else:
+        app.config['SESSION_FILE_DIR'] = mkdtemp()
     app.config.update(config.Flask)
-    app.config['SESSION_FILE_DIR'] = mkdtemp()
 
     login_manager.init_app(app)
     sess.init_app(app)
@@ -88,7 +97,9 @@ def create_app():
     prefix = config.Root.get(os.environ.get('FLASK_ENV'), '/')
     logging.info(f"Base prefix: {prefix}")
 
-    from ermaket.blueprints import tables, auth, transaction, sql, business_logic
+    from ermaket.blueprints import (
+        tables, auth, transaction, sql, business_logic
+    )
     app.register_blueprint(tables, url_prefix=f"{prefix}/tables")
     app.register_blueprint(auth, url_prefix=f"{prefix}/auth")
     app.register_blueprint(transaction, url_prefix=f"{prefix}/transaction")

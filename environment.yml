@@ -38,3 +38,4 @@ dependencies:
     - pytest-timeout
     - pytest-instafail
     - pyqt5
+    - pylibmc
