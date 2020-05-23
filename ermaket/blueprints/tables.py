@@ -106,4 +106,6 @@ def get_entry(schema, table):
         kwargs = get_filter_params(request.args, name, pagination=False)
         builder = QueryBuilder(db)
         result = builder.fetch_one(model, entry.displayColumns, **kwargs)
+        if result is None:
+            abort(404)
     return jsonify({**result, **scripts.append_})
