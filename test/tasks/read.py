@@ -52,30 +52,30 @@ class ReadTasks(TaskSet):
     def table_last(self):
         self.client.get(url='/tables/table/er1/task?offset=100000&limit=100')
 
-    # @task(1)
-    # def add_task(self):
-    #     transaction = {
-    #         Config.ENTRY_ID: {
-    #             'create': {
-    #                 'dummy_key': {
-    #                     'newData': {
-    #                         "name": "dummy",
-    #                         "due_date": "2020-05-23T19:12:06.981Z",
-    #                         "description": "dummy",
-    #                         "list_id": np.random.randint(1, 30)
-    #                     },
-    #                     'links': []
-    #                 }
-    #             }
-    #         }
-    #     }
-    #     self.client.post(
-    #         url='/transaction/execute',
-    #         data=json.dumps({'transaction': transaction}),
-    #         headers={
-    #             'Content-Type': 'application/json'
-    #         }
-    #     )
+    @task(1)
+    def add_task(self):
+        transaction = {
+            Config.ENTRY_ID: {
+                'create': {
+                    'dummy_key': {
+                        'newData': {
+                            "name": "dummy",
+                            "due_date": "2020-05-23T19:12:06.981Z",
+                            "description": "dummy",
+                            "list_id": np.random.randint(1, 30)
+                        },
+                        'links': []
+                    }
+                }
+            }
+        }
+        self.client.post(
+            url='/transaction/execute',
+            data=json.dumps({'transaction': transaction}),
+            headers={
+                'Content-Type': 'application/json'
+            }
+        )
 
 
 class ReadUser(HttpUser):
