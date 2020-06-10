@@ -681,6 +681,19 @@
                 <linkMultiple>False</linkMultiple>
                 <linkName>has_page</linkName>
             </linkedColumn>
+            <column>
+                <rowName>wiki_page_id</rowName>
+                <text>Wiki page id</text>
+                <isSort>True</isSort>
+                <isFilter>True</isFilter>
+                <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <isRequired>True</isRequired>
+                <type>int4</type>
+                <isVisible>False</isVisible>
+                <isUnique>True</isUnique>
+                <isAuto>False</isAuto>
+            </column>
             <linkedColumn>
                 <rowName>died_at_philosopher</rowName>
                 <text>Died at philosopher</text>
@@ -739,6 +752,12 @@
                     <isVisible>True</isVisible>
                     <linkType>dropdown</linkType>
                 </linkedField>
+                <simpleField>
+                    <rowName>wiki_page_id</rowName>
+                    <text>Wiki page id</text>
+                    <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
+                </simpleField>
                 <linkedField>
                     <rowName>died_at_philosopher</rowName>
                     <text>Died at philosopher</text>
@@ -760,6 +779,7 @@
                     <rows>
                         <rowName>name</rowName>
                         <rowName>has_page_wiki_page</rowName>
+                        <rowName>wiki_page_id</rowName>
                         <rowName>died_at_philosopher</rowName>
                         <rowName>was_born_at_philosopher</rowName>
                     </rows>
@@ -1219,6 +1239,19 @@
                 <linkMultiple>True</linkMultiple>
                 <linkName>has</linkName>
             </linkedColumn>
+            <column>
+                <rowName>philosopher_wiki_page_id</rowName>
+                <text>Philosopher wiki page id</text>
+                <isSort>True</isSort>
+                <isFilter>True</isFilter>
+                <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <isRequired>True</isRequired>
+                <type>int4</type>
+                <isVisible>False</isVisible>
+                <isUnique>False</isUnique>
+                <isAuto>False</isAuto>
+            </column>
         </columns>
         <formDescription>
             <schema>phil</schema>
@@ -1243,6 +1276,12 @@
                     <isVisible>True</isVisible>
                     <linkType>dropdown</linkType>
                 </linkedField>
+                <simpleField>
+                    <rowName>philosopher_wiki_page_id</rowName>
+                    <text>Philosopher wiki page id</text>
+                    <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
+                </simpleField>
             </fields>
             <groups>
                 <formGroup>
@@ -1251,6 +1290,7 @@
                         <rowName>id</rowName>
                         <rowName>name</rowName>
                         <rowName>has_philosopher</rowName>
+                        <rowName>philosopher_wiki_page_id</rowName>
                     </rows>
                 </formGroup>
             </groups>
@@ -1263,13 +1303,7 @@
                 <sort>asc</sort>
             </sortColumn>
         </defaultSort>
-        <displayColumns>
-            <displayColumn>
-                <rowName>has_philosopher</rowName>
-                <linkRowName>name</linkRowName>
-                <isMultiple>False</isMultiple>
-            </displayColumn>
-        </displayColumns>
+        <displayColumns/>
     </tableEntry>
     <tableEntry id="7">
         <accessRights inherit="True"/>
@@ -1737,6 +1771,19 @@
                 <linkMultiple>False</linkMultiple>
                 <linkName>has_page</linkName>
             </linkedColumn>
+            <column>
+                <rowName>wiki_page_id</rowName>
+                <text>Wiki page id</text>
+                <isSort>True</isSort>
+                <isFilter>True</isFilter>
+                <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <isRequired>True</isRequired>
+                <type>int4</type>
+                <isVisible>False</isVisible>
+                <isUnique>True</isUnique>
+                <isAuto>False</isAuto>
+            </column>
             <linkedColumn>
                 <rowName>is_author_of_philosopher</rowName>
                 <text>Is author of philosopher</text>
@@ -1787,6 +1834,12 @@
                     <isVisible>True</isVisible>
                     <linkType>dropdown</linkType>
                 </linkedField>
+                <simpleField>
+                    <rowName>wiki_page_id</rowName>
+                    <text>Wiki page id</text>
+                    <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
+                </simpleField>
                 <linkedField>
                     <rowName>is_author_of_philosopher</rowName>
                     <text>Is author of philosopher</text>
@@ -1803,6 +1856,7 @@
                         <rowName>abstract</rowName>
                         <rowName>language</rowName>
                         <rowName>has_page_wiki_page</rowName>
+                        <rowName>wiki_page_id</rowName>
                         <rowName>is_author_of_philosopher</rowName>
                     </rows>
                 </formGroup>

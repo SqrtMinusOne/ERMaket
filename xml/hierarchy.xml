@@ -235,6 +235,19 @@
                 <linkMultiple>True</linkMultiple>
                 <linkName>belongs_to</linkName>
             </linkedColumn>
+            <column>
+                <rowName>list_id</rowName>
+                <text>List id</text>
+                <isSort>True</isSort>
+                <isFilter>True</isFilter>
+                <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <isRequired>True</isRequired>
+                <type>int8</type>
+                <isVisible>False</isVisible>
+                <isUnique>False</isUnique>
+                <isAuto>False</isAuto>
+            </column>
             <linkedColumn>
                 <rowName>attachment_is_attached</rowName>
                 <text>Attachment is attached</text>
@@ -338,6 +351,12 @@
                     <isVisible>True</isVisible>
                     <linkType>dropdown</linkType>
                 </linkedField>
+                <simpleField>
+                    <rowName>list_id</rowName>
+                    <text>List id</text>
+                    <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
+                </simpleField>
                 <linkedField>
                     <rowName>attachment_is_attached</rowName>
                     <text>Attachment is attached</text>
@@ -370,6 +389,7 @@
                         <rowName>description</rowName>
                         <rowName>comment_is_written_to</rowName>
                         <rowName>belongs_to_list</rowName>
+                        <rowName>list_id</rowName>
                         <rowName>attachment_is_attached</rowName>
                         <rowName>subtask_contains</rowName>
                         <rowName>is_assigned_to_user</rowName>
@@ -428,6 +448,19 @@
                 <linkMultiple>True</linkMultiple>
                 <linkName>contains</linkName>
             </linkedColumn>
+            <column>
+                <rowName>task_id</rowName>
+                <text>Task id</text>
+                <isSort>True</isSort>
+                <isFilter>True</isFilter>
+                <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <isRequired>True</isRequired>
+                <type>int8</type>
+                <isVisible>False</isVisible>
+                <isUnique>False</isUnique>
+                <isAuto>False</isAuto>
+            </column>
             <linkedColumn>
                 <rowName>item_contains</rowName>
                 <text>Item contains</text>
@@ -466,6 +499,12 @@
                     <isVisible>True</isVisible>
                     <linkType>dropdown</linkType>
                 </linkedField>
+                <simpleField>
+                    <rowName>task_id</rowName>
+                    <text>Task id</text>
+                    <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
+                </simpleField>
                 <linkedField>
                     <rowName>item_contains</rowName>
                     <text>Item contains</text>
@@ -480,6 +519,7 @@
                     <rows>
                         <rowName>name</rowName>
                         <rowName>contains_task</rowName>
+                        <rowName>task_id</rowName>
                         <rowName>item_contains</rowName>
                     </rows>
                 </formGroup>
@@ -493,13 +533,7 @@
                 <sort>asc</sort>
             </sortColumn>
         </defaultSort>
-        <displayColumns>
-            <displayColumn>
-                <rowName>contains_task</rowName>
-                <linkRowName>name</linkRowName>
-                <isMultiple>False</isMultiple>
-            </displayColumn>
-        </displayColumns>
+        <displayColumns/>
     </tableEntry>
     <tableEntry id="4">
         <accessRights inherit="True"/>
@@ -555,6 +589,19 @@
                 <linkMultiple>True</linkMultiple>
                 <linkName>is_authored_by</linkName>
             </linkedColumn>
+            <column>
+                <rowName>user_name</rowName>
+                <text>User name</text>
+                <isSort>True</isSort>
+                <isFilter>True</isFilter>
+                <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <isRequired>True</isRequired>
+                <type>varchar(256)</type>
+                <isVisible>False</isVisible>
+                <isUnique>False</isUnique>
+                <isAuto>False</isAuto>
+            </column>
             <linkedColumn>
                 <rowName>is_written_to_task</rowName>
                 <text>Is written to task</text>
@@ -576,6 +623,19 @@
                 <linkMultiple>True</linkMultiple>
                 <linkName>is_written_to</linkName>
             </linkedColumn>
+            <column>
+                <rowName>task_id</rowName>
+                <text>Task id</text>
+                <isSort>True</isSort>
+                <isFilter>True</isFilter>
+                <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <isRequired>True</isRequired>
+                <type>int8</type>
+                <isVisible>False</isVisible>
+                <isUnique>False</isUnique>
+                <isAuto>False</isAuto>
+            </column>
         </columns>
         <formDescription>
             <schema>er1</schema>
@@ -600,6 +660,12 @@
                     <isVisible>True</isVisible>
                     <linkType>dropdown</linkType>
                 </linkedField>
+                <simpleField>
+                    <rowName>user_name</rowName>
+                    <text>User name</text>
+                    <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
+                </simpleField>
                 <linkedField>
                     <rowName>is_written_to_task</rowName>
                     <text>Is written to task</text>
@@ -607,6 +673,12 @@
                     <isVisible>True</isVisible>
                     <linkType>dropdown</linkType>
                 </linkedField>
+                <simpleField>
+                    <rowName>task_id</rowName>
+                    <text>Task id</text>
+                    <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
+                </simpleField>
             </fields>
             <groups>
                 <formGroup>
@@ -615,7 +687,9 @@
                         <rowName>id</rowName>
                         <rowName>text</rowName>
                         <rowName>is_authored_by_user</rowName>
+                        <rowName>user_name</rowName>
                         <rowName>is_written_to_task</rowName>
+                        <rowName>task_id</rowName>
                     </rows>
                 </formGroup>
             </groups>
@@ -628,13 +702,7 @@
                 <sort>asc</sort>
             </sortColumn>
         </defaultSort>
-        <displayColumns>
-            <displayColumn>
-                <rowName>is_written_to_task</rowName>
-                <linkRowName>name</linkRowName>
-                <isMultiple>False</isMultiple>
-            </displayColumn>
-        </displayColumns>
+        <displayColumns/>
     </tableEntry>
     <tableEntry id="5">
         <accessRights inherit="True"/>
@@ -795,6 +863,19 @@
                 <linkMultiple>True</linkMultiple>
                 <linkName>is_attached</linkName>
             </linkedColumn>
+            <column>
+                <rowName>task_id</rowName>
+                <text>Task id</text>
+                <isSort>True</isSort>
+                <isFilter>True</isFilter>
+                <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <isRequired>True</isRequired>
+                <type>int8</type>
+                <isVisible>False</isVisible>
+                <isUnique>False</isUnique>
+                <isAuto>False</isAuto>
+            </column>
         </columns>
         <formDescription>
             <schema>er1</schema>
@@ -819,6 +900,12 @@
                     <isVisible>True</isVisible>
                     <linkType>dropdown</linkType>
                 </linkedField>
+                <simpleField>
+                    <rowName>task_id</rowName>
+                    <text>Task id</text>
+                    <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
+                </simpleField>
             </fields>
             <groups>
                 <formGroup>
@@ -827,6 +914,7 @@
                         <rowName>id</rowName>
                         <rowName>contents</rowName>
                         <rowName>is_attached_task</rowName>
+                        <rowName>task_id</rowName>
                     </rows>
                 </formGroup>
             </groups>
@@ -839,13 +927,7 @@
                 <sort>asc</sort>
             </sortColumn>
         </defaultSort>
-        <displayColumns>
-            <displayColumn>
-                <rowName>is_attached_task</rowName>
-                <linkRowName>name</linkRowName>
-                <isMultiple>False</isMultiple>
-            </displayColumn>
-        </displayColumns>
+        <displayColumns/>
     </tableEntry>
     <tableEntry id="7">
         <accessRights inherit="True"/>
@@ -914,6 +996,19 @@
                 <linkMultiple>True</linkMultiple>
                 <linkName>contains</linkName>
             </linkedColumn>
+            <column>
+                <rowName>subtask_name</rowName>
+                <text>Subtask name</text>
+                <isSort>True</isSort>
+                <isFilter>True</isFilter>
+                <isEditable>True</isEditable>
+                <isPk>False</isPk>
+                <isRequired>True</isRequired>
+                <type>varchar(256)</type>
+                <isVisible>False</isVisible>
+                <isUnique>False</isUnique>
+                <isAuto>False</isAuto>
+            </column>
         </columns>
         <formDescription>
             <schema>er1</schema>
@@ -944,6 +1039,12 @@
                     <isVisible>True</isVisible>
                     <linkType>dropdown</linkType>
                 </linkedField>
+                <simpleField>
+                    <rowName>subtask_name</rowName>
+                    <text>Subtask name</text>
+                    <isEditable>True</isEditable>
+                    <isVisible>True</isVisible>
+                </simpleField>
             </fields>
             <groups>
                 <formGroup>
@@ -953,6 +1054,7 @@
                         <rowName>name</rowName>
                         <rowName>status</rowName>
                         <rowName>contains_subtask</rowName>
+                        <rowName>subtask_name</rowName>
                     </rows>
                 </formGroup>
             </groups>

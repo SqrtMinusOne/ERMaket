@@ -69,7 +69,7 @@ class HierachyConstructor:
         for relation in table.relationships:
             if relation.fk_col and relation.fk_col.name in local_fks:
                 t.columns.append(self._make_linked_fk_column(relation))
-                if relation.fk_col.pk:
+                if relation.fk_col.fk.column.pk:
                     t.columns.append(self._make_hidden_pk_column(relation))
                 else:
                     display_column = relation.display_column
