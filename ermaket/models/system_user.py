@@ -42,7 +42,7 @@ class User(Base, UserMixin):
             authority.update(role.can_register)
             for role in self.roles if role.can_register is not None
         ]
-        return len(target.difference(authority)) == 0
+        return len(target.difference(authority)) == 0 and len(authority) > 0
 
     def can_reset_password(self):
         return any([role.can_reset_password for role in self.roles])
